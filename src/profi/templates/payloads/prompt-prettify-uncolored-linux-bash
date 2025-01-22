@@ -1,0 +1,1 @@
+export PS1='[BASH][\u@\h \w]-[\D{%F %T}]\n\$ '

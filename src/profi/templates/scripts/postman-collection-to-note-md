@@ -1,0 +1,1 @@
+python <%=$(esh variables/tools_dir)%>/postman/postmanEndpointsToNote.py

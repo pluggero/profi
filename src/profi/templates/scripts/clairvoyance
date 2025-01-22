@@ -1,0 +1,6 @@
+mkdir -p clairvoyance; clairvoyance.py \
+    --output clairvoyance/gql_schema.json \
+    --wordlist <WORDLIST> \
+    --progress \
+    -H "Cookie: <COOKIE>" \
+    https://<URL-TO-GRAPHQL>

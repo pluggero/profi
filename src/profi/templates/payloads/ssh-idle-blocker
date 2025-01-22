@@ -1,0 +1,1 @@
+watch -n 10 'xdotool type "ls" && xdotool key Return'

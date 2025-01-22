@@ -1,0 +1,1 @@
+mkdir -p feroxbuster; feroxbuster -o feroxbuster/ferox_auth_initial.log -w /usr/share/seclists/Discovery/Web-Content/directory-list-2.3-medium.txt --no-state -n --rate-limit <120|200> -u "http://<ip>:<port>" --cookies <sessionname>=<sessionId>

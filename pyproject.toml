@@ -1,0 +1,44 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "profi"
+version = "1.0.0"
+authors = [
+  { name="Ehud Cseresnyés", email="ehud.cseresnyes@usd.de" },
+  { name="Niklas Betz", email="niklas.betz@usd.de" },
+  { name="Robin Plugge", email="robin.plugge@usd.de" },
+]
+description = "Rofi-based tool render common security related templates to clipboard"
+readme = "README.md"
+requires-python = ">=3.7"
+dependencies = [
+    "pyyaml>=6.0.1",
+]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Operating System :: OS Independent",
+]
+
+[tool.setuptools.packages.find]
+where = [ "src" ]
+
+[tool.setuptools.package-data]
+profi = [
+  "templates/**/*"
+]
+
+[project.scripts]
+profi = "profi.profi:main"
+
+[project.urls]
+homepage = "https://github.com/pluggero/profi"
+repository = "https://github.com/pluggero/profi"
+
+
+[tool.pytest.ini_options]
+filterwarnings = "ignore::urllib3.exceptions.InsecureRequestWarning"
+addopts = [
+    "--import-mode=importlib",
+]

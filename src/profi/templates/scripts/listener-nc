@@ -1,0 +1,1 @@
+nc -lvnp <%=$(esh variables/shell_port)%>

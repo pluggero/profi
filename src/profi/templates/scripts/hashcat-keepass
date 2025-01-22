@@ -1,0 +1,1 @@
+hashcat -m 13400 <john-hash-file> /usr/share/wordlists/rockyou.txt -r /usr/share/hashcat/rules/rockyou-30000.rule --force

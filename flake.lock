@@ -1,0 +1,234 @@
+{
+  "nodes": {
+    "chisel-linux": {
+      "flake": false,
+      "locked": {
+        "narHash": "sha256-nUuf1/DaYWLptxrwCR+IBNm1ApEl4HAik2nDXm+p+vo=",
+        "type": "file",
+        "url": "https://github.com/jpillora/chisel/releases/download/v1.9.1/chisel_1.9.1_linux_amd64.gz"
+      },
+      "original": {
+        "type": "file",
+        "url": "https://github.com/jpillora/chisel/releases/download/v1.9.1/chisel_1.9.1_linux_amd64.gz"
+      }
+    },
+    "chisel-windows": {
+      "flake": false,
+      "locked": {
+        "narHash": "sha256-IXbjlrXdsMVnxczZ/tIEJAf45hav+80Qo8FRSANLGa0=",
+        "type": "file",
+        "url": "https://github.com/jpillora/chisel/releases/download/v1.9.1/chisel_1.9.1_windows_amd64.gz"
+      },
+      "original": {
+        "type": "file",
+        "url": "https://github.com/jpillora/chisel/releases/download/v1.9.1/chisel_1.9.1_windows_amd64.gz"
+      }
+    },
+    "ghostpack": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1729807129,
+        "narHash": "sha256-9nlYQ5YsI6PPPrrYtxeSD6lDFrkdoJtEREq+oE0ASKg=",
+        "owner": "r3motecontrol",
+        "repo": "Ghostpack-CompiledBinaries",
+        "rev": "20a5f0a81456358b2bdc9846774949a7fb25acd8",
+        "type": "github"
+      },
+      "original": {
+        "owner": "r3motecontrol",
+        "repo": "Ghostpack-CompiledBinaries",
+        "type": "github"
+      }
+    },
+    "godpotato": {
+      "flake": false,
+      "locked": {
+        "narHash": "sha256-RK17flnM4eTWu32dj0SCLuPyycjUymqdXLx13HAX91g=",
+        "type": "file",
+        "url": "https://github.com/BeichenDream/GodPotato/releases/download/V1.20/GodPotato-NET4.exe"
+      },
+      "original": {
+        "type": "file",
+        "url": "https://github.com/BeichenDream/GodPotato/releases/download/V1.20/GodPotato-NET4.exe"
+      }
+    },
+    "invoke-eventviewer": {
+      "flake": false,
+      "locked": {
+        "narHash": "sha256-zuLslbtKLOyf9V2tqHTdhGfOZ+xSM6//B+rCMcej8xk=",
+        "type": "file",
+        "url": "https://raw.githubusercontent.com/CsEnox/EventViewer-UACBypass/main/Invoke-EventViewer.ps1"
+      },
+      "original": {
+        "type": "file",
+        "url": "https://raw.githubusercontent.com/CsEnox/EventViewer-UACBypass/main/Invoke-EventViewer.ps1"
+      }
+    },
+    "invoke-mimikatz": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1707174366,
+        "narHash": "sha256-rar6uBelbIxrv55NBILLbjnYZpYhtNfrBkIBV2nnJuw=",
+        "owner": "PluggeRo",
+        "repo": "Invoke-Mimikatz",
+        "rev": "7768b026422c22ce5e2ad2f98573cc5826127a19",
+        "type": "github"
+      },
+      "original": {
+        "owner": "PluggeRo",
+        "repo": "Invoke-Mimikatz",
+        "type": "github"
+      }
+    },
+    "invoke-vshadow": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1708684103,
+        "narHash": "sha256-UtlxYItqhjYngaLqKm/qMTFMYPHxXRYek0GLw/VmzrM=",
+        "owner": "PluggeRo",
+        "repo": "Invoke-vshadow",
+        "rev": "1806887bc5a1353bbe3f5dd27d09d6d76ee53a5f",
+        "type": "github"
+      },
+      "original": {
+        "owner": "PluggeRo",
+        "repo": "Invoke-vshadow",
+        "type": "github"
+      }
+    },
+    "ligolo-ng-agent-windows": {
+      "flake": false,
+      "locked": {
+        "narHash": "sha256-uwXkbo1POaCW4FdjZOvC8UODRkuIFFtOGakW2GW5ZPE=",
+        "type": "file",
+        "url": "https://github.com/nicocha30/ligolo-ng/releases/download/v0.6.2/ligolo-ng_agent_0.6.2_windows_amd64.zip"
+      },
+      "original": {
+        "type": "file",
+        "url": "https://github.com/nicocha30/ligolo-ng/releases/download/v0.6.2/ligolo-ng_agent_0.6.2_windows_amd64.zip"
+      }
+    },
+    "ligolo-ng-agent-wintun": {
+      "flake": false,
+      "locked": {
+        "narHash": "sha256-3yLT1EbSaU2bfKEHk3jTV6l835AC8tCo2rbP3nvBV0o=",
+        "type": "file",
+        "url": "https://www.wintun.net/builds/wintun-0.14.1.zip"
+      },
+      "original": {
+        "type": "file",
+        "url": "https://www.wintun.net/builds/wintun-0.14.1.zip"
+      }
+    },
+    "mimikatz": {
+      "flake": false,
+      "locked": {
+        "narHash": "sha256-6qozAciu13C4T1RVy5H/BtfhT4cwzCMkPXlVRVjABFA=",
+        "type": "file",
+        "url": "https://github.com/gentilkiwi/mimikatz/releases/download/2.2.0-20220919/mimikatz_trunk.zip"
+      },
+      "original": {
+        "type": "file",
+        "url": "https://github.com/gentilkiwi/mimikatz/releases/download/2.2.0-20220919/mimikatz_trunk.zip"
+      }
+    },
+    "nixpkgs": {
+      "locked": {
+        "lastModified": 1735617354,
+        "narHash": "sha256-5zJyv66q68QZJZsXtmjDBazGnF0id593VSy+8eSckoo=",
+        "owner": "nixos",
+        "repo": "nixpkgs",
+        "rev": "69b9a8c860bdbb977adfa9c5e817ccb717884182",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nixos",
+        "ref": "nixpkgs-unstable",
+        "repo": "nixpkgs",
+        "type": "github"
+      }
+    },
+    "payloadAllTheThings": {
+      "flake": false,
+      "locked": {
+        "narHash": "sha256-1NS07WOq+XX4Spq0SyksS/utnUH0yPVohAtc9wOSjz0=",
+        "type": "file",
+        "url": "https://github.com/swisskyrepo/PayloadsAllTheThings/archive/refs/tags/3.0.zip"
+      },
+      "original": {
+        "type": "file",
+        "url": "https://github.com/swisskyrepo/PayloadsAllTheThings/archive/refs/tags/3.0.zip"
+      }
+    },
+    "printspoofer32": {
+      "flake": false,
+      "locked": {
+        "narHash": "sha256-HwdMrpppFixp5z/pkc1u8eKEyMxlj1YA4PpGTjHZcXw=",
+        "type": "file",
+        "url": "https://github.com/itm4n/PrintSpoofer/releases/download/v1.0/PrintSpoofer32.exe"
+      },
+      "original": {
+        "type": "file",
+        "url": "https://github.com/itm4n/PrintSpoofer/releases/download/v1.0/PrintSpoofer32.exe"
+      }
+    },
+    "printspoofer64": {
+      "flake": false,
+      "locked": {
+        "narHash": "sha256-yl1Mwnzx47WrhQ9I/QnMcelLhwDyiwgWfj5SzXLgrxA=",
+        "type": "file",
+        "url": "https://github.com/itm4n/PrintSpoofer/releases/download/v1.0/PrintSpoofer64.exe"
+      },
+      "original": {
+        "type": "file",
+        "url": "https://github.com/itm4n/PrintSpoofer/releases/download/v1.0/PrintSpoofer64.exe"
+      }
+    },
+    "pspy": {
+      "flake": false,
+      "locked": {
+        "narHash": "sha256-IyB2VWMGveMjKG+/wMlurQesKiYlVaC+TMgqZ+t6Z98=",
+        "type": "file",
+        "url": "https://github.com/DominicBreuker/pspy/releases/download/v1.2.1/pspy64"
+      },
+      "original": {
+        "type": "file",
+        "url": "https://github.com/DominicBreuker/pspy/releases/download/v1.2.1/pspy64"
+      }
+    },
+    "root": {
+      "inputs": {
+        "chisel-linux": "chisel-linux",
+        "chisel-windows": "chisel-windows",
+        "ghostpack": "ghostpack",
+        "godpotato": "godpotato",
+        "invoke-eventviewer": "invoke-eventviewer",
+        "invoke-mimikatz": "invoke-mimikatz",
+        "invoke-vshadow": "invoke-vshadow",
+        "ligolo-ng-agent-windows": "ligolo-ng-agent-windows",
+        "ligolo-ng-agent-wintun": "ligolo-ng-agent-wintun",
+        "mimikatz": "mimikatz",
+        "nixpkgs": "nixpkgs",
+        "payloadAllTheThings": "payloadAllTheThings",
+        "printspoofer32": "printspoofer32",
+        "printspoofer64": "printspoofer64",
+        "pspy": "pspy",
+        "sysinternals": "sysinternals"
+      }
+    },
+    "sysinternals": {
+      "flake": false,
+      "locked": {
+        "narHash": "sha256-R7P6SzvZRKzoguhHZLoIRBDuC5qxmEAtQhBV+Y7ae18=",
+        "type": "file",
+        "url": "https://download.sysinternals.com/files/SysinternalsSuite.zip"
+      },
+      "original": {
+        "type": "file",
+        "url": "https://download.sysinternals.com/files/SysinternalsSuite.zip"
+      }
+    }
+  },
+  "root": "root",
+  "version": 7
+}

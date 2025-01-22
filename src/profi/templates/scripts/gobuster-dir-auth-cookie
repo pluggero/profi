@@ -1,0 +1,1 @@
+mkdir -p gobuster; gobuster dir -x zip,pdf,php,html,txt,config -o gobuster/gobuster_auth.txt -w /usr/share/seclists/Discovery/Web-Content/directory-list-2.3-medium.txt -u http://<ip>:<port> -c "<cookie_name>=<cookie_value>"

@@ -1,0 +1,1 @@
+mkdir -p nmap; sudo nmap -v -sCV -Pn -oA nmap/initial-tcp-full -p- -T4 --traceroute -O --max-retries 3 <ip>; sudo chown -R $(whoami):$(whoami) nmap

