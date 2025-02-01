@@ -1,3 +1,11 @@
+'''
+NameMash by superkojiman
+
+Generate a list of possible usernames from a person's first and last name. 
+
+https://blog.techorganic.com/2011/07/17/creating-a-user-name-list-for-brute-force-attacks/
+'''
+
 import sys
 import os.path
 
