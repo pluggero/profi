@@ -1,5 +1,5 @@
 {
-  description = "OSCPasting Flake";
+  description = "profi Flake";
 
   inputs = {
     # Nixpkgs / NixOS version to use.
@@ -14,11 +14,11 @@
     sysinternals.url = "file+https://download.sysinternals.com/files/SysinternalsSuite.zip";
     sysinternals.flake = false;
 
-    chisel-windows.url = "https://github.com/jpillora/chisel/releases/download/v1.9.1/chisel_1.9.1_windows_amd64.gz";
+    chisel-windows.url = "https://github.com/jpillora/chisel/releases/download/v1.10.1/chisel_1.10.1_windows_amd64.gz";
     chisel-windows.flake = false;
 
     # This is already in nixpkgs as pkgs.chisel
-    chisel-linux.url = "https://github.com/jpillora/chisel/releases/download/v1.9.1/chisel_1.9.1_linux_amd64.gz";
+    chisel-linux.url = "https://github.com/jpillora/chisel/releases/download/v1.10.1/chisel_1.10.1_linux_amd64.gz";
     chisel-linux.flake = false;
 
     ghostpack.url = "github:r3motecontrol/Ghostpack-CompiledBinaries";
@@ -27,7 +27,7 @@
     pspy.url = "https://github.com/DominicBreuker/pspy/releases/download/v1.2.1/pspy64";
     pspy.flake = false;
 
-    ligolo-ng-agent-windows.url = "file+https://github.com/nicocha30/ligolo-ng/releases/download/v0.6.2/ligolo-ng_agent_0.6.2_windows_amd64.zip";
+    ligolo-ng-agent-windows.url = "file+https://github.com/nicocha30/ligolo-ng/releases/download/v0.7.5/ligolo-ng_agent_0.7.5_windows_amd64.zip";
     ligolo-ng-agent-windows.flake = false;
 
     # Broken due to being tar.gz => need to fix in postUnpackPhase
@@ -52,11 +52,12 @@
     invoke-eventviewer.url = "https://raw.githubusercontent.com/CsEnox/EventViewer-UACBypass/main/Invoke-EventViewer.ps1";
     invoke-eventviewer.flake = false;
 
-    payloadAllTheThings.url = "file+https://github.com/swisskyrepo/PayloadsAllTheThings/archive/refs/tags/3.0.zip";
+    payloadAllTheThings.url = "file+https://github.com/swisskyrepo/PayloadsAllTheThings/archive/refs/tags/4.1.zip";
     payloadAllTheThings.flake = false;
   };
 
-  outputs = { self, nixpkgs, ... }@inputs:
+  outputs =
+    { self, nixpkgs, ... }@inputs:
     let
 
       # to work with older version of flakes
@@ -66,7 +67,12 @@
       version = builtins.substring 0 8 lastModifiedDate;
 
       # System types to support.
-      supportedSystems = [ "x86_64-linux" "x86_64-darwin" "aarch64-linux" "aarch64-darwin" ];
+      supportedSystems = [
+        "x86_64-linux"
+        "x86_64-darwin"
+        "aarch64-linux"
+        "aarch64-darwin"
+      ];
 
       # Helper function to generate an attrset '{ x86_64-linux = f "x86_64-linux"; ... }'.
       forAllSystems = nixpkgs.lib.genAttrs supportedSystems;
@@ -78,9 +84,12 @@
     {
 
       # Provide some binary packages for selected system types.
-      packages = forAllSystems (system:
+      packages = forAllSystems (
+        system:
         let
           pkgs = nixpkgsFor.${system};
+
+          templatesDir = ./src/profi/templates;
 
           # Mapping of tools to copy in the form of `destination = source`. The
           # destination is a path relative to the XDG_TOOLS_DIR, the source can
@@ -89,8 +98,10 @@
           # Each entry will be copied during the installPhase.
           external-tools = with inputs; {
 
-            "bloodhound/SharpHound.ps1" = "${pkgs.bloodhound}/lib/BloodHound/resources/app/Collectors/SharpHound.ps1";
-            "bloodhound/SharpHound.exe" = "${pkgs.bloodhound}/lib/BloodHound/resources/app/Collectors/SharpHound.exe";
+            "bloodhound/SharpHound.ps1" =
+              "${pkgs.bloodhound}/lib/BloodHound/resources/app/Collectors/SharpHound.ps1";
+            "bloodhound/SharpHound.exe" =
+              "${pkgs.bloodhound}/lib/BloodHound/resources/app/Collectors/SharpHound.exe";
 
             "Invoke-Mimikatz.ps1" = "${invoke-mimikatz}/Invoke-Mimikatz.ps1";
             "chisel/chisel_windows_amd64.gz" = "${chisel-windows}";
@@ -103,8 +114,8 @@
 
             # Workaround for https://github.com/NixOS/nix/issues/7083
             "ligolo-ng/proxy/linux" = pkgs.fetchzip {
-              url = "https://github.com/nicocha30/ligolo-ng/releases/download/v0.6.2/ligolo-ng_proxy_0.6.2_linux_amd64.tar.gz";
-              sha256 = "sha256-QSDmGfkLGnDF3K9JQEOWUoXigFsD/CBhk3eXsjpvYzw=";
+              url = "https://github.com/nicocha30/ligolo-ng/releases/download/v0.7.5/ligolo-ng_proxy_0.7.5_linux_amd64.tar.gz";
+              sha256 = "sha256-YfX6DFbDe9PtZnVEKAyS2PFEkjjPxl+8nUYb40HJLak=";
               stripRoot = false;
             };
             # "ligolo-ng/proxy/linux" = "${ligolo-ng-proxy-linux}";
@@ -114,163 +125,151 @@
             "vshadow/Invoke-vshadow.ps1" = "${invoke-vshadow}";
             "godpotato/GodPotato-NET4.exe" = "${godpotato}";
             "uacbypass/Invoke-EventViewer.ps1" = "${invoke-eventviewer}";
-            "powershell/spray-passwords.ps1" = ./templates/helper_scripts/spray-passwords.ps1;
-            "nmap/nmapServicesToNote.py" = ./templates/helper_scripts/nmapServicesToNote.py;
-            "nmap/nmapServicesToOrg.py" = ./templates/helper_scripts/nmapServicesToOrg.py;
-            "icebreaker/icebreakerServicesToNoteMd.py" = ./templates/helper_scripts/icebreakerServicesToNoteMd.py;
-            "postman/postmanEndpointsToNote.py" = ./templates/helper_scripts/postmanEndpointsToNote.py;
-            "wsdl/wsdlEndpointsToNote.py" = ./templates/helper_scripts/wsdlEndpointsToNote.py;
-            "openapi/openapiEndpointsToNote.py" = ./templates/helper_scripts/openapiEndpointsToNote.py;
-            "certificate/createFakeCertificate.py" = ./templates/helper_scripts/createFakeCertificate.py;
-            "phpserver/upload.php" = ./templates/helper_scripts/upload.php;
+            "powershell/spray-passwords.ps1" = templatesDir + /helper_scripts/spray-passwords.ps1;
+            "nmap/nmapServicesToNote.py" = templatesDir + /helper_scripts/nmapServicesToNote.py;
+            "nmap/nmapServicesToOrg.py" = templatesDir + /helper_scripts/nmapServicesToOrg.py;
+            "icebreaker/icebreakerServicesToNoteMd.py" =
+              templatesDir + /helper_scripts/icebreakerServicesToNoteMd.py;
+            "postman/postmanEndpointsToNote.py" = templatesDir + /helper_scripts/postmanEndpointsToNote.py;
+            "wsdl/wsdlEndpointsToNote.py" = templatesDir + /helper_scripts/wsdlEndpointsToNote.py;
+            "openapi/openapiEndpointsToNote.py" = templatesDir + /helper_scripts/openapiEndpointsToNote.py;
+            "certificate/createFakeCertificate.py" = templatesDir + /helper_scripts/createFakeCertificate.py;
+            "phpserver/upload.php" = templatesDir + /helper_scripts/upload.php;
           };
 
         in
         {
 
-          oscpasting = with pkgs; python3Packages.buildPythonApplication {
-            pname = "oscpasting";
-            version = "0.1";
-            format = "pyproject";
+          profi =
+            with pkgs;
+            python3Packages.buildPythonApplication {
+              pname = "profi";
+              version = "1.0.0";
+              format = "pyproject";
 
-            src = ./.;
+              src = ./.;
 
-            nativeBuildInputs = with python3Packages; [
-              setuptools
+              nativeBuildInputs = with python3Packages; [
+                setuptools
 
-              unzip
-            ];
+                unzip
+              ];
 
-            propagatedBuildInputs = with python3Packages; [
-              findutils
-              esh
-              rofi
-              wl-clipboard # copy to clipboard on Wayland
-              xclip # copy to clipboard on X
-              perl
-              unixtools.ifconfig
-              libossp_uuid # For generating uuids
-              num-utils # For random numbers
-              python312
-              pyyaml
-            ];
+              propagatedBuildInputs = with python3Packages; [
+                findutils
+                esh
+                rofi
+                wl-clipboard # copy to clipboard on Wayland
+                xclip # copy to clipboard on X
+                perl
+                unixtools.ifconfig
+                libossp_uuid # For generating uuids
+                num-utils # For random numbers
+                python312
+                pyyaml
+              ];
 
-            preFixup =
-              let
-                toolDir     = "$out/share/tools";
-                templateDir = "$out/share/templates";
-              in
-              ''
-                # Create directory for templates
-                mkdir -p ${templateDir}
-                cp -r templates/* ${templateDir}
+              preFixup =
+                let
+                  outToolsDir = "$out/share/tools";
+                  outTemplatesDir = "$out/share/templates";
+                in
+                ''
+                  # Create directory for templates
+                  mkdir -p ${outTemplatesDir}
+                  cp -r ${templatesDir}/* ${outTemplatesDir}
 
-                # Create directory for external tools
-                mkdir -p ${toolDir}
-              ''
-              +
-              builtins.concatStringsSep "\n" (
-                lib.mapAttrsToList
-                  (destination: source: ''
-                    mkdir -p `dirname "${toolDir}/${destination}"`
-                    cp -r -v '${source}' "${toolDir}/${destination}"
-                  '')
-                  external-tools) +
-              ''
-              '';
+                  # Create directory for external tools
+                  mkdir -p ${outToolsDir}
+                ''
+                + builtins.concatStringsSep "\n" (
+                  lib.mapAttrsToList (destination: source: ''
+                    mkdir -p `dirname "${outToolsDir}/${destination}"`
+                    cp -r -v '${source}' "${outToolsDir}/${destination}"
+                  '') external-tools
+                )
+                + '''';
 
-            postUnpack =
-              let
-                toolDir = "$out/share/tools";
-              in
-              ''
-                mkdir -p `dirname "${toolDir}/mimikatz"`
-                unzip ${inputs.mimikatz} -d ${toolDir}/mimikatz
+              postUnpack =
+                let
+                  outToolsDir = "$out/share/tools";
+                in
+                ''
+                  mkdir -p `dirname "${outToolsDir}/mimikatz"`
+                  unzip ${inputs.mimikatz} -d ${outToolsDir}/mimikatz
 
-                mkdir -p `dirname "${toolDir}/sysinternals"`
-                unzip ${inputs.sysinternals} -d ${toolDir}/sysinternals
+                  mkdir -p `dirname "${outToolsDir}/sysinternals"`
+                  unzip ${inputs.sysinternals} -d ${outToolsDir}/sysinternals
 
-                mkdir -p `dirname "${toolDir}/payloadAllTheThings"`
-                unzip ${inputs.payloadAllTheThings} -d ${toolDir}/payloadAllTheThings
+                  mkdir -p `dirname "${outToolsDir}/payloadAllTheThings"`
+                  unzip ${inputs.payloadAllTheThings} -d ${outToolsDir}/payloadAllTheThings
 
-                mkdir -p `dirname "${toolDir}/ligolo-ng/agent/windows"`
-                unzip ${inputs.ligolo-ng-agent-windows} -d ${toolDir}/ligolo-ng/agent/windows
+                  mkdir -p `dirname "${outToolsDir}/ligolo-ng/agent/windows"`
+                  unzip ${inputs.ligolo-ng-agent-windows} -d ${outToolsDir}/ligolo-ng/agent/windows
 
-                mkdir -p `dirname "${toolDir}/ligolo-ng/agent/wintun"`
-                unzip ${inputs.ligolo-ng-agent-wintun} -d ${toolDir}/ligolo-ng/agent/wintun
-              '';
-          };
-
-          oscp-script = with pkgs; stdenv.mkDerivation rec {
-            pname = "oscpasting";
-            inherit version;
-            src = ./.;
-
-            buildInputs = [
-              findutils
-              esh
-              rofi
-              wl-clipboard # copy to clipboard on Wayland
-              xclip # copy to clipboard on X
-              perl
-              unixtools.ifconfig
-              libossp_uuid # For generating uuids
-              num-utils # For random numbers
-              python312
-            ];
-
-            nativeBuildInputs = [ makeWrapper ];
-
-            installPhase =
-              let
-                toolDir     = "$out/share/tools";
-                templateDir = "$out/share/templates";
-              in
-              ''
-                # Install the main script
-                mkdir -p $out/bin
-                cp script.sh $out/bin/oscpasting
-                chmod +x $out/bin/oscpasting
-
-                # Create directory for external tools
-                mkdir -p ${toolDir}
-
-                mkdir -p ${templateDir}
-
-                cp -r templates/* ${templateDir}
-              ''
-              +
-              builtins.concatStringsSep "\n" (
-                lib.mapAttrsToList
-                  (destination: source: ''
-                    mkdir -p `dirname "${toolDir}/${destination}"`
-                    cp -r -v '${source}' "${toolDir}/${destination}"
-                  '')
-                  external-tools) +
-              ''
-                # Wrap the script:
-                # - PATH is set to dependencies
-                # - XDG_TOOLS_DIR to our directory with external tools
-
-                wrapProgram $out/bin/oscpasting \
-                --prefix PATH : ${lib.makeBinPath  buildInputs} \
-                --set XDG_TOOLS_DIR "$out/share/tools"
-              '';
-
-            meta = {
-              # Specify the default binary to run on `nix run`
-              mainProgram = "oscpasting";
-              description = "Rofi-based tool render common security related templates to clipboard";
-              # platforms = platforms.linux;
+                  mkdir -p `dirname "${outToolsDir}/ligolo-ng/agent/wintun"`
+                  unzip ${inputs.ligolo-ng-agent-wintun} -d ${outToolsDir}/ligolo-ng/agent/wintun
+                '';
             };
-          };
 
-        });
+          profi-script =
+            with pkgs;
+            stdenv.mkDerivation rec {
+              pname = "profi";
+              inherit version;
+              src = ./.;
 
-      homeManagerModules.OSCPasting = import ./hm.nix self;
+              nativeBuildInputs = [ makeWrapper ];
+
+              installPhase =
+                let
+                  outToolsDir = "$out/share/tools";
+                  outTemplatesDir = "$out/share/templates";
+                in
+                ''
+                  # Install the main script
+                  mkdir -p $out/bin
+                  cp script.sh $out/bin/profi
+                  chmod +x $out/bin/profi
+
+                  # Create directory for external tools
+                  mkdir -p ${outToolsDir}
+
+                  mkdir -p ${outTemplatesDir}
+
+                  cp -r ${templatesDir}/* ${outTemplatesDir}
+                ''
+                + builtins.concatStringsSep "\n" (
+                  lib.mapAttrsToList (destination: source: ''
+                    mkdir -p `dirname "${outToolsDir}/${destination}"`
+                    cp -r -v '${source}' "${outToolsDir}/${destination}"
+                  '') external-tools
+                )
+                + ''
+                  # Wrap the script:
+                  # - PATH is set to dependencies
+                  # - XDG_TOOLS_DIR to our directory with external tools
+
+                  wrapProgram $out/bin/profi \
+                  --prefix PATH : ${lib.makeBinPath buildInputs} \
+                  --set XDG_TOOLS_DIR "$out/share/tools"
+                '';
+
+              meta = {
+                # Specify the default binary to run on `nix run`
+                mainProgram = "profi";
+                description = "Rofi-based tool render common security related templates to clipboard";
+                # platforms = platforms.linux;
+              };
+            };
+
+        }
+      );
+
+      homeManagerModules.profi = import ./hm.nix self;
 
       # The default package for `nix build` and `nix run`. Use `nix flake show`
       # to inspect the contents or look inside `result` after building
-      defaultPackage = forAllSystems (system: self.packages.${system}.oscp-script);
+      defaultPackage = forAllSystems (system: self.packages.${system}.profi);
     };
 }
