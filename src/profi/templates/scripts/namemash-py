@@ -1,1 +1,1 @@
-python <%=$(esh variables/tools_dir)%>/namemash/namemash.py names.txt > possible.txt
+python <%=$(esh variables/templates_dir)%>/helper_scripts/namemash.py names.txt > possible.txt
