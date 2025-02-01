@@ -61,6 +61,7 @@ def main():
 
     # Change directory to templates
     templates_dir = os.path.expanduser(config["templates_dir"])
+    os.environ["OP_TEMPLATES_DIR"] = templates_dir
     os.chdir(templates_dir)
 
     # Find files, excluding certain paths, and select one using rofi with environment variables
