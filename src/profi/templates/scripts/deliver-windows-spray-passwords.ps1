@@ -1,4 +1,4 @@
-mkdir -p packstation/outbound; cp -n <%=$(esh variables/tools_dir)%>/powershell/spray-passwords.ps1 packstation/outbound; \
+mkdir -p packstation/outbound; cp -n <%=$(esh variables/templates_dir)%>/helper_scripts/spray-passwords.ps1 packstation/outbound; \
 echo '================================================================'; \
 echo '                      -----PowerShell-----                      '; \
 echo 'Preparation: powershell -ep bypass'; \
