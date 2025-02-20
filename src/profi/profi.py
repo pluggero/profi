@@ -1,17 +1,11 @@
 import os
 import subprocess
-import argparse
 import yaml
 from pathlib import Path
 import importlib.resources
+import click
 
-def main():
-    # Setup argparse
-    parser = argparse.ArgumentParser(description="Script Description")
-    # Add arguments as needed here
-    # e.g., parser.add_argument('-f', '--flag', action='store_true', help='An example flag')
-    args = parser.parse_args()
-
+def load_config():
     # Check if the config file exists and read it, otherwise create it with default values
     config_file_path = Path("~/.config/profi/config.yaml").expanduser()
 
@@ -56,6 +50,29 @@ def main():
         if value:
             os.environ[f"OP_{key.upper()}"] = str(value)
 
+    return config
+
+def get_available_templates(template_dir):
+    # Change directory to templates
+    templates_dir = os.path.expanduser(template_dir)
+    os.chdir(templates_dir)
+
+    # Find files, excluding certain paths
+    find_command = "find . -type f -not -path './helper_scripts/*' -not -path './source_code/*' -not -path './variables/*'"
+    templates = []
+    try:
+        find_result = subprocess.check_output(find_command, shell=True, env=os.environ).splitlines()
+        templates = [line.decode('utf-8') for line in find_result]
+    except subprocess.CalledProcessError:
+        exit()
+
+    return templates
+
+@click.command()
+@click.option("-t", "--template", help="The template to be executed, skipping rofi", type=click.Choice(get_available_templates(os.path.expanduser(load_config()["templates_dir"]))))
+def main(template):
+    config = load_config()
+
     tools_dir = os.path.expanduser(config["tools_dir"])
     os.environ["OP_TOOLS_DIR"] = tools_dir
 
@@ -63,18 +80,28 @@ def main():
     templates_dir = os.path.expanduser(config["templates_dir"])
     os.chdir(templates_dir)
 
-    # Find files, excluding certain paths, and select one using rofi with environment variables
-    find_command = "find . -type f -not -path './helper_scripts/*' -not -path './source_code/*' -not -path './variables/*'"
-    file_selection_command = f"{find_command} | rofi -dmenu -i -p 'Template'"
+    selected_file = ""
 
-    try:
-        selected_file = (
-            subprocess.check_output(file_selection_command, shell=True, env=os.environ)
-            .decode()
-            .strip()
-        )
-    except subprocess.CalledProcessError:
-        exit()
+    if template:
+
+        selected_file = template
+
+    else:
+
+        templates = get_available_templates(templates_dir)
+
+        combined_templates = "\n".join(templates)
+
+        file_selection_command = f"printf '{combined_templates}' | rofi -dmenu -i -p 'Template'"
+
+        try:
+            selected_file = (
+                subprocess.check_output(file_selection_command, shell=True, env=os.environ)
+                .decode()
+                .strip()
+            )
+        except subprocess.CalledProcessError:
+            exit()
 
     # Process the selected file
     if selected_file:
