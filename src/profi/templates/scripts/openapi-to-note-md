@@ -1,1 +1,1 @@
-python <%=$(esh variables/tools_dir)%>/openapi/openapiEndpointsToNote.py
+python <%=$(esh variables/templates_dir)%>/helper_scripts/openapiEndpointsToNote.py
