@@ -1,1 +1,1 @@
-python <%=$(esh variables/tools_dir)%>/icebreaker/icebreakerServicesToNoteMd.py
+python <%=$(esh variables/templates_dir)%>/helper_scripts/icebreakerServicesToNoteMd.py
