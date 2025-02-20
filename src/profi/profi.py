@@ -141,10 +141,11 @@ def main(template: str):
     try:
         # 1) Run esh
         esh_result = subprocess.run(
-            ["esh", str(Path(templates_dir) / selected_file)],
+            ["esh", selected_file],
             capture_output=True,
             text=True,
             check=True,
+            cwd=Path(templates_dir),
         )
 
         # 2) Run perl
