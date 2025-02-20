@@ -44,6 +44,12 @@
   - `clipboard`: The clipboard options
   - `template options`: Options for setting various variables in the templates
 
+### Tools
+
+This list contains a (non-exhaustive) list of template-specific tools:
+
+- [uuid](https://pkg.kali.org/pkg/ossp-uuid)
+
 ## Contributing
 
 Contributions are what make the open source community such an amazing place to learn, inspire, and create. Any contributions you make are **greatly appreciated**.
