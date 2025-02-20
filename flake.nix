@@ -144,7 +144,7 @@
             with pkgs;
             python3Packages.buildPythonApplication {
               pname = "profi";
-              version = "1.0.1";
+              version = "1.1.0";
               format = "pyproject";
 
               src = ./.;
