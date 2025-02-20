@@ -144,7 +144,7 @@
             with pkgs;
             python3Packages.buildPythonApplication {
               pname = "profi";
-              version = "1.0.0";
+              version = "1.1.0";
               format = "pyproject";
 
               src = ./.;
@@ -153,6 +153,7 @@
                 setuptools
 
                 unzip
+                pkgs.installShellFiles
               ];
 
               propagatedBuildInputs = with python3Packages; [
@@ -167,6 +168,7 @@
                 num-utils # For random numbers
                 python312
                 pyyaml
+                click
               ];
 
               preFixup =
@@ -210,6 +212,11 @@
                   mkdir -p `dirname "${outToolsDir}/ligolo-ng/agent/wintun"`
                   unzip ${inputs.ligolo-ng-agent-wintun} -d ${outToolsDir}/ligolo-ng/agent/wintun
                 '';
+              postInstall = ''
+                installShellCompletion --cmd profi \
+                --bash <(_PROFI_COMPLETE=bash_source $out/bin/profi) \
+                --fish <(_PROFI_COMPLETE=fish_source $out/bin/profi) \
+              '';
             };
 
           profi-script =
