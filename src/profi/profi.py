@@ -105,6 +105,7 @@ def main(template: str):
 
     # Change directory to templates
     templates_dir = os.path.expanduser(config["templates_dir"])
+    os.environ["OP_TEMPLATES_DIR"] = templates_dir
     available_templates = get_available_templates(templates_dir)
 
     if template:
