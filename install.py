@@ -222,21 +222,33 @@ def post_install_chisel(dep: Dependency, dest_dir: Path):
 
 def post_install_ligolo(dep: Dependency, dest_dir: Path):
     # Agent - Windows
-    safe_move_files("ligolo-ng_agent_*_windows_amd64.zip", dest_dir, Path(f"{dest_dir}/agent/windows"))
+    safe_move_files(
+        "ligolo-ng_agent_*_windows_amd64.zip",
+        dest_dir,
+        Path(f"{dest_dir}/agent/windows"),
+    )
     unzip_files(Path(f"{dest_dir}/agent/windows"))
-    windowsAgentDir = Path(f"{dest_dir}/agent/windows/ligolo-ng_agent_{dep.version}_windows_amd64")
+    windowsAgentDir = Path(
+        f"{dest_dir}/agent/windows/ligolo-ng_agent_{dep.version}_windows_amd64"
+    )
     safe_move_files("*", windowsAgentDir, Path(f"{dest_dir}/agent/windows"))
     Path.rmdir(windowsAgentDir)
 
     # Proxy - Linux
-    safe_move_files("ligolo-ng_proxy_*_linux_amd64.tar.gz", dest_dir, Path(f"{dest_dir}/proxy/linux"))
+    safe_move_files(
+        "ligolo-ng_proxy_*_linux_amd64.tar.gz",
+        dest_dir,
+        Path(f"{dest_dir}/proxy/linux"),
+    )
     gunzip_files(Path(f"{dest_dir}/proxy/linux"))
     untar_files(Path(f"{dest_dir}/proxy/linux"))
 
 
 def post_install_wintun(dep: Dependency, dest_dir: Path):
     # Agent - Wintun
-    safe_move_files(f"wintun-{dep.version}.zip", dest_dir, Path(f"{dest_dir}/agent/wintun"))
+    safe_move_files(
+        f"wintun-{dep.version}.zip", dest_dir, Path(f"{dest_dir}/agent/wintun")
+    )
     unzip_files(Path(f"{dest_dir}/agent/wintun"))
     wintunAgentDir = Path(f"{dest_dir}/agent/wintun/wintun-{dep.version}")
     safe_move_files("wintun", wintunAgentDir, Path(f"{dest_dir}/agent/wintun"))
