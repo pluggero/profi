@@ -77,6 +77,64 @@ def download_file(url: str, dest_dir: Path) -> None:
         if dest_file.exists():
             dest_file.unlink()
 
+
+def zip_path(
+    source: Path,
+    destination: Path,
+    compression: int = zipfile.ZIP_DEFLATED,
+    flatten_root: bool = False,
+) -> None:
+    """
+    Zips either a single file or a directory (recursively) into the specified
+    destination archive, using the given compression method.
+
+    :param source:       Path to a file or directory to zip.
+    :param destination:  Path to the resulting archive (e.g. 'archive.zip').
+    :param compression:  A zipfile compression constant (default ZIP_DEFLATED).
+                         Other valid constants include ZIP_STORED, ZIP_BZIP2,
+                         ZIP_LZMA (availability varies by Python version).
+    :param flatten_root:  If True and 'source' is a directory, the files inside
+                          'source' will appear at the top level of the zip
+                          (i.e., the source folder name is not included).
+                          If False, the source folder's name is included.
+    """
+    if not source.exists():
+        logging.error(f"Source '{source}' does not exist.")
+        return
+
+    # Create parent directories for destination if necessary
+    safe_mkdir(destination.parent)
+
+    try:
+        with zipfile.ZipFile(destination, mode="w", compression=compression) as zf:
+            # If it's just a single file, zip it with its base name as arcname
+            if source.is_file():
+                logging.info(f"Zipping file '{source}' to '{destination}'.")
+                zf.write(source, arcname=source.name)
+            else:
+                # It's a directory; zip all files inside (recursive)
+                logging.info(f"Zipping directory '{source}' to '{destination}'.")
+
+                # Use rglob('*') to find all files/folders under `source`
+                for item in source.rglob("*"):
+                    # Only add files, not directories (zipfile can handle dirs,
+                    # but typically we skip empty folders to avoid empty entries).
+                    if item.is_file():
+                        # Determine arcname depending on whether we flatten the root directory
+                        if flatten_root:
+                            # Store files relative to 'source'
+                            # Example: If item is /path/Release/sub/file.txt, arcname becomes sub/file.txt
+                            arcname = item.relative_to(source)
+                        else:
+                            # Preserve the top directory name
+                            # Example: arcname is Release/sub/file.txt
+                            arcname = item.relative_to(source.parent)
+                        zf.write(item, arcname=arcname)
+
+    except Exception as e:
+        logging.exception(f"An error occurred while zipping '{source}': {e}")
+
+
 def unzip_files(directory: Path, create_subfolder: bool = True) -> None:
     """
     Unzip all *.zip files in the specified directory.
@@ -254,6 +312,14 @@ def post_install_wintun(dep: Dependency, dest_dir: Path):
     safe_move_files("wintun", wintunAgentDir, Path(f"{dest_dir}/agent/wintun"))
     Path.rmdir(wintunAgentDir)
 
+
+def post_install_ysoserial_net(dep: Dependency, dest_dir: Path):
+    unzip_files(dest_dir, create_subfolder=False)
+    release_dir = Path(f"{dest_dir}/Release")
+    zip_path(release_dir, Path(f"{release_dir}.zip"), flatten_root=True)
+    shutil.rmtree(release_dir)
+
+
 ###############################################################################
 # DEPENDENCY DEFINITIONS
 ###############################################################################
@@ -372,6 +438,15 @@ DEPENDENCIES = [
             "https://raw.githubusercontent.com/CsEnox/EventViewer-UACBypass/{version}/Invoke-EventViewer.ps1",
         ],
         directory=Path("uacbypass"),
+    ),
+    Dependency(
+        name="ysoserial-net",
+        version="1.36",
+        urls=[
+            "https://github.com/pwntester/ysoserial.net/releases/download/v{version}/ysoserial-1dba9c4416ba6e79b6b262b758fa75e2ee9008e9.zip",
+        ],
+        directory=Path("ysoserial-net"),
+        post_download_function=post_install_ysoserial_net,
     ),
 ]
 
