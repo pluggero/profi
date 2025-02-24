@@ -213,7 +213,8 @@
         "printspoofer32": "printspoofer32",
         "printspoofer64": "printspoofer64",
         "pspy": "pspy",
-        "sysinternals": "sysinternals"
+        "sysinternals": "sysinternals",
+        "ysoserial-net": "ysoserial-net"
       }
     },
     "sysinternals": {
@@ -226,6 +227,18 @@
       "original": {
         "type": "file",
         "url": "https://download.sysinternals.com/files/SysinternalsSuite.zip"
+      }
+    },
+    "ysoserial-net": {
+      "flake": false,
+      "locked": {
+        "narHash": "sha256-JT3LFIg3mNWp32hLo40yLw27ZWgeG3jhb+qVB4B+MrY=",
+        "type": "file",
+        "url": "https://github.com/pwntester/ysoserial.net/releases/download/v1.36/ysoserial-1dba9c4416ba6e79b6b262b758fa75e2ee9008e9.zip"
+      },
+      "original": {
+        "type": "file",
+        "url": "https://github.com/pwntester/ysoserial.net/releases/download/v1.36/ysoserial-1dba9c4416ba6e79b6b262b758fa75e2ee9008e9.zip"
       }
     }
   },
