@@ -77,17 +77,55 @@ def download_file(url: str, dest_dir: Path) -> None:
         if dest_file.exists():
             dest_file.unlink()
 
-def unzip_files(directory: Path) -> None:
+def unzip_files(directory: Path, create_subfolder: bool = True) -> None:
     """
-    Unzip all .zip files in the directory to subfolders named after
-    the file minus the .zip extension. Then remove the .zip file.
+    Unzip all *.zip files in the specified directory.
+
+    If create_subfolders is True, each .zip file is extracted
+    into a subfolder named after the file (minus the .zip extension).
+    If create_subfolders is False, the contents are extracted
+    directly into the directory.
+
+    After a file is successfully unzipped, the original .zip
+    is deleted.
+
+    :param directory:        Path object pointing to the directory
+                             containing .zip files
+    :param create_subfolders: If True (default), each .zip is extracted
+                             into its own subfolder. If False, the .zip
+                             is extracted directly into `directory`.
     """
-    for zip_file in directory.glob("*.zip"):
-        target_dir = directory / zip_file.stem
-        logging.info(f"Unzipping {zip_file.name} into {target_dir}")
-        with zipfile.ZipFile(zip_file, 'r') as z:
-            z.extractall(target_dir)
-        zip_file.unlink()
+    if not directory.is_dir():
+        logging.error(f"Directory {directory} does not exist.")
+        return
+
+    zip_files = list(directory.glob("*.zip"))
+    if not zip_files:
+        logging.debug(f"No zip files found in {directory}")
+        return
+
+    for zip_file in zip_files:
+        try:
+            if create_subfolder:
+                # Create a subfolder matching the zip file name
+                target_dir = directory / zip_file.stem
+                target_dir.mkdir(parents=True, exist_ok=True)
+            else:
+                # Extract the contents directly into the directory
+                target_dir = directory
+
+            logging.info(f"Unzipping {zip_file.name} into {target_dir}")
+
+            with zipfile.ZipFile(zip_file, "r") as zf:
+                zf.extractall(target_dir)
+
+            # Remove the .zip file after successful extraction
+            zip_file.unlink()
+            logging.debug(f"Removed zip file '{zip_file.name}' after extraction.")
+
+        except Exception as e:
+            logging.error(f"Failed to unzip {zip_file.name}: {e}")
+
 
 def gunzip_files(directory: Path) -> None:
     """
@@ -171,23 +209,12 @@ class Dependency:
 # CUSTOM POST-INSTALL FUNCTIONS
 ###############################################################################
 def post_install_mimikatz(dep: Dependency, dest_dir: Path):
-    unzip_files(dest_dir)
-    extracted_dir = dest_dir / "mimikatz_trunk"
-    if extracted_dir.is_dir():
-        for item in extracted_dir.iterdir():
-            logging.debug(f"Moving {item.name} to {dest_dir}")
-            shutil.move(str(item), str(dest_dir))
-        extracted_dir.rmdir()
+    unzip_files(dest_dir, create_subfolder=False)
+
 
 def post_install_sysinternals(dep: Dependency, dest_dir: Path):
-    unzip_files(dest_dir)
-    # Move all files in SysinternalsSuite to the parent directory
-    extracted_dir = dest_dir / "SysinternalsSuite"
-    if extracted_dir.is_dir():
-        for item in extracted_dir.iterdir():
-            logging.debug(f"Moving {item.name} to {dest_dir}")
-            shutil.move(str(item), str(dest_dir))
-        extracted_dir.rmdir()
+    unzip_files(dest_dir, create_subfolder=False)
+
 
 def post_install_chisel(dep: Dependency, dest_dir: Path):
     gunzip_files(dest_dir)
