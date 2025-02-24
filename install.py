@@ -3,17 +3,18 @@
 Setup script for installing dependencies for profi.
 """
 
-import os
 import glob
-import sys
-import shutil
-import logging
-import requests
-import zipfile
-import tarfile
 import gzip
-from typing import Union
+import logging
+import os
+import shutil
+import sys
+import tarfile
+import zipfile
 from pathlib import Path
+from typing import Union
+
+import requests
 
 ###############################################################################
 # LOGGING CONFIG
@@ -31,12 +32,14 @@ HOME_DIR = Path.home()
 # TODO: Take the value from config if exist
 TOOLS_DIR = HOME_DIR / ".local" / "share" / "profi" / "tools"
 
+
 ###############################################################################
 # UTILITY FUNCTIONS
 ###############################################################################
 def safe_mkdir(path: Path) -> None:
     """Create a directory if it does not exist."""
     path.mkdir(parents=True, exist_ok=True)
+
 
 def clean_dir(directory: Path) -> None:
     """Removes all files and subdirectories in the specified directory."""
@@ -49,11 +52,12 @@ def clean_dir(directory: Path) -> None:
         else:
             item.unlink()
 
+
 def download_file(url: str, dest_dir: Path) -> None:
     """
     Download a file from the given URL into dest_dir if it does not already exist.
     """
-    filename = url.split('/')[-1]
+    filename = url.split("/")[-1]
     dest_file = dest_dir / filename
 
     if dest_file.exists():
@@ -64,7 +68,7 @@ def download_file(url: str, dest_dir: Path) -> None:
     try:
         response = requests.get(url, stream=True, timeout=60)
         response.raise_for_status()
-        with open(dest_file, 'wb') as out_file:
+        with open(dest_file, "wb") as out_file:
             for chunk in response.iter_content(chunk_size=8192):
                 out_file.write(chunk)
         logging.info(f"Downloaded {filename} successfully.")
@@ -73,17 +77,113 @@ def download_file(url: str, dest_dir: Path) -> None:
         if dest_file.exists():
             dest_file.unlink()
 
-def unzip_files(directory: Path) -> None:
+
+def zip_path(
+    source: Path,
+    destination: Path,
+    compression: int = zipfile.ZIP_DEFLATED,
+    flatten_root: bool = False,
+) -> None:
     """
-    Unzip all .zip files in the directory to subfolders named after
-    the file minus the .zip extension. Then remove the .zip file.
+    Zips either a single file or a directory (recursively) into the specified
+    destination archive, using the given compression method.
+
+    :param source:       Path to a file or directory to zip.
+    :param destination:  Path to the resulting archive (e.g. 'archive.zip').
+    :param compression:  A zipfile compression constant (default ZIP_DEFLATED).
+                         Other valid constants include ZIP_STORED, ZIP_BZIP2,
+                         ZIP_LZMA (availability varies by Python version).
+    :param flatten_root:  If True and 'source' is a directory, the files inside
+                          'source' will appear at the top level of the zip
+                          (i.e., the source folder name is not included).
+                          If False, the source folder's name is included.
     """
-    for zip_file in directory.glob("*.zip"):
-        target_dir = directory / zip_file.stem
-        logging.info(f"Unzipping {zip_file.name} into {target_dir}")
-        with zipfile.ZipFile(zip_file, 'r') as z:
-            z.extractall(target_dir)
-        zip_file.unlink()
+    if not source.exists():
+        logging.error(f"Source '{source}' does not exist.")
+        return
+
+    # Create parent directories for destination if necessary
+    safe_mkdir(destination.parent)
+
+    try:
+        with zipfile.ZipFile(destination, mode="w", compression=compression) as zf:
+            # If it's just a single file, zip it with its base name as arcname
+            if source.is_file():
+                logging.info(f"Zipping file '{source}' to '{destination}'.")
+                zf.write(source, arcname=source.name)
+            else:
+                # It's a directory; zip all files inside (recursive)
+                logging.info(f"Zipping directory '{source}' to '{destination}'.")
+
+                # Use rglob('*') to find all files/folders under `source`
+                for item in source.rglob("*"):
+                    # Only add files, not directories (zipfile can handle dirs,
+                    # but typically we skip empty folders to avoid empty entries).
+                    if item.is_file():
+                        # Determine arcname depending on whether we flatten the root directory
+                        if flatten_root:
+                            # Store files relative to 'source'
+                            # Example: If item is /path/Release/sub/file.txt, arcname becomes sub/file.txt
+                            arcname = item.relative_to(source)
+                        else:
+                            # Preserve the top directory name
+                            # Example: arcname is Release/sub/file.txt
+                            arcname = item.relative_to(source.parent)
+                        zf.write(item, arcname=arcname)
+
+    except Exception as e:
+        logging.exception(f"An error occurred while zipping '{source}': {e}")
+
+
+def unzip_files(directory: Path, create_subfolder: bool = True) -> None:
+    """
+    Unzip all *.zip files in the specified directory.
+
+    If create_subfolders is True, each .zip file is extracted
+    into a subfolder named after the file (minus the .zip extension).
+    If create_subfolders is False, the contents are extracted
+    directly into the directory.
+
+    After a file is successfully unzipped, the original .zip
+    is deleted.
+
+    :param directory:        Path object pointing to the directory
+                             containing .zip files
+    :param create_subfolders: If True (default), each .zip is extracted
+                             into its own subfolder. If False, the .zip
+                             is extracted directly into `directory`.
+    """
+    if not directory.is_dir():
+        logging.error(f"Directory {directory} does not exist.")
+        return
+
+    zip_files = list(directory.glob("*.zip"))
+    if not zip_files:
+        logging.debug(f"No zip files found in {directory}")
+        return
+
+    for zip_file in zip_files:
+        try:
+            if create_subfolder:
+                # Create a subfolder matching the zip file name
+                target_dir = directory / zip_file.stem
+                target_dir.mkdir(parents=True, exist_ok=True)
+            else:
+                # Extract the contents directly into the directory
+                target_dir = directory
+
+            logging.info(f"Unzipping {zip_file.name} into {target_dir}")
+
+            with zipfile.ZipFile(zip_file, "r") as zf:
+                zf.extractall(target_dir)
+
+            # Remove the .zip file after successful extraction
+            zip_file.unlink()
+            logging.debug(f"Removed zip file '{zip_file.name}' after extraction.")
+
+        except Exception as e:
+            logging.error(f"Failed to unzip {zip_file.name}: {e}")
+
 
 def gunzip_files(directory: Path) -> None:
     """
@@ -93,10 +193,11 @@ def gunzip_files(directory: Path) -> None:
     for gz_file in directory.glob("*.gz"):
         target_path = directory / gz_file.stem
         logging.info(f"Decompressing {gz_file.name} to {target_path.name}")
-        with gzip.open(gz_file, 'rb') as f_in:
-            with open(target_path, 'wb') as f_out:
+        with gzip.open(gz_file, "rb") as f_in:
+            with open(target_path, "wb") as f_out:
                 shutil.copyfileobj(f_in, f_out)
         gz_file.unlink()
+
 
 def untar_files(directory: Path) -> None:
     """
@@ -105,9 +206,10 @@ def untar_files(directory: Path) -> None:
     """
     for tar_file in directory.glob("*.tar"):
         logging.info(f"Extracting {tar_file.name}")
-        with tarfile.open(tar_file, 'r') as t:
+        with tarfile.open(tar_file, "r") as t:
             t.extractall(directory)
         tar_file.unlink()
+
 
 def safe_move_files(pattern: str, src_dir: Path, dest_dir: Path) -> None:
     """
@@ -117,6 +219,7 @@ def safe_move_files(pattern: str, src_dir: Path, dest_dir: Path) -> None:
     for matched in src_dir.glob(pattern):
         logging.info(f"Moving {matched.name} to {dest_dir}")
         shutil.move(str(matched), str(dest_dir / matched.name))
+
 
 ###############################################################################
 # DEPENDENCY CLASS
@@ -130,13 +233,14 @@ class Dependency:
     - directory: the name of the final directory where tools will reside
     - post_download_function: an optional function that takes (Path to the tools_dir) as argument.
     """
+
     def __init__(
         self,
         name: str,
         version: str,
         urls: list[str],
         directory: Path,
-        post_download_function=None
+        post_download_function=None,
     ):
         self.name = name
         self.version = version
@@ -158,51 +262,63 @@ class Dependency:
         if self.post_download_function:
             self.post_download_function(self, dest_dir)
 
+
 ###############################################################################
 # CUSTOM POST-INSTALL FUNCTIONS
 ###############################################################################
 def post_install_mimikatz(dep: Dependency, dest_dir: Path):
-    unzip_files(dest_dir)
-    extracted_dir = dest_dir / "mimikatz_trunk"
-    if extracted_dir.is_dir():
-        for item in extracted_dir.iterdir():
-            logging.debug(f"Moving {item.name} to {dest_dir}")
-            shutil.move(str(item), str(dest_dir))
-        extracted_dir.rmdir()
+    unzip_files(dest_dir, create_subfolder=False)
+
 
 def post_install_sysinternals(dep: Dependency, dest_dir: Path):
-    unzip_files(dest_dir)
-    # Move all files in SysinternalsSuite to the parent directory
-    extracted_dir = dest_dir / "SysinternalsSuite"
-    if extracted_dir.is_dir():
-        for item in extracted_dir.iterdir():
-            logging.debug(f"Moving {item.name} to {dest_dir}")
-            shutil.move(str(item), str(dest_dir))
-        extracted_dir.rmdir()
+    unzip_files(dest_dir, create_subfolder=False)
+
 
 def post_install_chisel(dep: Dependency, dest_dir: Path):
     gunzip_files(dest_dir)
 
+
 def post_install_ligolo(dep: Dependency, dest_dir: Path):
     # Agent - Windows
-    safe_move_files("ligolo-ng_agent_*_windows_amd64.zip", dest_dir, Path(f"{dest_dir}/agent/windows"))
+    safe_move_files(
+        "ligolo-ng_agent_*_windows_amd64.zip",
+        dest_dir,
+        Path(f"{dest_dir}/agent/windows"),
+    )
     unzip_files(Path(f"{dest_dir}/agent/windows"))
-    windowsAgentDir = Path(f"{dest_dir}/agent/windows/ligolo-ng_agent_{dep.version}_windows_amd64")
+    windowsAgentDir = Path(
+        f"{dest_dir}/agent/windows/ligolo-ng_agent_{dep.version}_windows_amd64"
+    )
     safe_move_files("*", windowsAgentDir, Path(f"{dest_dir}/agent/windows"))
     Path.rmdir(windowsAgentDir)
 
     # Proxy - Linux
-    safe_move_files("ligolo-ng_proxy_*_linux_amd64.tar.gz", dest_dir, Path(f"{dest_dir}/proxy/linux"))
+    safe_move_files(
+        "ligolo-ng_proxy_*_linux_amd64.tar.gz",
+        dest_dir,
+        Path(f"{dest_dir}/proxy/linux"),
+    )
     gunzip_files(Path(f"{dest_dir}/proxy/linux"))
     untar_files(Path(f"{dest_dir}/proxy/linux"))
 
+
 def post_install_wintun(dep: Dependency, dest_dir: Path):
     # Agent - Wintun
-    safe_move_files(f"wintun-{dep.version}.zip", dest_dir, Path(f"{dest_dir}/agent/wintun"))
+    safe_move_files(
+        f"wintun-{dep.version}.zip", dest_dir, Path(f"{dest_dir}/agent/wintun")
+    )
     unzip_files(Path(f"{dest_dir}/agent/wintun"))
     wintunAgentDir = Path(f"{dest_dir}/agent/wintun/wintun-{dep.version}")
     safe_move_files("wintun", wintunAgentDir, Path(f"{dest_dir}/agent/wintun"))
     Path.rmdir(wintunAgentDir)
+
+
+def post_install_ysoserial_net(dep: Dependency, dest_dir: Path):
+    unzip_files(dest_dir, create_subfolder=False)
+    release_dir = Path(f"{dest_dir}/Release")
+    zip_path(release_dir, Path(f"{release_dir}.zip"), flatten_root=True)
+    shutil.rmtree(release_dir)
+
 
 ###############################################################################
 # DEPENDENCY DEFINITIONS
@@ -225,7 +341,7 @@ DEPENDENCIES = [
             "https://raw.githubusercontent.com/pluggero/Invoke-Mimikatz/main/Invoke-Mimikatz.ps1",
         ],
         directory=Path("mimikatz"),
-        post_download_function=post_install_mimikatz
+        post_download_function=post_install_mimikatz,
     ),
     Dependency(
         name="sysinternals",
@@ -234,7 +350,7 @@ DEPENDENCIES = [
             "https://download.sysinternals.com/files/SysinternalsSuite.zip",
         ],
         directory=Path("sysinternals"),
-        post_download_function=post_install_sysinternals
+        post_download_function=post_install_sysinternals,
     ),
     Dependency(
         name="rubeus",
@@ -277,7 +393,7 @@ DEPENDENCIES = [
             "https://github.com/jpillora/chisel/releases/download/v{version}/chisel_{version}_linux_amd64.gz",
         ],
         directory=Path("chisel"),
-        post_download_function=post_install_chisel
+        post_download_function=post_install_chisel,
     ),
     Dependency(
         name="ligolo-ng",
@@ -287,7 +403,7 @@ DEPENDENCIES = [
             "https://github.com/nicocha30/ligolo-ng/releases/download/v{version}/ligolo-ng_proxy_{version}_linux_amd64.tar.gz",
         ],
         directory=Path("ligolo-ng"),
-        post_download_function=post_install_ligolo
+        post_download_function=post_install_ligolo,
     ),
     Dependency(
         name="wintun",
@@ -296,7 +412,7 @@ DEPENDENCIES = [
             "https://www.wintun.net/builds/wintun-{version}.zip",
         ],
         directory=Path("ligolo-ng"),
-        post_download_function=post_install_wintun
+        post_download_function=post_install_wintun,
     ),
     Dependency(
         name="printspoofer",
@@ -323,7 +439,17 @@ DEPENDENCIES = [
         ],
         directory=Path("uacbypass"),
     ),
+    Dependency(
+        name="ysoserial-net",
+        version="1.36",
+        urls=[
+            "https://github.com/pwntester/ysoserial.net/releases/download/v{version}/ysoserial-1dba9c4416ba6e79b6b262b758fa75e2ee9008e9.zip",
+        ],
+        directory=Path("ysoserial-net"),
+        post_download_function=post_install_ysoserial_net,
+    ),
 ]
+
 
 ###############################################################################
 # MAIN
@@ -343,6 +469,6 @@ def main() -> int:
     logging.info("Setup completed successfully.")
     return 0
 
+
 if __name__ == "__main__":
     sys.exit(main())
-

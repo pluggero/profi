@@ -54,6 +54,9 @@
 
     payloadAllTheThings.url = "file+https://github.com/swisskyrepo/PayloadsAllTheThings/archive/refs/tags/4.1.zip";
     payloadAllTheThings.flake = false;
+
+    ysoserial-net.url = "file+https://github.com/pwntester/ysoserial.net/releases/download/v1.36/ysoserial-1dba9c4416ba6e79b6b262b758fa75e2ee9008e9.zip";
+    ysoserial-net.flake = false;
   };
 
   outputs =
@@ -197,19 +200,22 @@
                   outToolsDir = "$out/share/tools";
                 in
                 ''
-                  mkdir -p `dirname "${outToolsDir}/mimikatz"`
+                  mkdir -p "${outToolsDir}/mimikatz"
                   unzip ${inputs.mimikatz} -d ${outToolsDir}/mimikatz
 
-                  mkdir -p `dirname "${outToolsDir}/sysinternals"`
+                  mkdir -p "${outToolsDir}/sysinternals"
                   unzip ${inputs.sysinternals} -d ${outToolsDir}/sysinternals
 
-                  mkdir -p `dirname "${outToolsDir}/payloadAllTheThings"`
+                  mkdir -p "${outToolsDir}/payloadAllTheThings"
                   unzip ${inputs.payloadAllTheThings} -d ${outToolsDir}/payloadAllTheThings
 
-                  mkdir -p `dirname "${outToolsDir}/ligolo-ng/agent/windows"`
+                  mkdir -p "${outToolsDir}/ysoserial-net"
+                  cp ${inputs.ysoserial-net} ${outToolsDir}/ysoserial-net/Release.zip
+
+                  mkdir -p "${outToolsDir}/ligolo-ng/agent/windows"
                   unzip ${inputs.ligolo-ng-agent-windows} -d ${outToolsDir}/ligolo-ng/agent/windows
 
-                  mkdir -p `dirname "${outToolsDir}/ligolo-ng/agent/wintun"`
+                  mkdir -p "${outToolsDir}/ligolo-ng/agent/wintun"
                   unzip ${inputs.ligolo-ng-agent-wintun} -d ${outToolsDir}/ligolo-ng/agent/wintun
                 '';
               postInstall = ''
