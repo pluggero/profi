@@ -3,17 +3,18 @@
 Setup script for installing dependencies for profi.
 """
 
-import os
 import glob
-import sys
-import shutil
-import logging
-import requests
-import zipfile
-import tarfile
 import gzip
-from typing import Union
+import logging
+import os
+import shutil
+import sys
+import tarfile
+import zipfile
 from pathlib import Path
+from typing import Union
+
+import requests
 
 ###############################################################################
 # LOGGING CONFIG
@@ -31,12 +32,14 @@ HOME_DIR = Path.home()
 # TODO: Take the value from config if exist
 TOOLS_DIR = HOME_DIR / ".local" / "share" / "profi" / "tools"
 
+
 ###############################################################################
 # UTILITY FUNCTIONS
 ###############################################################################
 def safe_mkdir(path: Path) -> None:
     """Create a directory if it does not exist."""
     path.mkdir(parents=True, exist_ok=True)
+
 
 def clean_dir(directory: Path) -> None:
     """Removes all files and subdirectories in the specified directory."""
@@ -49,11 +52,12 @@ def clean_dir(directory: Path) -> None:
         else:
             item.unlink()
 
+
 def download_file(url: str, dest_dir: Path) -> None:
     """
     Download a file from the given URL into dest_dir if it does not already exist.
     """
-    filename = url.split('/')[-1]
+    filename = url.split("/")[-1]
     dest_file = dest_dir / filename
 
     if dest_file.exists():
@@ -64,7 +68,7 @@ def download_file(url: str, dest_dir: Path) -> None:
     try:
         response = requests.get(url, stream=True, timeout=60)
         response.raise_for_status()
-        with open(dest_file, 'wb') as out_file:
+        with open(dest_file, "wb") as out_file:
             for chunk in response.iter_content(chunk_size=8192):
                 out_file.write(chunk)
         logging.info(f"Downloaded {filename} successfully.")
@@ -93,10 +97,11 @@ def gunzip_files(directory: Path) -> None:
     for gz_file in directory.glob("*.gz"):
         target_path = directory / gz_file.stem
         logging.info(f"Decompressing {gz_file.name} to {target_path.name}")
-        with gzip.open(gz_file, 'rb') as f_in:
-            with open(target_path, 'wb') as f_out:
+        with gzip.open(gz_file, "rb") as f_in:
+            with open(target_path, "wb") as f_out:
                 shutil.copyfileobj(f_in, f_out)
         gz_file.unlink()
+
 
 def untar_files(directory: Path) -> None:
     """
@@ -105,9 +110,10 @@ def untar_files(directory: Path) -> None:
     """
     for tar_file in directory.glob("*.tar"):
         logging.info(f"Extracting {tar_file.name}")
-        with tarfile.open(tar_file, 'r') as t:
+        with tarfile.open(tar_file, "r") as t:
             t.extractall(directory)
         tar_file.unlink()
+
 
 def safe_move_files(pattern: str, src_dir: Path, dest_dir: Path) -> None:
     """
@@ -117,6 +123,7 @@ def safe_move_files(pattern: str, src_dir: Path, dest_dir: Path) -> None:
     for matched in src_dir.glob(pattern):
         logging.info(f"Moving {matched.name} to {dest_dir}")
         shutil.move(str(matched), str(dest_dir / matched.name))
+
 
 ###############################################################################
 # DEPENDENCY CLASS
@@ -130,13 +137,14 @@ class Dependency:
     - directory: the name of the final directory where tools will reside
     - post_download_function: an optional function that takes (Path to the tools_dir) as argument.
     """
+
     def __init__(
         self,
         name: str,
         version: str,
         urls: list[str],
         directory: Path,
-        post_download_function=None
+        post_download_function=None,
     ):
         self.name = name
         self.version = version
@@ -157,6 +165,7 @@ class Dependency:
         # Run any custom post install steps
         if self.post_download_function:
             self.post_download_function(self, dest_dir)
+
 
 ###############################################################################
 # CUSTOM POST-INSTALL FUNCTIONS
@@ -183,6 +192,7 @@ def post_install_sysinternals(dep: Dependency, dest_dir: Path):
 def post_install_chisel(dep: Dependency, dest_dir: Path):
     gunzip_files(dest_dir)
 
+
 def post_install_ligolo(dep: Dependency, dest_dir: Path):
     # Agent - Windows
     safe_move_files("ligolo-ng_agent_*_windows_amd64.zip", dest_dir, Path(f"{dest_dir}/agent/windows"))
@@ -195,6 +205,7 @@ def post_install_ligolo(dep: Dependency, dest_dir: Path):
     safe_move_files("ligolo-ng_proxy_*_linux_amd64.tar.gz", dest_dir, Path(f"{dest_dir}/proxy/linux"))
     gunzip_files(Path(f"{dest_dir}/proxy/linux"))
     untar_files(Path(f"{dest_dir}/proxy/linux"))
+
 
 def post_install_wintun(dep: Dependency, dest_dir: Path):
     # Agent - Wintun
@@ -225,7 +236,7 @@ DEPENDENCIES = [
             "https://raw.githubusercontent.com/pluggero/Invoke-Mimikatz/main/Invoke-Mimikatz.ps1",
         ],
         directory=Path("mimikatz"),
-        post_download_function=post_install_mimikatz
+        post_download_function=post_install_mimikatz,
     ),
     Dependency(
         name="sysinternals",
@@ -234,7 +245,7 @@ DEPENDENCIES = [
             "https://download.sysinternals.com/files/SysinternalsSuite.zip",
         ],
         directory=Path("sysinternals"),
-        post_download_function=post_install_sysinternals
+        post_download_function=post_install_sysinternals,
     ),
     Dependency(
         name="rubeus",
@@ -277,7 +288,7 @@ DEPENDENCIES = [
             "https://github.com/jpillora/chisel/releases/download/v{version}/chisel_{version}_linux_amd64.gz",
         ],
         directory=Path("chisel"),
-        post_download_function=post_install_chisel
+        post_download_function=post_install_chisel,
     ),
     Dependency(
         name="ligolo-ng",
@@ -287,7 +298,7 @@ DEPENDENCIES = [
             "https://github.com/nicocha30/ligolo-ng/releases/download/v{version}/ligolo-ng_proxy_{version}_linux_amd64.tar.gz",
         ],
         directory=Path("ligolo-ng"),
-        post_download_function=post_install_ligolo
+        post_download_function=post_install_ligolo,
     ),
     Dependency(
         name="wintun",
@@ -296,7 +307,7 @@ DEPENDENCIES = [
             "https://www.wintun.net/builds/wintun-{version}.zip",
         ],
         directory=Path("ligolo-ng"),
-        post_download_function=post_install_wintun
+        post_download_function=post_install_wintun,
     ),
     Dependency(
         name="printspoofer",
@@ -325,6 +336,7 @@ DEPENDENCIES = [
     ),
 ]
 
+
 ###############################################################################
 # MAIN
 ###############################################################################
@@ -343,6 +355,6 @@ def main() -> int:
     logging.info("Setup completed successfully.")
     return 0
 
+
 if __name__ == "__main__":
     sys.exit(main())
-
