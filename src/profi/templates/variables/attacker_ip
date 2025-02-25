@@ -1,1 +1,1 @@
-<%=${OP_ATTACKER_IP:-$(ifconfig $(esh variables/attacker_interface) | grep 'inet ' | cut -d' ' -f10 | tr -d '[:space:]')}%>
+<%=${OP_ATTACKER_IP:-$(ip -f inet addr show $(esh variables/attacker_interface) | awk '/inet / {print $2}' | cut -d/ -f1)}%>
