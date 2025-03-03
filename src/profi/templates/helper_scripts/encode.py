@@ -25,6 +25,10 @@ def base64pwsh_encode(data):
     powershell_command = base64.b64encode(powershell_command.encode())
     return powershell_command.decode("utf-8")
 
+def hex_encode(data):
+    # Convert each character to its hexadecimal representation
+    return ''.join(format(ord(c), '02x') for c in data)
+
 if __name__ == "__main__":
     if len(sys.argv) != 2:
         print("Usage: echo 'Hello World' | url_encode.py [--url | --base64 | --base64pwsh ]")
@@ -41,6 +45,8 @@ if __name__ == "__main__":
         encoded_string = base64_encode(input_string)
     elif option == '--base64pwsh':
         encoded_string = base64pwsh_encode(input_string)
+    elif option == '--hex':
+        encoded_string = hex_encode(input_string)
     else:
         print("Invalid option. Use --url, --base64 or --base64pwsh.")
         sys.exit(1)
