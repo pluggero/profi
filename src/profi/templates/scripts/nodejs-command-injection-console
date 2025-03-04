@@ -1,0 +1,1 @@
+console.log(require("child_process").execSync("ls").toString());
