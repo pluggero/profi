@@ -1,0 +1,4 @@
+r = requests.get(
+    "http://localhost/",
+    headers = {}
+)

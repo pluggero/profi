@@ -1,0 +1,5 @@
+r = requests.post(
+    "http://localhost/",
+    headers = {"Content-Type": "application/json"},
+    data = "{"test":"value"}"
+)

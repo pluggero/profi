@@ -1,0 +1,27 @@
+#!/usr/bin/python3
+
+import requests
+import json
+import jwt
+
+def getToken():
+    print(f"[*] Getting Token ...")
+    
+    headers = {"Content-Type": "application/json"}
+    data = {"username": "niki", "password": "nikiRTHo2kV1Aa323"}
+    response = requests.post(auth_endpoint, headers=headers, data=json.dumps(data))
+
+    token = response.json()['token']
+    print(f"[*] Got Token: {token}")
+
+    # confirm this is a valid JWT token
+    try:
+        decoded_token = jwt.decode(token, options={"verify_signature": False})
+        return token
+    except jwt.DecodeError:
+        return "Invalid token format"
+    except Exception as e:
+        return f"Error: {e}"
+
+# Example Usage
+admin_token = getToken()
