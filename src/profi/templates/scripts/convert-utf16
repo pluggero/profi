@@ -1,0 +1,1 @@
+iconv -f utf16 -t utf8 file_in.txt -o file_out.txt
