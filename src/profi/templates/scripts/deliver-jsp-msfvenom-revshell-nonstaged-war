@@ -6,4 +6,4 @@ echo '1. Start listener: <% echo $(esh scripts/listener-msf-multi-handler-linux-
 echo '================================================================'; \
 echo '                      ------Exploitation------                      '; \
 echo '2. Upload WAR file and visit endpoint'; \
-echo '================================================================'; \
+echo '================================================================';
