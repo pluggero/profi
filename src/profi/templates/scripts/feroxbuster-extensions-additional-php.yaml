@@ -1,0 +1,8 @@
+metadata:
+  filename: "feroxbuster-extensions-additional-php.yaml"
+  tags: ["web", "api"]
+  created: "2025-03-29"
+  author: "Unknown"
+
+content: |
+  php,phar,php5

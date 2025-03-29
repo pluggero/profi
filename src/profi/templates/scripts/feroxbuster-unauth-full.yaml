@@ -1,0 +1,8 @@
+metadata:
+  filename: "feroxbuster-unauth-full.yaml"
+  tags: ["web", "api"]
+  created: "2025-03-29"
+  author: "Unknown"
+
+content: |
+    mkdir -p feroxbuster; feroxbuster -o feroxbuster/ferox_unauth_full.log -w /usr/share/seclists/Discovery/Web-Content/directory-list-2.3-medium.txt --no-state --rate-limit <120|200> -u "http://<ip>:<port>" -x <zip,config,txt,pdf,html,js,bak>

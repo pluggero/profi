@@ -1,0 +1,9 @@
+metadata:
+  filename: "xcat-detect.yaml"
+  tags: ["web", "api"]
+  created: "2025-03-29"
+  author: "@anakles"
+
+content: |
+  xcat detect https://<TARGET> <INJECT_PARAM> <GET-PARAM>=<VALUE> --true-string='<CANARY>'
+

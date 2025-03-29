@@ -1,0 +1,8 @@
+metadata:
+  filename: "xcat-dump-document.yaml"
+  tags: ["web", "api"]
+  created: "2025-03-29"
+  author: "@anakles"
+
+content: |
+  xcat run https://<TARGET> <INJECT_PARAM> <GET-PARAM>=<VALUE> --true-string='<CANARY>'

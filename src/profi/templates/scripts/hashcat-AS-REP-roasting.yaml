@@ -1,0 +1,8 @@
+metadata:
+  filename: "hashcat-AS-REP-roasting.yaml"
+  tags: ["windows", "cracking"]
+  created: "2025-03-29"
+  author: "Unknown"
+
+content: |
+  sudo hashcat -m 18200 hashes.asreproast /usr/share/wordlists/rockyou.txt -r /usr/share/hashcat/rules/best64.rule --force

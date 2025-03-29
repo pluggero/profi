@@ -1,1 +1,0 @@
-hashcat -m 12001 <hashes-files> /usr/share/wordlists/fasttrack.txt

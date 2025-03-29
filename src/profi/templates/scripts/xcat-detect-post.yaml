@@ -1,0 +1,8 @@
+metadata:
+  filename: "xcat-detect-post.yaml"
+  tags: ["web", "api"]
+  created: "2025-03-29"
+  author: "@anakles"
+
+content: |
+  xcat detect https://<TARGET> <INJECT_PARAM> -m POST <POST-PARAM>=<VALUE> --true-string='<CANARY>' --encode FORM

@@ -1,0 +1,8 @@
+metadata:
+  filename: "jsluice-urls-ts.yaml"
+  tags: ["web"]
+  created: "2025-03-29"
+  author: "@anakles"
+
+content: |
+  mkdir -p jsluice; find . -name '*.ts' | jsluice urls --unique | tee jsluice/jsluice_urls_ts.log
