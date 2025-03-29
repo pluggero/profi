@@ -1,6 +1,6 @@
 metadata:
   filename: "xss-script-steal-cookies.yaml"
-  tags: ["web"]
+  tags: ["web", "xss"]
   created: "2025-03-29"
   author: "@anakles"
 

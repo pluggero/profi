@@ -1,6 +1,6 @@
 metadata:
   filename: "xss-blind-img-onerror-include-script-download-insert-head.yaml"
-  tags: ["web"]
+  tags: ["web", "xss"]
   created: "2025-03-29"
   author: "Unknown"
 

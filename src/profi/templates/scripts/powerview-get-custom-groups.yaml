@@ -1,6 +1,6 @@
 metadata:
   filename: "powerview-get-custom-groups.yaml"
-  tags: ["windows", "domain"]
+  tags: ["windows", "domain", "enum"]
   created: "2025-03-29"
   author: "Unknown"
 

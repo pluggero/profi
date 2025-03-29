@@ -1,6 +1,6 @@
 metadata:
   filename: "clairvoyance.yaml"
-  tags: ["api"]
+  tags: ["api", "enum"]
   created: "2025-03-29"
   author: "@anakles"
   

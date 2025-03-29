@@ -1,6 +1,6 @@
 metadata:
   filename: "feroxbuster-unauth-initial-speedy.yaml"
-  tags: ["web", "api"]
+  tags: ["web", "api", "enum"]
   created: "2025-03-29"
   author: "Unknown"
 
