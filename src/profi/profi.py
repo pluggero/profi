@@ -190,10 +190,11 @@ def parse_payload(file_path: Path) -> str:
         return ""  # Return an empty string in case of an error
 
 
-def get_available_templates(template_dir: str) -> list[str]:
+def get_available_templates(template_dir: str, clean: bool = False) -> list[str]:
     """
     Recursively collect template files from the provided directory,
     excluding certain subdirectories.
+    The parameter 'clean' returns the list of templates without parsing the tags
     """
     templates = []
     root = Path(template_dir).expanduser()
@@ -209,15 +210,17 @@ def get_available_templates(template_dir: str) -> list[str]:
             if not {"helper_scripts", "source_code", "variables"}.intersection(parts):
                 # Only include YAML files
                 if f.suffix in {".yaml"}:
-                    # TODO: Additionally to the filename, read the tags from the file
                     # Store the file path relative to the templates root
+                    
+                    if clean:
+                        templates.append(str(f.relative_to(root)))
+                    else:
+                        metadata = parse_metadata(f)
+                        tags = getattr(metadata, "tags")
+                        tag_string = build_tags(tags)
 
-                    metadata = parse_metadata(f)
-                    tags = getattr(metadata, "tags")
-                    tag_string = build_tags(tags)
-
-                    file_name_without_ext = f.stem
-                    templates.append(str(f.relative_to(root).with_name(file_name_without_ext)) + f"\t({tag_string})")
+                        file_name_without_ext = f.stem
+                        templates.append(str(f.relative_to(root).with_name(file_name_without_ext)) + f"\t({tag_string})")
                 
     return templates
 
@@ -228,7 +231,7 @@ def get_available_templates(template_dir: str) -> list[str]:
     "--template",
     help="The template to be executed, skipping rofi",
     type=click.Choice(
-        get_available_templates(os.path.expanduser(load_config()["templates_dir"]))
+        get_available_templates(os.path.expanduser(load_config()["templates_dir"]), True)
     ),
 )
 def main(template: str):
