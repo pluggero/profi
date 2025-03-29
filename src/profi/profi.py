@@ -110,6 +110,8 @@ def build_tags(tags: list[str]) -> str:
 
     if "web" in tags:
         tag_elements.append(" <span color='cyan'>web</span> ")
+    if "api" in tags:
+        tag_elements.append(" <span color='teal'>api</span> ")
     if "system" in tags:
         tag_elements.append(" <span color='orange'>system</span> ")
     if "shell" in tags:
