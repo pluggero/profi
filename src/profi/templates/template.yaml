@@ -1,0 +1,8 @@
+metadata:
+  filename: "<filename>.yaml"
+  tags: ["web", "api", "shell", "system", "linux", "windows", "domain", "mobile", "cracking", "privesc", "proxy"]
+  created: "<today>"
+  author: "Unknown"
+  
+content: |
+  Ur payload here

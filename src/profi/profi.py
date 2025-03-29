@@ -3,9 +3,20 @@ import os
 import subprocess
 import sys
 from pathlib import Path
+from dataclasses import dataclass
+from typing import List
 
 import click
 import yaml
+
+
+@dataclass
+class Metadata:
+    filename: str
+    tags: List[str]
+    created: str
+    author: str
+
 
 DEFAULT_CONFIG = {
     "tools_dir": "~/.local/share/profi/tools",
@@ -22,6 +33,10 @@ DEFAULT_CONFIG = {
         "shell_port": "4444",
         "webdav_port": "80",
     },
+    "colors": {
+        "tag1": "red",
+        "tag2": "blue"
+    }
 }
 
 
@@ -62,6 +77,78 @@ def load_config() -> dict:
     return config
 
 
+def parse_metadata(file_path: Path) -> Metadata:
+    """
+    Reads the provided path, parses the metadata of the file into the Metadata class object
+    and returns the object.
+    """
+    try:
+        with open(file_path, "r", encoding="utf-8") as file:
+            data = yaml.safe_load(file) or {}  # Ensure data is not None
+
+        metadata = data.get("metadata", {})  # Get metadata section, default to empty dict
+
+        return Metadata(
+            filename=metadata.get("filename", "unknown.yaml"),  # Default filename
+            tags=metadata.get("tags", []),  # Default empty list if tags are missing
+            created=metadata.get("created", "Unknown Date"),  # Default date string
+            author=metadata.get("author", "Unknown")  # Default author name
+        )
+    
+    except (FileNotFoundError, yaml.YAMLError) as e:
+        print(f"Error reading {file_path}: {e}")
+        return Metadata("unknown.yaml", [], "Unknown Date", "Unknown")  # Fallback values
+
+
+def build_tags(tags: list[str]) -> str:
+    """
+    Parses a list of given tags and combines them into a color-coded string.
+    """
+    tag_elements = []
+    
+    # TODO: Load colors from config file
+
+    if "web" in tags:
+        tag_elements.append(" <span color='cyan'>web</span> ")
+    if "system" in tags:
+        tag_elements.append(" <span color='orange'>system</span> ")
+    if "shell" in tags:
+        tag_elements.append(" <span color='red'>shell</span> ")
+    if "linux" in tags:
+        tag_elements.append(" <span color='yellow'>linux</span> ")
+    if "windows" in tags:
+        tag_elements.append(" <span color='lightblue'>windows</span> ")
+    if "domain" in tags:
+        tag_elements.append(" <span color='blue'>domain</span> ")
+    if "mobile" in tags:
+        tag_elements.append(" <span color='green'>mobile</span> ")
+    if "cracking" in tags:
+        tag_elements.append(" <span color='purple'>cracking</span> ")
+    if "privesc" in tags:
+        tag_elements.append(" <span color='pink'>privesc</span> ")
+    if "proxy" in tags:
+        tag_elements.append(" <span color='gray'>proxy</span> ")
+
+    tag_string = "".join(tag_elements)
+    return f"<b>Tags:</b> {tag_string}"
+
+
+def parse_payload(file_path: Path) -> str:
+    """
+    Reads the provided path, parses the payload of the file and returns it.
+    """
+    try:
+        with open(file_path, "r", encoding="utf-8") as file:
+            data = yaml.safe_load(file) or {}  # Safely load YAML content
+
+        # Extract the payload content
+        return data.get("content", "")  # Default to an empty string if no content field
+
+    except (FileNotFoundError, yaml.YAMLError) as e:
+        print(f"Error reading {file_path}: {e}")
+        return ""  # Return an empty string in case of an error
+
+
 def get_available_templates(template_dir: str) -> list[str]:
     """
     Recursively collect template files from the provided directory,
@@ -69,18 +156,28 @@ def get_available_templates(template_dir: str) -> list[str]:
     """
     templates = []
     root = Path(template_dir).expanduser()
+    
 
     if not root.is_dir():
         return templates
 
     for f in root.rglob("*"):
         if f.is_file():
-            # Exclude certain folders
+            # Exclude certain folders and files that are not YAML
             parts = set(f.parts)
             if not {"helper_scripts", "source_code", "variables"}.intersection(parts):
-                # Store the file path relative to the templates root
-                templates.append(str(f.relative_to(root)))
+                # Only include YAML files
+                if f.suffix in {".yaml"}:
+                    # TODO: Additionally to the filename, read the tags from the file
+                    # Store the file path relative to the templates root
 
+                    metadata = parse_metadata(f)
+                    tags = getattr(metadata, "tags")
+                    tag_string = build_tags(tags)
+
+                    file_name_without_ext = f.stem
+                    templates.append(str(f.relative_to(root).with_name(file_name_without_ext)) + f"\t({tag_string})")
+                
     return templates
 
 
@@ -113,7 +210,7 @@ def main(template: str):
     else:
         # Show rofi menu
         combined_templates = "\n".join(available_templates)
-        file_selection_command = ["rofi", "-dmenu", "-i", "-p", "Template"]
+        file_selection_command = ["rofi", "-dmenu", "-i", "-p", "Template", "-markup-rows"]
 
         try:
             # We provide the list of templates via stdin
@@ -127,7 +224,8 @@ def main(template: str):
             if rofi_proc.returncode != 0:
                 # This usually means user canceled
                 sys.exit(0)
-            selected_file = rofi_proc.stdout.strip()
+            # Remove the tags from the selected template and re-append the yaml file extension
+            selected_file = rofi_proc.stdout.strip().split("\t", 1)[0] + ".yaml"
         except FileNotFoundError:
             click.echo("Error: rofi is not installed or not found in PATH.", err=True)
             sys.exit(1)
@@ -140,9 +238,14 @@ def main(template: str):
     # We can do each step separately to avoid shell piping
     copy_command = config["copy_command"].split()
     try:
+        #0) extract payload from yaml
+        payload = parse_payload(f"{str(Path(templates_dir))}/{selected_file}")
+        print(payload)
+
         # 1) Run esh
         esh_result = subprocess.run(
-            ["esh", selected_file],
+            ["esh", "-"],   # "-" prompts esh to read from stdin instead
+            input=payload,  # Pass the payload content directly to esh
             capture_output=True,
             text=True,
             check=True,
