@@ -1,1 +1,0 @@
-hashcat -m 5600 <NetNTLMv2-hash> /usr/share/wordlists/rockyou.txt -r /usr/share/hashcat/rules/best64.rule --force

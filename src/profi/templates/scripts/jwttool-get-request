@@ -1,3 +1,0 @@
-mkdir -p jwttool; python3 jwt_tool.py -M at \
-    -t "https://api.example.com/api/v1/user/76bab5dd-9307-ab04-8123-fda81234245" \
-    -rh "Authorization: Bearer eyJhbG...<JWT Token>" | tee jwttool/jwttool_get.log

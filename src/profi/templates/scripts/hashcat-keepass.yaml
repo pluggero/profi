@@ -1,0 +1,8 @@
+metadata:
+  filename: "hashcat-keepass.yaml"
+  tags: ["cracking"]
+  created: "2025-03-29"
+  author: "Unknown"
+
+content: |
+  hashcat -m 13400 <john-hash-file> /usr/share/wordlists/rockyou.txt -r /usr/share/hashcat/rules/rockyou-30000.rule --force

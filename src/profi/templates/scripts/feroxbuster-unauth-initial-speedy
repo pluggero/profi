@@ -1,1 +1,0 @@
-mkdir -p feroxbuster; feroxbuster -o feroxbuster/ferox_unauth_initial.log -w /usr/lib/python3/dist-packages/dirsearch/db/dicc.txt --no-state -n --rate-limit <120|200> -u "http://<ip>:<port>"

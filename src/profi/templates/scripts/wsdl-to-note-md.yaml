@@ -1,0 +1,8 @@
+metadata:
+  filename: "wsdl-to-note-md.yaml"
+  tags: []
+  created: "2025-03-29"
+  author: "Unknown"
+
+content: |
+  python <%=$(esh variables/templates_dir)%>/helper_scripts/wsdlEndpointsToNote.py

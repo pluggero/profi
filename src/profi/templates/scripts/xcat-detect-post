@@ -1,1 +1,0 @@
-xcat detect https://<TARGET> <INJECT_PARAM> -m POST <POST-PARAM>=<VALUE> --true-string='<CANARY>' --encode FORM

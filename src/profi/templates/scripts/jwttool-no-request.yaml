@@ -1,0 +1,9 @@
+metadata:
+  filename: "jwttool-no-request.yaml"
+  tags: []
+  created: "2025-03-29"
+  author: "@anakles"
+
+content: |
+  mkdir -p jwttool; python3 jwt_tool.py \
+      "<JWT_TOKEN>" | tee jwttool/jwttool_no.log

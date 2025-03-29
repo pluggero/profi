@@ -1,0 +1,8 @@
+metadata:
+  filename: "jsluice-urls-js.yaml"
+  tags: ["web"]
+  created: "2025-03-29"
+  author: "@anakles"
+
+content: |
+  mkdir -p jsluice; find . -name '*.js' | jsluice urls --unique | tee jsluice/jsluice_urls_js.log

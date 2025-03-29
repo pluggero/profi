@@ -1,0 +1,8 @@
+metadata:
+  filename: "hydra-dictionary-ftp.yaml"
+  tags: ["system"]
+  created: "2025-03-29"
+  author: "Unknown"
+
+content: |
+  hydra -l <user> -P /usr/share/wordlists/rockyou.txt -s <port> ftp://<ip>

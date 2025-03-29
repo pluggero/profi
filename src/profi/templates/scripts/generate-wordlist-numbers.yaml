@@ -1,0 +1,11 @@
+metadata:
+  filename: "generate-wordlist-numbers.yaml"
+  tags: []
+  created: "2025-03-29"
+  author: "Unknown"
+
+content: |
+  read --prompt-str "Start Number:" START_NUMBER; \
+  read --prompt-str "End Number:" END_NUMBER; \
+  read --prompt-str "Interval:" INTERVAL; \
+  echo "Execute to get wordlist in clipboard: bash -c 'if [ $START_NUMBER -le $END_NUMBER ]; then for ((i=$START_NUMBER; i<=$END_NUMBER; i+=$INTERVAL)); do echo \$i; done; else for ((i=$START_NUMBER; i>=$END_NUMBER; i-=$INTERVAL)); do echo \$i; done; fi' | xclip -sel clip"

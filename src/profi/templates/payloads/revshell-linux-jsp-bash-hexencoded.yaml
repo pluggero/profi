@@ -1,0 +1,8 @@
+metadata:
+  filename: "revshell-linux-jsp-bash-hexencoded.yaml"
+  tags: ["shell", "linux"]
+  created: "2025-03-29"
+  author: "Unknown"
+
+content: |
+  <% echo $(esh payloads/revshell-linux-jsp-bash) | python helper_scripts/encode.py --hex %>

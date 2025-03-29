@@ -1,0 +1,8 @@
+metadata:
+  filename: "generate-uuid-v1.yaml"
+  tags: []
+  created: "2025-03-29"
+  author: "Unknown"
+
+content: |
+  <%=$(uuid)%>

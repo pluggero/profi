@@ -1,0 +1,8 @@
+metadata:
+  filename: "feroxbuster-extensions-addtional-jsp.yaml"
+  tags: ["web", "api", "enum"]
+  created: "2025-03-29"
+  author: "Unknown"
+
+content: |
+  jsp,faces

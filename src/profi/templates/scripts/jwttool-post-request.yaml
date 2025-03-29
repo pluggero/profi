@@ -1,0 +1,11 @@
+metadata:
+  filename: "jwttool-post-request.yaml"
+  tags: ["web", "api"]
+  created: "2025-03-29"
+  author: "@anakles"
+
+content: |
+  mkdir -p jwttool; python3 jwt_tool.py -M at \
+      -t "https://api.example.com/api/v1/user/76bab5dd-9307-ab04-8123-fda81234245" \
+      -rh "Authorization: Bearer eyJhbG...<JWT Token>" \
+      -pd "1" | tee jwttool/jwttool_post.log
