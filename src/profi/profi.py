@@ -127,6 +127,30 @@ def parse_color_settings(yaml_file):
     return {}
 
 
+def get_op_color_env_vars():
+    """Retrieve all OP_COLOR_* environment variables and return them as a dictionary."""
+    return {
+        key: value for key, value in os.environ.items() if key.startswith("OP_COLOR_")
+    }
+
+
+def check_tag_in_env(tags):
+    """
+    Check if any tag from the provided list has a matching OP_COLOR_* environment variable.
+
+    :param tags: List of tags to check.
+    :return: List of matching tags with their colors.
+    """
+    env_vars = get_op_color_env_vars()
+    
+    # Convert OP_COLOR_<TAG> to lowercase tag names
+    env_tags = {key[9:].lower(): value for key, value in env_vars.items()}  # Remove 'OP_COLOR_' prefix
+    
+    # Find matches
+    matches = {tag: env_tags[tag] for tag in tags if tag in env_tags}
+    
+    return matches
+
 
 def build_tags(tags: list[str]) -> str:
     """
@@ -134,41 +158,11 @@ def build_tags(tags: list[str]) -> str:
     """
     tag_elements = []
    
-    # Load custom parameters from config
-    color_web = os.environ["OP_COLOR_WEB"]
-    color_api = os.environ["OP_COLOR_API"]
-    color_system = os.environ["OP_COLOR_SYSTEM"]
-    color_shell = os.environ["OP_COLOR_SHELL"]
-    color_linux = os.environ["OP_COLOR_LINUX"]
-    color_windows = os.environ["OP_COLOR_WINDOWS"]
-    color_domain = os.environ["OP_COLOR_DOMAIN"]
-    color_mobile = os.environ["OP_COLOR_MOBILE"]
-    color_cracking = os.environ["OP_COLOR_CRACKING"]
-    color_privesc = os.environ["OP_COLOR_PRIVESC"]
-    color_proxy = os.environ["OP_COLOR_PROXY"]
+    matching_tags = check_tag_in_env(tags)
 
-    if "web" in tags:
-        tag_elements.append(f" <span color='{color_web}'>web</span> ")
-    if "api" in tags:
-        tag_elements.append(f" <span color='{color_api}'>api</span> ")
-    if "system" in tags:
-        tag_elements.append(f" <span color='{color_system}'>system</span> ")
-    if "shell" in tags:
-        tag_elements.append(f" <span color='{color_shell}'>shell</span> ")
-    if "linux" in tags:
-        tag_elements.append(f" <span color='{color_linux}'>linux</span> ")
-    if "windows" in tags:
-        tag_elements.append(f" <span color='{color_windows}'>windows</span> ")
-    if "domain" in tags:
-        tag_elements.append(f" <span color='{color_domain}'>domain</span> ")
-    if "mobile" in tags:
-        tag_elements.append(f" <span color='{color_mobile}'>mobile</span> ")
-    if "cracking" in tags:
-        tag_elements.append(f" <span color='{color_cracking}'>cracking</span> ")
-    if "privesc" in tags:
-        tag_elements.append(f" <span color='{color_privesc}'>privesc</span> ")
-    if "proxy" in tags:
-        tag_elements.append(f" <span color='{color_proxy}'>proxy</span> ")
+    for tag in tags:
+        color = matching_tags.get(tag, "white")
+        tag_elements.append(f"<span color='{color}'>{tag}</span> ")
 
     tag_string = "".join(tag_elements)
     return f"<b>Tags:</b> {tag_string}"
