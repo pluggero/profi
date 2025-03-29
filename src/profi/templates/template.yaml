@@ -1,8 +1,0 @@
-metadata:
-  filename: "<filename>.yaml"
-  tags: ["web", "api", "shell", "system", "linux", "windows", "domain", "mobile", "cracking", "privesc", "proxy"]
-  created: "2025-03-29"
-  author: "Unknown"
-  
-content: |
-  Ur payload here

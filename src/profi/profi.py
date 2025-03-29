@@ -34,8 +34,17 @@ DEFAULT_CONFIG = {
         "webdav_port": "80",
     },
     "colors": {
-        "tag1": "red",
-        "tag2": "blue"
+        "web" : "cyan",
+        "api" : "teal",
+        "system" : "orange",
+        "shell" : "red",
+        "linux" : "yellow",
+        "windows" :"lightblue",
+        "domain" :"blue",
+        "mobile" :"green",
+        "cracking" :"purple",
+        "privesc" : "pink",
+        "proxy" : "gray"
     }
 }
 
@@ -73,6 +82,9 @@ def load_config() -> dict:
     for key, value in config["settings"].items():
         if value is not None:
             os.environ[f"OP_{key.upper()}"] = str(value)
+    for key, value in config["colors"].items():
+        if value is not None:
+            os.environ[f"OP_COLOR_{key.upper()}"] = str(value)
 
     return config
 
@@ -100,36 +112,63 @@ def parse_metadata(file_path: Path) -> Metadata:
         return Metadata("unknown.yaml", [], "Unknown Date", "Unknown")  # Fallback values
 
 
+def parse_color_settings(yaml_file):
+    """
+    Parses the color settings from a YAML configuration file.
+    """
+    try:
+        with open(yaml_file, 'r') as file:
+            config = yaml.safe_load(file)
+            return config.get("colors", {})
+    except FileNotFoundError:
+        print(f"Error: The file {yaml_file} was not found.")
+    except yaml.YAMLError as e:
+        print(f"Error parsing YAML file: {e}")
+    return {}
+
+
+
 def build_tags(tags: list[str]) -> str:
     """
     Parses a list of given tags and combines them into a color-coded string.
     """
     tag_elements = []
-    
-    # TODO: Load colors from config file
+   
+    # Load custom parameters from config
+    color_web = os.environ["OP_COLOR_WEB"]
+    color_api = os.environ["OP_COLOR_API"]
+    color_system = os.environ["OP_COLOR_SYSTEM"]
+    color_shell = os.environ["OP_COLOR_SHELL"]
+    color_linux = os.environ["OP_COLOR_LINUX"]
+    color_windows = os.environ["OP_COLOR_WINDOWS"]
+    color_domain = os.environ["OP_COLOR_DOMAIN"]
+    color_mobile = os.environ["OP_COLOR_MOBILE"]
+    color_cracking = os.environ["OP_COLOR_CRACKING"]
+    color_privesc = os.environ["OP_COLOR_PRIVESC"]
+    color_proxy = os.environ["OP_COLOR_PROXY"]
 
     if "web" in tags:
-        tag_elements.append(" <span color='cyan'>web</span> ")
+        tag_elements.append(f" <span color='{color_web}'>web</span> ")
     if "api" in tags:
-        tag_elements.append(" <span color='teal'>api</span> ")
+        tag_elements.append(f" <span color='{color_api}'>api</span> ")
     if "system" in tags:
-        tag_elements.append(" <span color='orange'>system</span> ")
+        tag_elements.append(f" <span color='{color_system}'>system</span> ")
     if "shell" in tags:
-        tag_elements.append(" <span color='red'>shell</span> ")
+        tag_elements.append(f" <span color='{color_shell}'>shell</span> ")
     if "linux" in tags:
-        tag_elements.append(" <span color='yellow'>linux</span> ")
+        tag_elements.append(f" <span color='{color_linux}'>linux</span> ")
     if "windows" in tags:
-        tag_elements.append(" <span color='lightblue'>windows</span> ")
+        tag_elements.append(f" <span color='{color_windows}'>windows</span> ")
     if "domain" in tags:
-        tag_elements.append(" <span color='blue'>domain</span> ")
+        tag_elements.append(f" <span color='{color_domain}'>domain</span> ")
     if "mobile" in tags:
-        tag_elements.append(" <span color='green'>mobile</span> ")
+        tag_elements.append(f" <span color='{color_mobile}'>mobile</span> ")
     if "cracking" in tags:
-        tag_elements.append(" <span color='purple'>cracking</span> ")
+        tag_elements.append(f" <span color='{color_cracking}'>cracking</span> ")
     if "privesc" in tags:
-        tag_elements.append(" <span color='pink'>privesc</span> ")
+        tag_elements.append(f" <span color='{color_privesc}'>privesc</span> ")
     if "proxy" in tags:
-        tag_elements.append(" <span color='gray'>proxy</span> ")
+        tag_elements.append(f" <span color='{color_proxy}'>proxy</span> ")
 
     tag_string = "".join(tag_elements)
     return f"<b>Tags:</b> {tag_string}"
