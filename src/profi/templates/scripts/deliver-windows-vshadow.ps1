@@ -10,4 +10,4 @@ echo 'Extract system file: reg.exe save hklm\system <%=$(esh variables/delivery_
 echo '================================================================'; \
 echo '                         -----CMD-----                          '; \
 echo '================================================================'; \
-python -m http.server <%=$(esh variables/delivery_outbound_port)%> -d packstation/outbound
+python <%=$(esh variables/templates_dir)%>/helper_scripts/startEnhancedHttpServer.py -p <%=$(esh variables/delivery_outbound_port)%> -d packstation/outbound
