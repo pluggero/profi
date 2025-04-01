@@ -1,0 +1,8 @@
+metadata:
+  filename: "nmap-initial-tcp-full.yaml"
+  tags: ["system"]
+  created: "2025-03-29"
+  author: "Unknown"
+
+content: |
+  mkdir -p nmap; sudo nmap -v -sCV -Pn -oA nmap/initial-tcp-full -p- -T4 --traceroute -O --max-retries 3 <ip>; sudo chown -R $(whoami):$(whoami) nmap

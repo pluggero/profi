@@ -1,0 +1,8 @@
+metadata:
+  filename: "prompt-prettify-uncolored-linux-bash.yaml"
+  tags: ["linux"]
+  created: "2025-03-29"
+  author: "Unknown"
+
+content: |
+  export PS1='[BASH][\u@\h \w]-[\D{%F %T}]\n\$ '

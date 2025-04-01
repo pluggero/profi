@@ -1,0 +1,8 @@
+metadata:
+  filename: "hyrda-dictionary-http-basic-auth.yaml"
+  tags: ["web", "api"]
+  created: "2025-03-29"
+  author: "Unknown"
+
+content: |
+  hydra -l <user> -P /usr/share/wordlists/rockyou.txt <ip> http-get /<path>

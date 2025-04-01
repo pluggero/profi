@@ -1,0 +1,8 @@
+metadata:
+  filename: "prompt-prettify-uncolored-windows-cmd.yaml"
+  tags: ["windows"]
+  created: "2025-03-29"
+  author: "Unknown"
+
+content: |
+  prompt [CMD][%USERNAME%@%COMPUTERNAME% $P][$D $T]$_$G

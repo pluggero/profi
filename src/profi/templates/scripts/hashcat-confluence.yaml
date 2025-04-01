@@ -1,0 +1,8 @@
+metadata:
+  filename: "hashcat-confluence.yaml"
+  tags: ["cracking"]
+  created: "2025-03-29"
+  author: "Unknown"
+
+content: |
+  hashcat -m 12001 <hashes-files> /usr/share/wordlists/fasttrack.txt

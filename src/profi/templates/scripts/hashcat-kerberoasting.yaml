@@ -1,0 +1,8 @@
+metadata:
+  filename: "hashcat-kerberoasting.yaml"
+  tags: ["domain", "cracking"]
+  created: "2025-03-29"
+  author: "Unknown"
+
+content: |
+  sudo hashcat -m 13100 hashes.kerberoast /usr/share/wordlists/rockyou.txt -r /usr/share/hashcat/rules/best64.rule --force

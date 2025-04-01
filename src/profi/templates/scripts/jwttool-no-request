@@ -1,2 +1,0 @@
-mkdir -p jwttool; python3 jwt_tool.py \
-    "<JWT_TOKEN>" | tee jwttool/jwttool_no.log

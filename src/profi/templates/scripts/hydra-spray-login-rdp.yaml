@@ -1,0 +1,8 @@
+metadata:
+  filename: "hydra-spray-rdp.yaml"
+  tags: ["system"]
+  created: "2025-03-29"
+  author: "Unknown"
+
+content: |
+  hydra -l <username> -p <password> -M <targets.txt> rdp

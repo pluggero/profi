@@ -1,1 +1,0 @@
-<%=$(echo"$(random)$(random)")%>

