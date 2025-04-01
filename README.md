@@ -2,6 +2,38 @@
 
 <a id="readme-top"></a>
 
+## Usage
+
+
+### Tags
+
+You can search for templates either by name or by tag.
+All our templates have sounding names that should be self explaining, what this template is for.
+Every template may have some tags, that group them together, in case you need some inspiration of which template could help you.
+
+We currently support these tags:
+
+|Tag                                    | What's it for?                                                                                                                             |
+| -------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------ |
+| <span color='cyan'>web</span>          | For templates that target web applications<br>- The line between `web` and `api` is blurry, but `web` templates usually require a frontend |
+| <span color='teal'>api</span>          | For templates that target APIs                                                                                                             |
+| <span color='orange'>system</span>     | For templates that target services that may be host independent (e.g. ssh, ftp, smb, ...)                                                  |
+| <span color='green'>mobile</span>      | For templates that target mobile devices (iOS, Android, ...)                                                                               |
+| <span color='lightblue'>windows</span> | For templates that target Windows (usually combined with others)                                                                           |
+| <span color='yellow'>linux</span>      | For templates that target Linux (usually combined with others)                                                                             |
+| <span color='blue'>domain</span>       | For templates that require a domain joined host                                                                                            |
+| <span color='red'>shell</span>         | For templates that get you a reverse shell                                                                                                 |
+| <span color='green'>mobile</span>      | For templates that help you get crackable material and crack it                                                                            |
+| <span color='pink'>privesc</span>      | For templates that help you elevate your privileges                                                                                        |
+| <span color='gray'>proxy</span>        | For templates that help you setting up a proxy for pivoting to different systems (ligolo-ng, chisel, ssh port forwarding)                  |
+
+
+Some information on how tags are used:
+
+- Tags should be assigned to templates according to the target system 
+- We currently assume, *PRofi* is run on a Linux system, thus the pasted commands should all run on Linux. This does not "justify" the Linux tag.
+
+
 ## Getting Started
 
 ### Prerequisites
@@ -51,6 +83,19 @@ This list contains a (non-exhaustive) list of template-specific tools:
 - [uuid](https://pkg.kali.org/pkg/ossp-uuid)
 
 ## Contributing
+
+If you want to add a template, please use this YAML format:
+
+```yaml
+metadata:
+  filename: "<filename>.yaml"
+  tags: ["web", "api", "shell", "system", "linux", "windows", "domain", "mobile", "cracking", "privesc", "proxy"]
+  created: "2025-03-29"
+  author: "Unknown"
+  
+content: |
+  Ur payload here
+```
 
 Contributions are what make the open source community such an amazing place to learn, inspire, and create. Any contributions you make are **greatly appreciated**.
 See the [open issues](https://github.com/pluggero/profi/issues) for a full list of proposed features (and known issues).

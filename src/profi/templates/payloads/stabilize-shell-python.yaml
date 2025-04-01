@@ -1,0 +1,18 @@
+metadata:
+  filename: "stabilize-shell-python.yaml"
+  tags: ["shell", "linux"]
+  created: "2025-03-29"
+  author: "@anakles"
+
+content: |
+  echo '================================================================'; \
+  echo '                      -----On Target-----                      '; \
+  echo "Execute: python3 -c 'import pty;pty.spawn(\"/bin/bash\");'"; \
+  echo 'Then background: Ctrl + Z  '; \
+  echo '================================================================'; \
+  echo '                         -----On Host-----                          '; \
+  echo 'Execute: stty raw -echo; fg   '; \
+  echo '================================================================'; \
+  echo '                         ----On Target----                          '; \
+  echo 'Execute: export TERM=xterm   '; \
+  echo '================================================================'; 

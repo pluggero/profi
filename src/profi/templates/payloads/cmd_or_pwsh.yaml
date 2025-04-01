@@ -1,0 +1,8 @@
+metadata:
+  filename: "cmd_or_pwsh.yaml"
+  tags: ["windows"]
+  created: "2025-03-29"
+  author: "Unknown"
+
+content: |
+  (dir 2>&1 *`|echo CMD);&<# rem #>echo PowerShell

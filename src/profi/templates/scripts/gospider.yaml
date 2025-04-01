@@ -1,0 +1,8 @@
+metadata:
+  filename: "gospider.yaml"
+  tags: ["web", "api", "enum"]
+  created: "2025-03-29"
+  author: "Unknown"
+
+content: |
+  mkdir -p gospider; gospider -o gospider -c 10 -d 1 --sitemap -s "<url>"

@@ -1,7 +1,0 @@
-touch ips.txt; \
-echo "Enumerating over the following ips:"; \
-cat ips.txt;
-
-for ip in (cat ips.txt)
-    \$command
-end

