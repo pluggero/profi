@@ -7,4 +7,4 @@ echo 'Run (PsExec64.exe - tgt): <%=$(esh variables/delivery_path_windows)%>\PsEx
 echo '================================================================'; \
 echo '                         -----CMD-----                          '; \
 echo '================================================================'; \
-python -m http.server <%=$(esh variables/delivery_outbound_port)%> -d packstation/outbound
+python <%=$(esh variables/templates_dir)%>/helper_scripts/startEnhancedHttpServer.py -p <%=$(esh variables/delivery_outbound_port)%> -d packstation/outbound

