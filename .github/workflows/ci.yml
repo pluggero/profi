@@ -38,7 +38,7 @@ jobs:
           python-version: "3.x"
 
       - name: Install test dependencies
-        run: pip3 install pytest pyyaml
+        run: pip3 install pytest pyyaml urllib3
 
       - name: Run pytest
         run: pytest --color=yes tests/
