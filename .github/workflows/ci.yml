@@ -19,7 +19,7 @@ jobs:
           python-version: "3.x"
 
       - name: Install test dependencies
-        run: pip3 install yamllint
+        run: pip3 install -r requirements.txt
 
       - name: Run yamllint
         run: |
@@ -38,7 +38,7 @@ jobs:
           python-version: "3.x"
 
       - name: Install test dependencies
-        run: pip3 install pytest pyyaml urllib3
+        run: pip3 install -r requirements.txt
 
       - name: Run pytest
         run: pytest --color=yes tests/
