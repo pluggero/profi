@@ -4,7 +4,7 @@ REQUIRED_METADATA_FIELDS = ["filename", "tags", "created", "author"]
 REQUIRED_TOP_LEVEL_FIELDS = ["metadata", "content"]
 
 
-def has_required_keys(d: dict, keys: list[str]) -> list[str]:
+def has_keys(d: dict, keys: list[str]) -> list[str]:
     """Returns list of missing keys."""
     return [key for key in keys if key not in d]
 
@@ -22,12 +22,12 @@ def test_template_structure():
         if not isinstance(content, dict):
             continue  # Error already handled in another test
 
-        missing_top_fields = has_required_keys(content, REQUIRED_TOP_LEVEL_FIELDS)
+        missing_top_fields = has_keys(content, REQUIRED_TOP_LEVEL_FIELDS)
         if missing_top_fields:
-            erros.add(filepath.name)
+            errors.add(filepath.name)
 
         metadata = content.get("metadata", {})
-        missing_metadata_fields = has_required_keys(metadata, REQUIRED_METADATA_FIELDS)
+        missing_metadata_fields = has_keys(metadata, REQUIRED_METADATA_FIELDS)
         if missing_metadata_fields:
             errors.add(filepath.name)
 
