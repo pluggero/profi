@@ -7,8 +7,12 @@ TEMPLATES_DIR = PROJECT_ROOT / "src" / "profi" / "templates"
 
 
 def get_all_templates():
-    """Recursively return all template names under TEMPLATES_DIR."""
-    return [f for f in TEMPLATES_DIR.rglob("*.yaml") if f.is_file()]
+    """Recursively return all template names under TEMPLATES_DIR, matching all YAML file extensions."""
+    return [
+        f
+        for f in TEMPLATES_DIR.rglob("*")
+        if f.is_file() and f.suffix.lower() in {".yaml", ".yml"}
+    ]
 
 
 def get_relative_yaml_paths():
