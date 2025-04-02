@@ -2,7 +2,7 @@ from .utils import get_all_templates, load_yaml_file
 
 
 def test_filename_match_metadata():
-    """Check that metadata.filename matches the actual file's name."""
+    """Check that metadata.filename matches the file's name."""
     errors = set()
 
     for filepath in get_all_templates():
