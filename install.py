@@ -320,6 +320,10 @@ def post_install_ysoserial_net(dep: Dependency, dest_dir: Path):
     shutil.rmtree(release_dir)
 
 
+def post_install_pingcastle(dep: Dependency, dest_dir: Path):
+    unzip_files(dest_dir, create_subfolder=False)
+
+
 ###############################################################################
 # DEPENDENCY DEFINITIONS
 ###############################################################################
@@ -447,6 +451,15 @@ DEPENDENCIES = [
         ],
         directory=Path("ysoserial-net"),
         post_download_function=post_install_ysoserial_net,
+    ),
+    Dependency(
+        name="pingcastle",
+        version="3.3.0.1",
+        urls=[
+            "https://github.com/netwrix/pingcastle/releases/download/{version}/PingCastle_{version}.zip",
+        ],
+        directory=Path("pingcastle"),
+        post_download_function=post_install_pingcastle,
     ),
 ]
 
