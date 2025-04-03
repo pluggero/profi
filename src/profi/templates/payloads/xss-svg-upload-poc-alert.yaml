@@ -1,3 +1,4 @@
+---
 metadata:
   filename: "xss-svg-upload-poc-alert.yaml"
   tags: ["web", "xss"]

@@ -1,3 +1,4 @@
+---
 metadata:
   filename: "xss-script-steal-cookies.yaml"
   tags: ["web", "xss"]
