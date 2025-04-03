@@ -45,6 +45,7 @@ DEFAULT_CONFIG = {
         "cracking": "purple",
         "privesc": "pink",
         "wordlist": "black",
+        "utils": "tomato"
     },
 }
 

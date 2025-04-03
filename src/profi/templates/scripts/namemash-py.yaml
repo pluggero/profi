@@ -1,7 +1,9 @@
 ---
 metadata:
   filename: "namemash-py.yaml"
-  tags: ["python"]
+  tags: [
+    "python",
+    "wordlist"]
   created: "2025-03-29"
   author: "@anakles"
 
