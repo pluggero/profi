@@ -2,8 +2,8 @@ import importlib.resources
 import os
 import subprocess
 import sys
-from pathlib import Path
 from dataclasses import dataclass
+from pathlib import Path
 from typing import List
 
 import click
@@ -34,18 +34,18 @@ DEFAULT_CONFIG = {
         "webdav_port": "80",
     },
     "colors": {
-        "web" : "cyan",
-        "api" : "teal",
-        "system" : "orange",
-        "shell" : "red",
-        "linux" : "yellow",
-        "windows" :"lightblue",
-        "domain" :"blue",
-        "mobile" :"green",
-        "cracking" :"purple",
-        "privesc" : "pink",
-        "proxy" : "gray"
-    }
+        "web": "cyan",
+        "api": "teal",
+        "system": "orange",
+        "shell": "red",
+        "linux": "yellow",
+        "windows": "lightblue",
+        "domain": "blue",
+        "mobile": "green",
+        "cracking": "purple",
+        "privesc": "pink",
+        "wordlist": "black",
+    },
 }
 
 
@@ -98,18 +98,22 @@ def parse_metadata(file_path: Path) -> Metadata:
         with open(file_path, "r", encoding="utf-8") as file:
             data = yaml.safe_load(file) or {}  # Ensure data is not None
 
-        metadata = data.get("metadata", {})  # Get metadata section, default to empty dict
+        metadata = data.get(
+            "metadata", {}
+        )  # Get metadata section, default to empty dict
 
         return Metadata(
             filename=metadata.get("filename", "unknown.yaml"),  # Default filename
             tags=metadata.get("tags", []),  # Default empty list if tags are missing
             created=metadata.get("created", "Unknown Date"),  # Default date string
-            author=metadata.get("author", "Unknown")  # Default author name
+            author=metadata.get("author", "Unknown"),  # Default author name
         )
-    
+
     except (FileNotFoundError, yaml.YAMLError) as e:
         print(f"Error reading {file_path}: {e}")
-        return Metadata("unknown.yaml", [], "Unknown Date", "Unknown")  # Fallback values
+        return Metadata(
+            "unknown.yaml", [], "Unknown Date", "Unknown"
+        )  # Fallback values
 
 
 def parse_color_settings(yaml_file):
@@ -117,7 +121,7 @@ def parse_color_settings(yaml_file):
     Parses the color settings from a YAML configuration file.
     """
     try:
-        with open(yaml_file, 'r') as file:
+        with open(yaml_file, "r") as file:
             config = yaml.safe_load(file)
             return config.get("colors", {})
     except FileNotFoundError:
@@ -142,13 +146,15 @@ def check_tag_in_env(tags):
     :return: List of matching tags with their colors.
     """
     env_vars = get_op_color_env_vars()
-    
+
     # Convert OP_COLOR_<TAG> to lowercase tag names
-    env_tags = {key[9:].lower(): value for key, value in env_vars.items()}  # Remove 'OP_COLOR_' prefix
-    
+    env_tags = {
+        key[9:].lower(): value for key, value in env_vars.items()
+    }  # Remove 'OP_COLOR_' prefix
+
     # Find matches
     matches = {tag: env_tags[tag] for tag in tags if tag in env_tags}
-    
+
     return matches
 
 
@@ -157,7 +163,7 @@ def build_tags(tags: list[str]) -> str:
     Parses a list of given tags and combines them into a color-coded string.
     """
     tag_elements = []
-   
+
     matching_tags = check_tag_in_env(tags)
 
     for tag in tags:
@@ -192,7 +198,6 @@ def get_available_templates(template_dir: str, clean: bool = False) -> list[str]
     """
     templates = []
     root = Path(template_dir).expanduser()
-    
 
     if not root.is_dir():
         return templates
@@ -205,7 +210,7 @@ def get_available_templates(template_dir: str, clean: bool = False) -> list[str]
                 # Only include YAML files
                 if f.suffix in {".yaml"}:
                     # Store the file path relative to the templates root
-                    
+
                     if clean:
                         templates.append(str(f.relative_to(root)))
                     else:
@@ -214,8 +219,11 @@ def get_available_templates(template_dir: str, clean: bool = False) -> list[str]
                         tag_string = build_tags(tags)
 
                         file_name_without_ext = f.stem
-                        templates.append(str(f.relative_to(root).with_name(file_name_without_ext)) + f"\t({tag_string})")
-                
+                        templates.append(
+                            str(f.relative_to(root).with_name(file_name_without_ext))
+                            + f"\t({tag_string})"
+                        )
+
     return templates
 
 
@@ -225,7 +233,9 @@ def get_available_templates(template_dir: str, clean: bool = False) -> list[str]
     "--template",
     help="The template to be executed, skipping rofi",
     type=click.Choice(
-        get_available_templates(os.path.expanduser(load_config()["templates_dir"]), True)
+        get_available_templates(
+            os.path.expanduser(load_config()["templates_dir"]), True
+        )
     ),
 )
 def main(template: str):
@@ -248,7 +258,14 @@ def main(template: str):
     else:
         # Show rofi menu
         combined_templates = "\n".join(available_templates)
-        file_selection_command = ["rofi", "-dmenu", "-i", "-p", "Template", "-markup-rows"]
+        file_selection_command = [
+            "rofi",
+            "-dmenu",
+            "-i",
+            "-p",
+            "Template",
+            "-markup-rows",
+        ]
 
         try:
             # We provide the list of templates via stdin
@@ -276,13 +293,12 @@ def main(template: str):
     # We can do each step separately to avoid shell piping
     copy_command = config["copy_command"].split()
     try:
-        #0) extract payload from yaml
+        # 0) extract payload from yaml
         payload = parse_payload(f"{str(Path(templates_dir))}/{selected_file}")
-        print(payload)
 
         # 1) Run esh
         esh_result = subprocess.run(
-            ["esh", "-"],   # "-" prompts esh to read from stdin instead
+            ["esh", "-"],  # "-" prompts esh to read from stdin instead
             input=payload,  # Pass the payload content directly to esh
             capture_output=True,
             text=True,

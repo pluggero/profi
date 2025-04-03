@@ -4,7 +4,6 @@
 
 ## Usage
 
-
 ### Tags
 
 You can search for templates either by name or by tag.
@@ -13,7 +12,7 @@ Every template may have some tags, that group them together, in case you need so
 
 We currently support these tags:
 
-|Tag                                    | What's it for?                                                                                                                             |
+| Tag                                    | What's it for?                                                                                                                             |
 | -------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------ |
 | <span color='cyan'>web</span>          | For templates that target web applications<br>- The line between `web` and `api` is blurry, but `web` templates usually require a frontend |
 | <span color='teal'>api</span>          | For templates that target APIs                                                                                                             |
@@ -26,13 +25,12 @@ We currently support these tags:
 | <span color='green'>mobile</span>      | For templates that help you get crackable material and crack it                                                                            |
 | <span color='pink'>privesc</span>      | For templates that help you elevate your privileges                                                                                        |
 | <span color='gray'>proxy</span>        | For templates that help you setting up a proxy for pivoting to different systems (ligolo-ng, chisel, ssh port forwarding)                  |
-
+| <span color='black'>wordlist</span>    | For templates that help you creating wordlists                                                                                             |
 
 Some information on how tags are used:
 
-- Tags should be assigned to templates according to the target system 
-- We currently assume, *PRofi* is run on a Linux system, thus the pasted commands should all run on Linux. This does not "justify" the Linux tag.
-
+- Tags should be assigned to templates according to the target system
+- We currently assume, _PRofi_ is run on a Linux system, thus the pasted commands should all run on Linux. This does not "justify" the Linux tag.
 
 ## Getting Started
 
@@ -40,7 +38,6 @@ Some information on how tags are used:
 
 - [rofi](https://github.com/davatorium/rofi)
 - [esh](https://github.com/jirutka/esh)
-- [net-tools](https://github.com/ecki/net-tools)
 - [php](https://www.php.net/)
 - [xclip](https://github.com/astrand/xclip) (for X11)
 
@@ -89,10 +86,23 @@ If you want to add a template, please use this YAML format:
 ```yaml
 metadata:
   filename: "<filename>.yaml"
-  tags: ["web", "api", "shell", "system", "linux", "windows", "domain", "mobile", "cracking", "privesc", "proxy"]
+  tags:
+    [
+      "web",
+      "api",
+      "shell",
+      "system",
+      "linux",
+      "windows",
+      "domain",
+      "mobile",
+      "cracking",
+      "privesc",
+      "proxy",
+    ]
   created: "2025-03-29"
   author: "Unknown"
-  
+
 content: |
   Ur payload here
 ```
