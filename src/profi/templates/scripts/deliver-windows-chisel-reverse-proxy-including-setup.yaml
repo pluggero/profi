@@ -7,12 +7,12 @@ metadata:
 
 content: |
   mkdir -p packstation/outbound; gunzip -c <%=$(esh variables/tools_dir)%>/chisel/chisel_windows_amd64.gz > packstation/outbound/chisel.exe; gunzip -c <%=$(esh variables/tools_dir)%>/chisel/chisel_linux_amd64.gz > chisel; chmod +x chisel; \
-  
+
   echo "Answer the following with a target ip and port. Appropriate commands will be printed."; \
   read --prompt-str "Target IP:" target; \
   read --prompt-str "Target port:" target_port; \
   read --prompt-str "Kali port:" kali_port; \
-  
+
   echo '================================================================'; \
   echo '                      -----Kali-----                      '; \
   echo 'Start reverse proxy: ./chisel server -p <%=$(esh variables/proxy_port)%> --reverse'; \

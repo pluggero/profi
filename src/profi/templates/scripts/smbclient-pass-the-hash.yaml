@@ -7,4 +7,3 @@ metadata:
 
 content: |
   smbclient \\\\<IP>\\<smb-folder> -U Administrator --pw-nt-hash <NTLM-hash>
-

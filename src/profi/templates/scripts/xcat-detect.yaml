@@ -7,4 +7,3 @@ metadata:
 
 content: |
   xcat detect https://<TARGET> <INJECT_PARAM> <GET-PARAM>=<VALUE> --true-string='<CANARY>'
-

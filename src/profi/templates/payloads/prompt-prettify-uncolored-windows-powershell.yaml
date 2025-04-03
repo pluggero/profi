@@ -11,16 +11,16 @@ content: |
       $currentUser = [System.Security.Principal.WindowsIdentity]::GetCurrent().Name
       $hostName = $env:COMPUTERNAME
       $dateTime = Get-Date -Format "yyyy-MM-dd HH:mm:ss"
-      
+
       # Adding [PS] as the PowerShell indicator
       $psIndicator = "[PS]"
-      
+
       # Construct the prompt string with the PowerShell indicator
       $prompt = "$psIndicator[$currentUser@$hostName $currentPath]-[$dateTime]`n>"
-      
+
       # Optional: Reset color to default
       Write-Host -NoNewline $prompt -ForegroundColor White
-      
+
       # Return a blank prompt to allow PowerShell to handle command entry
       return " "
   }
