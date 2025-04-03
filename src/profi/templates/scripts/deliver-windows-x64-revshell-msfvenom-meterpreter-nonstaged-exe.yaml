@@ -1,6 +1,6 @@
 ---
 metadata:
-  filename: "deliver-windows-x64-revshell-msfvenom-meterpreter-nonstages.exe.yaml"
+  filename: "deliver-windows-x64-revshell-msfvenom-meterpreter-nonstaged-exe.yaml"
   tags: ["shell", "windows"]
   created: "2025-03-29"
   author: "Unknown"

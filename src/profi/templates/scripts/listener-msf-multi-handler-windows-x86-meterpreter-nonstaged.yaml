@@ -1,6 +1,6 @@
 ---
 metadata:
-  filename: "listener-msf-multi-handler-windows-x86-mterpreter-nonstaged.yaml"
+  filename: "listener-msf-multi-handler-windows-x86-meterpreter-nonstaged.yaml"
   tags: ["windows", "shell"]
   created: "2025-03-29"
   author: "Unknown"

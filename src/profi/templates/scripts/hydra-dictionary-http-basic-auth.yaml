@@ -1,6 +1,6 @@
 ---
 metadata:
-  filename: "hyrda-dictionary-http-basic-auth.yaml"
+  filename: "hydra-dictionary-http-basic-auth.yaml"
   tags: ["web", "api"]
   created: "2025-03-29"
   author: "Unknown"

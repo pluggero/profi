@@ -1,6 +1,6 @@
 ---
 metadata:
-  filename: "hydra-spray-rdp.yaml"
+  filename: "hydra-spray-login-rdp.yaml"
   tags: ["system"]
   created: "2025-03-29"
   author: "Unknown"

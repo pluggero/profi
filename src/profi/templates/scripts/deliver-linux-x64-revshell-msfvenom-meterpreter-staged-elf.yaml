@@ -1,6 +1,6 @@
 ---
 metadata:
-  filename: "deliver-linux-revshell-msfvenom-meterpreter-staged-elf.yaml"
+  filename: "deliver-linux-x64-revshell-msfvenom-meterpreter-staged-elf.yaml"
   tags: ["shell", "linux"]
   created: "2025-03-29"
   author: "Unknown"
