@@ -1,0 +1,10 @@
+---
+metadata:
+  filename: "generate-wordlist-nmap-top-ports.yaml"
+  tags: ["wordlist"]
+  created: "2025-04-03"
+  author: "PluggeRo"
+
+content: |
+  read --prompt-str "Top X ports:" PORT_AMOUNT; \
+  echo "Execute to get wordlist in clipboard: bash -c 'awk \'\$2~/tcp\$/\' /usr/share/nmap/nmap-services | sort -r -k3 | head -n $PORT_AMOUNT | awk \'{print \$2}\' | cut -d \'/\' -f 1' | xclip -sel clip"
