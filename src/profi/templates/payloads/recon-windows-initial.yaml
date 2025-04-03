@@ -1,3 +1,4 @@
+---
 metadata:
   filename: "recon-windows-initial.yaml"
   tags: ["windows", "domain"]
@@ -6,11 +7,11 @@ metadata:
 
 content: |
   $commandsAndPurposes = New-Object 'system.collections.generic.dictionary[string,string]';
-  
+
   $username = & whoami | ForEach-Object { $_ -split '\\' } | Select-Object -Last 1;
-  
+
   $PSReadlineHistorySavePath = (Get-PSReadlineOption).HistorySavePath;
-  
+
   $commandsAndPurposes.Add("System Information", "systeminfo");
   $commandsAndPurposes.Add("Hostname", "hostname");
   $commandsAndPurposes.Add("Username", "whoami");
@@ -25,7 +26,7 @@ content: |
   $commandsAndPurposes.Add("Currently Active Connections", "netstat -ano");
   $commandsAndPurposes.Add("Common User Files", "<%=$(esh payloads/recon-windows-common-user-files)%>");
   $commandsAndPurposes.Add("User PSReadline History", "type $PSReadlineHistorySavePath");
-  
+
   # Adding the command for running processes as a script block
   $processCommandScriptBlock = {
       Get-Process | ForEach-Object {
@@ -42,17 +43,17 @@ content: |
       }
   }
   $commandsAndPurposes.Add("Running Processes", $processCommandScriptBlock);
-  
+
   If(Test-Path report.txt) {
       Remove-Item -Path report.txt
   }
-  
+
   foreach ($purpose in $commandsAndPurposes.Keys) {
       $command = $commandsAndPurposes[$purpose];
-  
+
       echo "==========================================" >> report.txt;
       echo "Trying to enum for $purpose" >> report.txt;
-  
+
       if ($command -is [scriptblock]) {
           # Execute script block directly
           & $command >> report.txt
@@ -60,8 +61,8 @@ content: |
           # Execute command as string
           Invoke-Expression $command >> report.txt;
       }
-  
+
       sleep 1;
   }
-  
+
   echo "Done enumerating! Check report.txt"

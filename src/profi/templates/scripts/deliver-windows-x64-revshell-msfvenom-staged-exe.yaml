@@ -1,3 +1,4 @@
+---
 metadata:
   filename: "deliver-windows-x64-revshell-msfvenom-staged-exe.yaml"
   tags: ["shell", "windows"]

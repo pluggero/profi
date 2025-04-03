@@ -1,3 +1,4 @@
+---
 metadata:
   filename: "hashcat-netntlmv2.yaml"
   tags: ["domain", "cracking"]

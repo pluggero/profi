@@ -1,3 +1,4 @@
+---
 metadata:
   filename: "xss-blind-img-onerror-include-script-download-insert-head.yaml"
   tags: ["web", "xss"]

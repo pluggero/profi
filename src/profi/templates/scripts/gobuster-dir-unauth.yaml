@@ -1,3 +1,4 @@
+---
 metadata:
   filename: "gobuster-dir-unauth.yaml"
   tags: ["web", "api", "enum"]

@@ -1,3 +1,4 @@
+---
 metadata:
   filename: "feroxbuster-unauth-initial.yaml"
   tags: ["web", "api", "enum"]
