@@ -1,3 +1,4 @@
+---
 metadata:
   filename: "deliver-jsp-msfvenom-revshell-nonstaged-war.yaml"
   tags: ["web", "shell", "linux"]

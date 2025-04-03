@@ -1,3 +1,4 @@
+---
 metadata:
   filename: "lateral-movement-template-DCOM-powershell-revshell.yaml"
   tags: ["shell", "windows"]

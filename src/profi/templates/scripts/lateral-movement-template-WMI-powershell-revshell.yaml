@@ -1,3 +1,4 @@
+---
 metadata:
   filename: "lateral-movement-template-WMI-powershell-revshell.yaml"
   tags: ["shell", "windows"]

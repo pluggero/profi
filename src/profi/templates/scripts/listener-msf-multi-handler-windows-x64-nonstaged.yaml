@@ -1,3 +1,4 @@
+---
 metadata:
   filename: "listener-msf-multi-handler-windows-x64-nonstaged.yaml"
   tags: ["windows", "shell"]
