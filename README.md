@@ -85,10 +85,10 @@ There are 3 ways in which the colors can be specified:
 ```
 ```
 # by name
-<tagname>: "green"
+"<tagname>": "green"
 
 # by hexcode
-<tagname>: "#00FF00"
+"<tagname>": "#00FF00"
 ```
 
 
