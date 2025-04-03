@@ -1,3 +1,4 @@
+---
 metadata:
   filename: "impacket-psexec-pass-the-hash.yaml"
   tags: ["windows", "domain"]

@@ -1,6 +1,7 @@
+---
 metadata:
   filename: "deliver-windows-Invoke-mimikatz.ps1.yaml"
-  tags: ["windows", "domain","cracking", "privesc"]
+  tags: ["windows", "domain", "cracking", "privesc"]
   created: "2025-03-29"
   author: "Unknown"
 

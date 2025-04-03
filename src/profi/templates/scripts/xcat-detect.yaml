@@ -1,3 +1,4 @@
+---
 metadata:
   filename: "xcat-detect.yaml"
   tags: ["web", "api", "enum"]
@@ -6,4 +7,3 @@ metadata:
 
 content: |
   xcat detect https://<TARGET> <INJECT_PARAM> <GET-PARAM>=<VALUE> --true-string='<CANARY>'
-

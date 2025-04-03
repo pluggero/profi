@@ -1,5 +1,6 @@
+---
 metadata:
-  filename: "deliver-windows-vshadow.yaml"
+  filename: "deliver-windows-vshadow-ps1.yaml"
   tags: ["windows", "privesc"]
   created: "2025-03-29"
   author: "Unknown"

@@ -1,3 +1,4 @@
+---
 metadata:
   filename: "xss-script-basic-poc-alert.yaml"
   tags: ["web", "xss"]

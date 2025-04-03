@@ -1,6 +1,7 @@
+---
 metadata:
   filename: "deliver-windows-Invoke-EventViewer.ps1.yaml"
-  tags: ["windows","privesc"]
+  tags: ["windows", "privesc"]
   created: "2025-03-29"
   author: "Unknown"
 

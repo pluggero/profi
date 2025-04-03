@@ -1,3 +1,4 @@
+---
 metadata:
   filename: "nodejs-command-injection.yaml"
   tags: ["web"]
@@ -13,4 +14,3 @@ content: |
   echo 'Observe the callback below:                                     '; \
   echo '================================================================'; \
   python -m http.server <%=$(esh variables/delivery_outbound_port)%> -d packstation/outbound
-  

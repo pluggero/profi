@@ -1,3 +1,4 @@
+---
 metadata:
   filename: "hashcat-kerberoasting.yaml"
   tags: ["domain", "cracking"]

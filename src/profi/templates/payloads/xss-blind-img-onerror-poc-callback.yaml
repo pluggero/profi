@@ -1,3 +1,4 @@
+---
 metadata:
   filename: "xss-blind-img-onerror-poc-callback.yaml"
   tags: ["web", "xss"]

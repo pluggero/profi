@@ -1,3 +1,4 @@
+---
 metadata:
   filename: "impacket-GetUserSPNs-kerberoasting.yaml"
   tags: ["domain", "cracking"]

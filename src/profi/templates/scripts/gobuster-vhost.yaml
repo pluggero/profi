@@ -1,3 +1,4 @@
+---
 metadata:
   filename: "gobuster-vhost.yaml"
   tags: ["web", "api", "enum"]

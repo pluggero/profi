@@ -1,3 +1,4 @@
+---
 metadata:
   filename: "xss-blind-img-onerror-script-input-base64.yaml"
   tags: ["web", "xss"]

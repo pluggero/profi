@@ -1,9 +1,10 @@
+---
 metadata:
   filename: "clairvoyance.yaml"
   tags: ["api", "enum"]
   created: "2025-03-29"
   author: "@anakles"
-  
+
 content: |
   mkdir -p clairvoyance; clairvoyance.py \
       --output clairvoyance/gql_schema.json \
