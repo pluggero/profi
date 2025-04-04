@@ -1,9 +1,9 @@
 ---
 metadata:
   filename: "generate-random-number.yaml"
-  tags: []
+  tags: ["utils"]
   created: "2025-03-29"
   author: "Unknown"
 
 content: |
-  <%=$(echo"$(random)$(random)")%>
+  <%=$(echo "$(random)$(random)")%>
