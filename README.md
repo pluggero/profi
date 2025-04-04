@@ -26,6 +26,7 @@ We currently support these tags:
 | <span color='pink'>privesc</span>      | For templates that help you elevate your privileges                                                                                        |
 | <span color='gray'>proxy</span>        | For templates that help you setting up a proxy for pivoting to different systems (ligolo-ng, chisel, ssh port forwarding)                  |
 | <span color='black'>wordlist</span>    | For templates that help you creating wordlists                                                                                             |
+| <span color='tomato'>utils</span>      | For templates that run utility scripts                                                                                             |
 
 Some information on how tags are used:
 
@@ -72,6 +73,27 @@ Some information on how tags are used:
   - `locations`: The locations of the tools and templates
   - `clipboard`: The clipboard options
   - `template options`: Options for setting various variables in the templates
+
+   
+#### Tags
+
+Using the configuration file, you can specify and configure custom color codings for each tag. Rofi uses the [Pango Markup Language](https://docs.gtk.org/Pango/pango_markup.html) for styling.
+`PRofi` will only render those tags in color, which have a color assigned in the config file. All other tags will default to a white font color.
+
+There are 3 ways in which the colors can be specified:
+
+```
+```
+# by name
+"<tagname>": "green"
+
+# by hexcode
+"<tagname>": "#00FF00"
+```
+
+
+For more information, please refer to the official [Rofi documentation](https://davatorium.github.io/rofi/current/rofi-dmenu.5/) or the [Pango documentation](https://docs.gtk.org/Pango/pango_markup.html).
+
 
 ### Tools
 
