@@ -4,6 +4,26 @@ import yaml
 
 PROJECT_ROOT = Path(__file__).resolve().parent.parent
 TEMPLATES_DIR = PROJECT_ROOT / "src" / "profi" / "templates"
+AVAILABLE_TAGS = {
+    "api",
+    "cracking",
+    "domain",
+    "linux",
+    "mobile",
+    "privesc",
+    "proxy",
+    "shell",
+    "system",
+    "utils",
+    "web",
+    "windows",
+    "wordlist",
+}
+
+
+def get_available_tags():
+    """Return a set of available tags."""
+    return AVAILABLE_TAGS
 
 
 def get_all_templates():
