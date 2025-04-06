@@ -1,7 +1,7 @@
 ---
 metadata:
   filename: "jwttool-no-request.yaml"
-  tags: []
+  tags: ["web", "api"]
   created: "2025-03-29"
   author: "@anakles"
 
