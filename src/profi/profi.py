@@ -44,8 +44,11 @@ DEFAULT_CONFIG = {
         "mobile": "green",
         "cracking": "purple",
         "privesc": "pink",
+        "proxy": "gray",
         "wordlist": "black",
-        "utils": "tomato"
+        "utils": "tomato",
+        "enum": "tan",
+        "xss": "plum",
     },
 }
 

@@ -18,6 +18,8 @@ AVAILABLE_TAGS = {
     "web",
     "windows",
     "wordlist",
+    "enum",
+    "xss",
 }
 
 
