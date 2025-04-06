@@ -1,7 +1,7 @@
 ---
 metadata:
   filename: "xss-img-submit-form.yaml"
-  tags: ["web", "xss"]
+  tags: ["web"]
   created: "2025-04-04"
   author: "@anakles"
 
