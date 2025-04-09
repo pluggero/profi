@@ -18,4 +18,4 @@ content: |
   echo '================================================================'; \
   echo '                         -----CMD-----                          '; \
   echo '================================================================'; \
-  python -m http.server <%=$(esh variables/delivery_outbound_port)%> -d packstation/outbound
+  python -m <%=$(esh variables/templates_dir)%>/helper_scripts/startEnhancedHttpServer.py <%=$(esh variables/delivery_outbound_port)%> -d packstation/outbound

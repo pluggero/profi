@@ -13,4 +13,4 @@ content: |
   echo 'Deliver (with credentials): ssh-copy-id -i ~/.ssh/id69_rsa <user>@<remote_ip>'
   echo 'Connect to box: ssh -i ~/.ssh/id69_rsa <user>@<remote_ip>'
   echo '================================================================'; \
-  python -m http.server <%=$(esh variables/delivery_outbound_port)%> -d packstation/outbound
+  python -m <%=$(esh variables/templates_dir)%>/helper_scripts/startEnhancedHttpServer.py <%=$(esh variables/delivery_outbound_port)%> -d packstation/outbound
