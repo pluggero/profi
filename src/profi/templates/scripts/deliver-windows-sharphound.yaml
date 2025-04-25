@@ -16,4 +16,4 @@ content: |
   echo '================================================================'; \
   echo '                         -----CMD-----                          '; \
   echo '================================================================'; \
-  python -m <%=$(esh variables/templates_dir)%>/helper_scripts/startEnhancedHttpServer.py <%=$(esh variables/delivery_outbound_port)%> -d packstation/outbound
+  python <%=$(esh variables/templates_dir)%>/helper_scripts/startEnhancedHttpServer.py -p <%=$(esh variables/delivery_outbound_port)%> -d packstation/outbound

