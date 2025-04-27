@@ -46,4 +46,12 @@ def compute_dynamic_values(config: Dict[str, Any]) -> Dict[str, str]:
         except (subprocess.TimeoutExpired, Exception):
             context['attacker_ip'] = ''
 
+    # Compute delivery_dir_listing_flag for HTTP server
+    # Converts boolean config to CLI flag for startEnhancedHttpServer.py
+    dir_listing = context.get('delivery_dir_listing', 'True')
+    if str(dir_listing).lower() in ('true', '1', 'yes'):
+        context['delivery_dir_listing_flag'] = '--allow-listing'
+    else:
+        context['delivery_dir_listing_flag'] = ''
+
     return context

