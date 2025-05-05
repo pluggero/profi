@@ -1,0 +1,9 @@
+---
+metadata:
+  filename: "identify-ssh-algorithm.yaml"
+  tags: ["utils"]
+  created: "2025-05-05"
+  author: "@benzammour@infosec.exchange"
+
+content: |
+  echo "Check algorithm of given SSH Key: ssh-keygen -l -f $FILE";
