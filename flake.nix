@@ -169,7 +169,7 @@
                 unixtools.ifconfig
                 libossp_uuid # For generating uuids
                 num-utils # For random numbers
-                python312
+                python
                 pyyaml
                 click
               ];
