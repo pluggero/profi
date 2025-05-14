@@ -171,8 +171,11 @@ def build_tags(tags: list[str]) -> str:
     matching_tags = check_tag_in_env(tags)
 
     for tag in tags:
-        color = matching_tags.get(tag, "white")
-        tag_elements.append(f"<span color='{color}'>{tag}</span> ")
+        color = matching_tags.get(tag)
+        if color:
+            tag_elements.append(f"<span color='{color}'>{tag}</span> ")
+        else:
+            tag_elements.append(f"<span>{tag}</span> ")
 
     tag_string = "".join(tag_elements)
     return f"<b>Tags:</b> {tag_string}"
