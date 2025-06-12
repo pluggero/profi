@@ -29,6 +29,7 @@ DEFAULT_CONFIG = {
         "delivery_outbound_port": "8086",
         "delivery_path_linux": "/dev/shm",
         "delivery_path_windows": "C:\\Windows\\Temp",
+        "delivery_dir_listing": True,
         "proxy_port": "8087",
         "shell_port": "4444",
         "webdav_port": "80",

