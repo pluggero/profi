@@ -20,6 +20,7 @@ let
     delivery_outbound_port = 8086;
     delivery_path_linux = "/dev/shm";
     delivery_path_windows = "C:\\Windows\\Temp";
+    delivery_dir_listing = true;
     proxy_port = 8087;
     shell_port = 4444;
     webdav_port = 80;
@@ -84,6 +85,11 @@ in
               type = types.str;
               default = defaultSettings.delivery_path_windows;
               description = "Path used to place transferred payloads on windows targets";
+            };
+            delivery_dir_listing = mkOption {
+              type = types.bool;
+              default = defaultSettings.delivery_dir_listing;
+              description = "Whether to enable directory listing for the delivery webserver";
             };
             proxy_port = mkOption {
               type = types.int;
