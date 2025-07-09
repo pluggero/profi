@@ -219,9 +219,11 @@
                   unzip ${inputs.ligolo-ng-agent-wintun} -d ${outToolsDir}/ligolo-ng/agent/wintun
                 '';
               postInstall = ''
-                installShellCompletion --cmd profi \
-                --bash <(_PROFI_COMPLETE=bash_source $out/bin/profi) \
-                --fish <(_PROFI_COMPLETE=fish_source $out/bin/profi) \
+                export HOME=$(pwd)
+
+                #installShellCompletion --cmd profi \
+                #--bash <(_PROFI_COMPLETE=bash_source $out/bin/profi) \
+                #--fish <(_PROFI_COMPLETE=fish_source $out/bin/profi) \
               '';
             };
 
