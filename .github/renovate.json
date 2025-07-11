@@ -95,7 +95,7 @@
       ],
       "datasourceTemplate": "custom.wintun",
       "depNameTemplate": "wintun",
-      "versioningTemplate": "semver",
+      "versioningTemplate": "loose",
       "extractVersionTemplate": "/wintun/snapshot/wintun-(?<version>[\\d.]+)\\.tar\\.xz"
     },
     {
