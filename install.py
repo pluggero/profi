@@ -76,6 +76,7 @@ def download_file(url: str, dest_dir: Path) -> None:
         logging.error(f"Failed to download {url}: {e}")
         if dest_file.exists():
             dest_file.unlink()
+        raise
 
 
 def zip_path(
@@ -133,6 +134,7 @@ def zip_path(
 
     except Exception as e:
         logging.exception(f"An error occurred while zipping '{source}': {e}")
+        raise
 
 
 def unzip_files(directory: Path, create_subfolder: bool = True) -> None:
@@ -183,6 +185,7 @@ def unzip_files(directory: Path, create_subfolder: bool = True) -> None:
 
         except Exception as e:
             logging.error(f"Failed to unzip {zip_file.name}: {e}")
+            raise
 
 
 def gunzip_files(directory: Path) -> None:
@@ -468,6 +471,8 @@ DEPENDENCIES = [
 # MAIN
 ###############################################################################
 def main() -> int:
+    errors: list[str] = []
+
     # 1) Prepare the tools directory
     safe_mkdir(TOOLS_DIR)
     clean_dir(TOOLS_DIR)
@@ -476,8 +481,17 @@ def main() -> int:
     for dep in DEPENDENCIES:
         install_dir = TOOLS_DIR / dep.directory
         safe_mkdir(install_dir)
-        dep.download(install_dir)
-        dep.post_download(install_dir)
+        try:
+            dep.download(install_dir)
+            dep.post_download(install_dir)
+        except Exception as e:
+            errors.append(f"{dep.name}: {e}")
+
+    if errors:
+        for msg in errors:
+            logging.error(msg)
+        logging.error("Setup failed due to errors.")
+        return 1
 
     logging.info("Setup completed successfully.")
     return 0
