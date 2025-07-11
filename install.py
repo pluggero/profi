@@ -266,6 +266,9 @@ class Dependency:
 ###############################################################################
 # CUSTOM POST-INSTALL FUNCTIONS
 ###############################################################################
+def post_install_sharphound(dep: Dependency, dest_dir: Path):
+    unzip_files(dest_dir, create_subfolder=False)
+
 def post_install_mimikatz(dep: Dependency, dest_dir: Path):
     unzip_files(dest_dir, create_subfolder=False)
 
@@ -330,16 +333,16 @@ def post_install_pingcastle(dep: Dependency, dest_dir: Path):
 DEPENDENCIES = [
     Dependency(
         name="sharphound",
-        version="master",
+        version="v2.6.6",
         urls=[
-            "https://raw.githubusercontent.com/BloodHoundAD/BloodHound/{version}/Collectors/SharpHound.ps1",
-            "https://raw.githubusercontent.com/BloodHoundAD/BloodHound/{version}/Collectors/SharpHound.exe",
+            "https://github.com/SpecterOps/SharpHound/releases/download/{version}/SharpHound_{version}_windows_x86.zip"
         ],
         directory=Path("bloodhound"),
+        post_download_function=post_install_sharphound,
     ),
     Dependency(
         name="mimikatz",
-        version="2.2.0-20220919",
+        version="2.2.0-20210810",
         urls=[
             "https://github.com/gentilkiwi/mimikatz/releases/download/{version}/mimikatz_trunk.zip",
             "https://raw.githubusercontent.com/pluggero/Invoke-Mimikatz/main/Invoke-Mimikatz.ps1",
@@ -366,9 +369,9 @@ DEPENDENCIES = [
     ),
     Dependency(
         name="pspy",
-        version="1.2.1",
+        version="v1.2.0",
         urls=[
-            "https://github.com/DominicBreuker/pspy/releases/download/v{version}/pspy64",
+            "https://github.com/DominicBreuker/pspy/releases/download/{version}/pspy64",
         ],
         directory=Path("pspy"),
     ),
@@ -376,16 +379,16 @@ DEPENDENCIES = [
         name="linpeas",
         version="20240324-2c3cd766",
         urls=[
-            "https://github.com/carlospolop/PEASS-ng/releases/download/{version}/linpeas.sh",
+            "https://github.com/peass-ng/PEASS-ng/releases/download/{version}/linpeas.sh",
         ],
         directory=Path("linpeas"),
     ),
     Dependency(
         name="winpeas",
-        version="20250113-4426d62e",
+        version="20240324-2c3cd766",
         urls=[
-            "https://github.com/carlospolop/PEASS-ng/releases/download/{version}/winPEAS.bat",
-            "https://github.com/carlospolop/PEASS-ng/releases/download/{version}/winPEASx64.exe",
+            "https://github.com/peass-ng/PEASS-ng/releases/download/{version}/winPEAS.bat",
+            "https://github.com/peass-ng/PEASS-ng/releases/download/{version}/winPEASx64.exe",
         ],
         directory=Path("winpeas"),
     ),
@@ -411,7 +414,7 @@ DEPENDENCIES = [
     ),
     Dependency(
         name="wintun",
-        version="0.14.1",
+        version="0.14",
         urls=[
             "https://www.wintun.net/builds/wintun-{version}.zip",
         ],
@@ -420,18 +423,18 @@ DEPENDENCIES = [
     ),
     Dependency(
         name="printspoofer",
-        version="1.0",
+        version="v0.9",
         urls=[
-            "https://github.com/itm4n/PrintSpoofer/releases/download/v{version}/PrintSpoofer64.exe",
-            "https://github.com/itm4n/PrintSpoofer/releases/download/v{version}/PrintSpoofer32.exe",
+            "https://github.com/itm4n/PrintSpoofer/releases/download/{version}/PrintSpoofer64.exe",
+            "https://github.com/itm4n/PrintSpoofer/releases/download/{version}/PrintSpoofer32.exe",
         ],
         directory=Path("printspoofer"),
     ),
     Dependency(
         name="godpotato",
-        version="1.20",
+        version="V1.10",
         urls=[
-            "https://github.com/BeichenDream/GodPotato/releases/download/V{version}/GodPotato-NET4.exe",
+            "https://github.com/BeichenDream/GodPotato/releases/download/{version}/GodPotato-NET4.exe",
         ],
         directory=Path("godpotato"),
     ),

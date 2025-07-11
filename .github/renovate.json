@@ -1,0 +1,147 @@
+{
+  "extends": [
+    "config:best-practices",
+    ":disableRateLimiting"
+  ],
+  "enabledManagers": [
+    "github-actions",
+    "pip_requirements",
+    "custom.regex"
+  ],
+  "assignees": [
+    "pluggero",
+    "anakles",
+    "benzammour",
+    "Cserny"
+  ],
+  "customManagers": [
+    {
+      "customType": "regex",
+      "managerFilePatterns": [
+        "/^install\\.py$/"
+      ],
+      "matchStrings": [
+        "name=\\s+\"sharphound\"\\s+version=\\s+\"(?<currentValue>[\\d\\.]+)\""
+      ],
+      "datasourceTemplate": "github-releases",
+      "depNameTemplate": "SpecterOps/SharpHound",
+      "versioningTemplate": "semver"
+    },
+    {
+      "customType": "regex",
+      "managerFilePatterns": [
+        "/^install\\.py$/"
+      ],
+      "matchStrings": [
+        "name=\\s+\"mimikatz\"\\s+version=\\s+\"(?<currentValue>[^\"]+)\""
+      ],
+      "datasourceTemplate": "github-releases",
+      "depNameTemplate": "gentilkiwi/mimikatz",
+      "versioningTemplate": "semver"
+    },
+    {
+      "customType": "regex",
+      "managerFilePatterns": [
+        "/^install\\.py$/"
+      ],
+      "matchStrings": [
+        "name=\\s+\"pspy\"\\s+version=\\s+\"(?<currentValue>[\\d\\.]+)\""
+      ],
+      "datasourceTemplate": "github-releases",
+      "depNameTemplate": "DominicBreuker/pspy",
+      "versioningTemplate": "semver"
+    },
+    {
+      "customType": "regex",
+      "managerFilePatterns": [
+        "/^install\\.py$/"
+      ],
+      "matchStrings": [
+        "name=\\s+\"linpeas\"\\s+version=\\s+\"(?<currentValue>[^\"]+)\"",
+        "name=\\s+\"winpeas\"\\s+version=\\s+\"(?<currentValue>[^\"]+)\""
+      ],
+      "datasourceTemplate": "github-releases",
+      "depNameTemplate": "peass-ng/PEASS-ng",
+      "versioningTemplate": "loose"
+    },
+    {
+      "customType": "regex",
+      "managerFilePatterns": [
+        "/^install\\.py$/"
+      ],
+      "matchStrings": [
+        "name=\\s+\"chisel\"\\s+version=\\s+\"(?<currentValue>[\\d\\.]+)\""
+      ],
+      "datasourceTemplate": "github-releases",
+      "depNameTemplate": "jpillora/chisel",
+      "versioningTemplate": "semver"
+    },
+    {
+      "customType": "regex",
+      "managerFilePatterns": [
+        "/^install\\.py$/"
+      ],
+      "matchStrings": [
+        "name=\\s+\"ligolo-ng\"\\s+version=\\s+\"(?<currentValue>[\\d\\.]+)\""
+      ],
+      "datasourceTemplate": "github-releases",
+      "depNameTemplate": "nicocha30/ligolo-ng",
+      "versioningTemplate": "semver"
+    }, 
+    {
+      "customType": "regex",
+      "managerFilePatterns": [
+        "/^install\\.py$/"
+      ],
+      "matchStrings": [
+        "name=\\s+\"wintun\"\\s+version=\\s+\"(?<currentValue>[\\d\\.]+)\""
+      ],
+      "datasourceTemplate": "custom.wintun",
+      "depNameTemplate": "wintun",
+      "versioningTemplate": "semver",
+      "extractVersionTemplate": "/wintun/tag/\\?h=(?<version>[\\d.]+)\\'"
+    },
+    {
+      "customType": "regex",
+      "managerFilePatterns": [
+        "/^install\\.py$/"
+      ],
+      "matchStrings": [
+        "name=\\s+\"printspoofer\"\\s+version=\\s+\"(?<currentValue>[\\d\\.]+)\""
+      ],
+      "datasourceTemplate": "github-releases",
+      "depNameTemplate": "itm4n/PrintSpoofer",
+      "versioningTemplate": "semver"
+    },
+    {
+      "customType": "regex",
+      "managerFilePatterns": [
+        "/^install\\.py$/"
+      ],
+      "matchStrings": [
+        "name=\\s+\"godpotato\"\\s+version=\\s+\"(?<currentValue>[\\d\\.]+)\""
+      ],
+      "datasourceTemplate": "github-releases",
+      "depNameTemplate": "BeichenDream/GodPotato",
+      "versioningTemplate": "semver"
+    },
+    {
+      "customType": "regex",
+      "managerFilePatterns": [
+        "/^install\\.py$/"
+      ],
+      "matchStrings": [
+        "name=\\s+\"pingcastle\"\\s+version=\\s+\"(?<currentValue>[\\d\\.]+)\""
+      ],
+      "datasourceTemplate": "github-releases",
+      "depNameTemplate": "netwrix/pingcastle",
+      "versioningTemplate": "semver"
+    }
+  ],
+  "customDatasources": {
+    "wintun": {
+      "defaultRegistryUrlTemplate": "https://git.zx2c4.com/wintun/refs/tags",
+      "format": "html"
+    }
+  }
+}
