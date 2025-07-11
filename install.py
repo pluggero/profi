@@ -407,7 +407,7 @@ DEPENDENCIES = [
     ),
     Dependency(
         name="ligolo-ng",
-        version="0.8.2",
+        version="0.8.1",
         urls=[
             "https://github.com/nicocha30/ligolo-ng/releases/download/v{version}/ligolo-ng_agent_{version}_windows_amd64.zip",
             "https://github.com/nicocha30/ligolo-ng/releases/download/v{version}/ligolo-ng_proxy_{version}_linux_amd64.tar.gz",
