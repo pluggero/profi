@@ -18,7 +18,7 @@
     {
       "customType": "regex",
       "managerFilePatterns": [
-        "/^install\\.py$/"
+        "install.py"
       ],
       "matchStrings": [
         "name=\\s+\"sharphound\".*?version=\\s+\"(?<currentValue>[\\d\\.]+)\""
@@ -30,7 +30,7 @@
     {
       "customType": "regex",
       "managerFilePatterns": [
-        "/^install\\.py$/"
+        "install.py"
       ],
       "matchStrings": [
         "name=\\s+\"mimikatz\".*?version=\\s+\"(?<currentValue>[^\"]+)\""
@@ -42,7 +42,7 @@
     {
       "customType": "regex",
       "managerFilePatterns": [
-        "/^install\\.py$/"
+        "install.py"
       ],
       "matchStrings": [
         "name=\\s+\"pspy\".*?version=\\s+\"(?<currentValue>[\\d\\.]+)\""
@@ -54,7 +54,7 @@
     {
       "customType": "regex",
       "managerFilePatterns": [
-        "/^install\\.py$/"
+        "install.py"
       ],
       "matchStrings": [
         "name=\\s+\"linpeas\".*?version=\\s+\"(?<currentValue>[^\"]+)\"",
@@ -67,7 +67,7 @@
     {
       "customType": "regex",
       "managerFilePatterns": [
-        "/^install\\.py$/"
+        "install.py"
       ],
       "matchStrings": [
         "name=\\s+\"chisel\".*?version=\\s+\"(?<currentValue>[\\d\\.]+)\""
@@ -79,7 +79,7 @@
     {
       "customType": "regex",
       "managerFilePatterns": [
-        "/^install\\.py$/"
+        "install.py"
       ],
       "matchStrings": [
         "name=\\s+\"ligolo-ng\".*?version=\\s+\"(?<currentValue>[\\d\\.]+)\""
@@ -91,7 +91,7 @@
     {
       "customType": "regex",
       "managerFilePatterns": [
-        "/^install\\.py$/"
+        "install.py"
       ],
       "matchStrings": [
         "name=\\s+\"wintun\".*?version=\\s+\"(?<currentValue>[\\d\\.]+)\""
@@ -104,7 +104,7 @@
     {
       "customType": "regex",
       "managerFilePatterns": [
-        "/^install\\.py$/"
+        "install.py"
       ],
       "matchStrings": [
         "name=\\s+\"printspoofer\".*?version=\\s+\"(?<currentValue>[\\d\\.]+)\""
@@ -116,7 +116,7 @@
     {
       "customType": "regex",
       "managerFilePatterns": [
-        "/^install\\.py$/"
+        "install.py"
       ],
       "matchStrings": [
         "name=\\s+\"godpotato\".*?version=\\s+\"(?<currentValue>[\\d\\.]+)\""
@@ -128,7 +128,7 @@
     {
       "customType": "regex",
       "managerFilePatterns": [
-        "/^install\\.py$/"
+        "install.py"
       ],
       "matchStrings": [
         "name=\\s+\"pingcastle\".*?version=\\s+\"(?<currentValue>[\\d\\.]+)\""
