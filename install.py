@@ -397,7 +397,7 @@ DEPENDENCIES = [
     ),
     Dependency(
         name="chisel",
-        version="1.9.1",
+        version="1.10.1",
         urls=[
             "https://github.com/jpillora/chisel/releases/download/v{version}/chisel_{version}_windows_amd64.gz",
             "https://github.com/jpillora/chisel/releases/download/v{version}/chisel_{version}_linux_amd64.gz",
