@@ -345,7 +345,7 @@ DEPENDENCIES = [
     ),
     Dependency(
         name="mimikatz",
-        version="2.2.0-20210810",
+        version="2.2.0-20220919",
         urls=[
             "https://github.com/gentilkiwi/mimikatz/releases/download/{version}/mimikatz_trunk.zip",
             "https://raw.githubusercontent.com/pluggero/Invoke-Mimikatz/main/Invoke-Mimikatz.ps1",
