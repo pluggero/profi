@@ -15,8 +15,8 @@ jobs:
       pull-requests: write
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: DeterminateSystems/determinate-nix-action@v3
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
+      - uses: DeterminateSystems/determinate-nix-action@9770a4910c6cacf42ba4e6de9b689ac8d66326df # v3
       - uses: DeterminateSystems/update-flake-lock@main
         with:
           pr-title: "Update Nix flake inputs"
