@@ -1,5 +1,7 @@
 # PRofi (Pentest Rofi)
 
+[![CI](https://github.com/pluggero/profi/actions/workflows/ci.yml/badge.svg)](https://github.com/pluggero/profi/actions/workflows/ci.yml)
+
 <a id="readme-top"></a>
 
 ## Usage
