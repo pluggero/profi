@@ -426,7 +426,7 @@ DEPENDENCIES = [
     ),
     Dependency(
         name="printspoofer",
-        version="0.9",
+        version="1.0",
         urls=[
             "https://github.com/itm4n/PrintSpoofer/releases/download/v{version}/PrintSpoofer64.exe",
             "https://github.com/itm4n/PrintSpoofer/releases/download/v{version}/PrintSpoofer32.exe",
@@ -435,7 +435,7 @@ DEPENDENCIES = [
     ),
     Dependency(
         name="godpotato",
-        version="1.10",
+        version="1.20",
         urls=[
             "https://github.com/BeichenDream/GodPotato/releases/download/V{version}/GodPotato-NET4.exe",
         ],
