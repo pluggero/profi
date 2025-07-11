@@ -42,3 +42,39 @@ jobs:
 
       - name: Run pytest
         run: pytest --color=yes tests/
+
+  install:
+    name: Installation (smoke-test)
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out the codebase
+        uses: actions/checkout@v4
+
+      - name: Set up Python 3
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+
+      - name: Install system prerequisites
+        run: |
+          sudo apt update
+          sudo apt install -y --no-install-recommends \
+            rofi php-cli xclip
+
+      - name: Install esh from source
+        run: |
+          git clone --depth 1 https://github.com/jirutka/esh.git /tmp/esh
+          sudo make -C /tmp/esh install-exec
+          esh -V
+
+      - name: Install Python requirements
+        run: pip install -r requirements.txt
+
+      - name: Run installer script
+        run: python install.py
+
+      - name: Install PRofi package
+        run: pip install .
+
+      - name: Smoke-test CLI
+        run: profi --help
