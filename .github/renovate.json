@@ -132,7 +132,7 @@
       ],
       "datasourceTemplate": "github-releases",
       "depNameTemplate": "netwrix/pingcastle",
-      "versioningTemplate": "semver"
+      "versioningTemplate": "ruby"
     }
   ],
   "customDatasources": {

@@ -336,9 +336,9 @@ def post_install_pingcastle(dep: Dependency, dest_dir: Path):
 DEPENDENCIES = [
     Dependency(
         name="sharphound",
-        version="v2.6.6",
+        version="2.6.6",
         urls=[
-            "https://github.com/SpecterOps/SharpHound/releases/download/{version}/SharpHound_{version}_windows_x86.zip"
+            "https://github.com/SpecterOps/SharpHound/releases/download/v{version}/SharpHound_v{version}_windows_x86.zip"
         ],
         directory=Path("bloodhound"),
         post_download_function=post_install_sharphound,
@@ -372,9 +372,9 @@ DEPENDENCIES = [
     ),
     Dependency(
         name="pspy",
-        version="v1.2.0",
+        version="1.2.0",
         urls=[
-            "https://github.com/DominicBreuker/pspy/releases/download/{version}/pspy64",
+            "https://github.com/DominicBreuker/pspy/releases/download/v{version}/pspy64",
         ],
         directory=Path("pspy"),
     ),
@@ -426,18 +426,18 @@ DEPENDENCIES = [
     ),
     Dependency(
         name="printspoofer",
-        version="v0.9",
+        version="0.9",
         urls=[
-            "https://github.com/itm4n/PrintSpoofer/releases/download/{version}/PrintSpoofer64.exe",
-            "https://github.com/itm4n/PrintSpoofer/releases/download/{version}/PrintSpoofer32.exe",
+            "https://github.com/itm4n/PrintSpoofer/releases/download/v{version}/PrintSpoofer64.exe",
+            "https://github.com/itm4n/PrintSpoofer/releases/download/v{version}/PrintSpoofer32.exe",
         ],
         directory=Path("printspoofer"),
     ),
     Dependency(
         name="godpotato",
-        version="V1.10",
+        version="1.10",
         urls=[
-            "https://github.com/BeichenDream/GodPotato/releases/download/{version}/GodPotato-NET4.exe",
+            "https://github.com/BeichenDream/GodPotato/releases/download/V{version}/GodPotato-NET4.exe",
         ],
         directory=Path("godpotato"),
     ),
