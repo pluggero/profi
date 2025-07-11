@@ -96,7 +96,7 @@
       "datasourceTemplate": "custom.wintun",
       "depNameTemplate": "wintun",
       "versioningTemplate": "semver",
-      "extractVersionTemplate": "/wintun/tag/\\?h=(?<version>[\\d.]+)"
+      "extractVersionTemplate": "/wintun/snapshot/wintun-(?<version>[\\d.]+)\\.tar\\.xz"
     },
     {
       "customType": "regex",
