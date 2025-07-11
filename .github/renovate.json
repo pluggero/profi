@@ -34,7 +34,7 @@
       ],
       "datasourceTemplate": "github-releases",
       "depNameTemplate": "gentilkiwi/mimikatz",
-      "versioningTemplate": "semver"
+      "versioningTemplate": "loose"
     },
     {
       "customType": "regex",
@@ -59,7 +59,7 @@
       ],
       "datasourceTemplate": "github-releases",
       "depNameTemplate": "peass-ng/PEASS-ng",
-      "versioningTemplate": "loose"
+      "versioningTemplate": "regex:^(?<major>\\d{4})(?<minor>\\d{2})(?<patch>\\d{2})(?:-(?<build>[0-9a-f]{8}))?$"
     },
     {
       "customType": "regex",
