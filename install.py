@@ -372,7 +372,7 @@ DEPENDENCIES = [
     ),
     Dependency(
         name="pspy",
-        version="1.2.0",
+        version="1.2.1",
         urls=[
             "https://github.com/DominicBreuker/pspy/releases/download/v{version}/pspy64",
         ],
