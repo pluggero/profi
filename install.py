@@ -417,7 +417,7 @@ DEPENDENCIES = [
     ),
     Dependency(
         name="wintun",
-        version="0.14",
+        version="0.14.1",
         urls=[
             "https://www.wintun.net/builds/wintun-{version}.zip",
         ],
