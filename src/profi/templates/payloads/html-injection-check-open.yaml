@@ -1,0 +1,9 @@
+---
+metadata:
+  filename: "html-injection-check-open.yaml"
+  tags: ["web", "xss"]
+  created: "2025-06-12"
+  author: "pluggero"
+
+content: |
+  "'><s>CanYouSeeMe
