@@ -3,6 +3,19 @@
     "config:best-practices",
     ":disableRateLimiting"
   ],
+  "automerge": false,
+  "automergeType": "pr",
+  "packageRules": [
+    {
+      "matchManagers": ["github-actions", "pip_requirements"],
+      "automerge": true,
+      "automergeType": "pr"
+    },
+    {
+      "matchManagers": ["custom.regex"],
+      "automerge": false
+    }
+  ],
   "enabledManagers": [
     "github-actions",
     "pip_requirements",
