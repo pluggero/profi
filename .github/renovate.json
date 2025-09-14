@@ -22,7 +22,10 @@
     "custom.regex"
   ],
   "assignees": [
-    "pluggero"
+    "pluggero",
+    "anakles",
+    "benzammour",
+    "Cserny"
   ],
   "customManagers": [
     {
