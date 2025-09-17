@@ -1,0 +1,1 @@
+<% if [ "${OP_DELIVERY_DIR_LISTING}" == "True" ]; then echo "--allow-listing"; else echo ""; fi %>
