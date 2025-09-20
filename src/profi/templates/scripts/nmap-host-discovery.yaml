@@ -1,0 +1,9 @@
+---
+metadata:
+  filename: "nmap-host-discovery.yaml"
+  tags: ["system"]
+  created: "2025-09-17"
+  author: "SBenzammour"
+
+content: |
+  mkdir -p nmap; sudo nmap -v -oA nmap/discovery -PS21,22,23,25,80,135,139,443,445,3389,31339 -PP -PU53,161,40125 -PA21,80,443,10042 -PM --source-port 53 -iL ip-ranges.txt; sudo chown -R $(whoami):$(whoami) nmap
