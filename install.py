@@ -328,6 +328,8 @@ def post_install_ysoserial_net(dep: Dependency, dest_dir: Path):
 
 def post_install_pingcastle(dep: Dependency, dest_dir: Path):
     unzip_files(dest_dir, create_subfolder=False)
+    pingcastleDir = Path(f"{dest_dir}/PingCastle_{dep.version}")
+    safe_move_files("*", pingcastleDir, dest_dir)
 
 
 ###############################################################################
