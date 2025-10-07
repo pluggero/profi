@@ -234,6 +234,45 @@ def get_available_templates(template_dir: str, clean: bool = False) -> list[str]
     return templates
 
 
+def print_debug_info(template_name: str, raw_content: str, esh_output: str, esh_errors: str, final_output: str):
+    """
+    Display debug information showing the processing steps.
+    """
+    click.echo("=" * 50)
+    click.echo("DEBUG MODE")
+    click.echo("=" * 50)
+    click.echo(f"Template: {template_name}")
+    click.echo()
+    
+    click.echo("Raw Content:")
+    click.echo("-" * 20)
+    click.echo(raw_content)
+    click.echo()
+    
+    click.echo("ESH Output:")
+    click.echo("-" * 20)
+    click.echo(esh_output)
+    click.echo()
+    
+    if esh_errors.strip():
+        click.echo("ESH Errors/Warnings:")
+        click.echo("-" * 30)
+        click.echo(esh_errors, err=True)
+        click.echo()
+    
+    click.echo("Final Output:")
+    click.echo("-" * 20)
+    click.echo(final_output)
+    click.echo()
+    
+    click.echo("Environment Variables (OP_*):")
+    click.echo("-" * 30)
+    op_vars = {k: v for k, v in os.environ.items() if k.startswith("OP_")}
+    for key, value in sorted(op_vars.items()):
+        click.echo(f"{key}={value}")
+    click.echo("=" * 50)
+
+
 @click.command()
 @click.option(
     "-t",
@@ -245,7 +284,12 @@ def get_available_templates(template_dir: str, clean: bool = False) -> list[str]
         )
     ),
 )
-def main(template: str):
+@click.option(
+    "--debug",
+    is_flag=True,
+    help="Show debug information including esh processing steps",
+)
+def main(template: str, debug: bool):
     """
     Command-line entry point for profi.
     Uses a pre-selected template if provided, otherwise prompts via rofi.
@@ -322,13 +366,23 @@ def main(template: str):
             check=True,
         )
 
-        # 3) Run copy command
-        subprocess.run(copy_command, input=perl_result.stdout, text=True, check=True)
+        # Show debug information if requested
+        if debug:
+            print_debug_info(selected_file, payload, esh_result.stdout, esh_result.stderr, perl_result.stdout)
+
+        # 3) Run copy command (skip if debug mode to avoid clipboard pollution)
+        if not debug:
+            subprocess.run(copy_command, input=perl_result.stdout, text=True, check=True)
+        else:
+            click.echo("\n[Debug mode: Output not copied to clipboard]")
     except FileNotFoundError as fnf:
         click.echo(f"Error: required command not found -> {fnf}", err=True)
         sys.exit(1)
     except subprocess.CalledProcessError as cpe:
         click.echo(f"Error running command: {cpe}", err=True)
+        if debug and 'esh_result' in locals() and hasattr(locals()['esh_result'], 'stderr'):
+            click.echo("\nESH stderr output:", err=True)
+            click.echo(locals()['esh_result'].stderr, err=True)
         sys.exit(1)
 
 
