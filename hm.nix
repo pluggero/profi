@@ -104,6 +104,89 @@ in
         };
         default = defaultSettings;
       };
+      colors = mkOption {
+        type = types.submodule {
+          options = {
+            web = mkOption {
+              type = types.str;
+              default = "cyan";
+              description = "Color for web-related text.";
+            };
+            api = mkOption {
+              type = types.str;
+              default = "teal";
+              description = "Color for api-related text.";
+            };
+            system = mkOption {
+              type = types.str;
+              default = "orange";
+              description = "Color for system-related text.";
+            };
+            shell = mkOption {
+              type = types.str;
+              default = "red";
+              description = "Color for shell-related text.";
+            };
+            linux = mkOption {
+              type = types.str;
+              default = "yellow";
+              description = "Color for linux-related text.";
+            };
+            windows = mkOption {
+              type = types.str;
+              default = "lightblue";
+              description = "Color for windows-related text.";
+            };
+            domain = mkOption {
+              type = types.str;
+              default = "blue";
+              description = "Color for domain-related text.";
+            };
+            mobile = mkOption {
+              type = types.str;
+              default = "green";
+              description = "Color for mobile-related text.";
+            };
+            cracking = mkOption {
+              type = types.str;
+              default = "purple";
+              description = "Color for cracking-related text.";
+            };
+            privesc = mkOption {
+              type = types.str;
+              default = "pink";
+              description = "Color for privesc-related text.";
+            };
+            proxy = mkOption {
+              type = types.str;
+              default = "gray";
+              description = "Color for proxy-related text.";
+            };
+            wordlist = mkOption {
+              type = types.str;
+              default = "black";
+              description = "Color for wordlist-related text.";
+            };
+            utils = mkOption {
+              type = types.str;
+              default = "tomato";
+              description = "Color for utils-related text.";
+            };
+            enum = mkOption {
+              type = types.str;
+              default = "tan";
+              description = "Color for enum-related text.";
+            };
+            xss = mkOption {
+              type = types.str;
+              default = "plum";
+              description = "Color for xss-related text.";
+            };
+          };
+        };
+        default = { };
+        description = "Color settings for profi output";
+      };
     };
   };
 
