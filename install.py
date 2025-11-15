@@ -382,7 +382,7 @@ DEPENDENCIES = [
     ),
     Dependency(
         name="linpeas",
-        version="20251017-d864f4c3",
+        version="20251115-0322d43c",
         urls=[
             "https://github.com/peass-ng/PEASS-ng/releases/download/{version}/linpeas.sh",
         ],
@@ -390,7 +390,7 @@ DEPENDENCIES = [
     ),
     Dependency(
         name="winpeas",
-        version="20251017-d864f4c3",
+        version="20251115-0322d43c",
         urls=[
             "https://github.com/peass-ng/PEASS-ng/releases/download/{version}/winPEAS.bat",
             "https://github.com/peass-ng/PEASS-ng/releases/download/{version}/winPEASx64.exe",
