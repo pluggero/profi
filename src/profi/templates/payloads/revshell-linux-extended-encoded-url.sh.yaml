@@ -1,9 +1,10 @@
----
 metadata:
-  filename: "revshell-linux-extended-encoded-url.sh.yaml"
-  tags: ["shell", "linux"]
-  created: "2025-03-29"
-  author: "Unknown"
+  filename: revshell-linux-extended-encoded-url.sh.yaml
+  tags:
+  - shell
+  - linux
+  created: '2025-03-29'
+  author: Unknown
+content: '{{ include(''payloads/revshell-linux-extended.sh.yaml'') | url_encode }}
 
-content: |
-  <% echo $(esh payloads/revshell-linux-extended.sh) | python helper_scripts/encode.py --url %>
+  '

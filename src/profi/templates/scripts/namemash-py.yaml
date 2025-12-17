@@ -1,9 +1,9 @@
----
 metadata:
-  filename: "namemash-py.yaml"
-  tags: ["wordlist"]
-  created: "2025-03-29"
-  author: "@anakles"
+  filename: namemash-py.yaml
+  tags:
+  - wordlist
+  created: '2025-03-29'
+  author: '@anakles'
+content: 'python {{ templates_dir }}/helper_scripts/namemash.py names.txt > possible.txt
 
-content: |
-  python <%=$(esh variables/templates_dir)%>/helper_scripts/namemash.py names.txt > possible.txt
+  '

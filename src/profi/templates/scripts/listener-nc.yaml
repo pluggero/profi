@@ -1,9 +1,9 @@
----
 metadata:
-  filename: "listener-nc.yaml"
-  tags: ["shell"]
-  created: "2025-03-29"
-  author: "Unknown"
+  filename: listener-nc.yaml
+  tags:
+  - shell
+  created: '2025-03-29'
+  author: Unknown
+content: 'nc -lvnp {{ shell_port }}
 
-content: |
-  nc -lvnp <%=$(esh variables/shell_port)%>
+  '

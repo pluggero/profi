@@ -1,9 +1,9 @@
----
 metadata:
-  filename: "generate-uuid-v4.yaml"
-  tags: ["utils"]
-  created: "2025-03-29"
-  author: "Unknown"
+  filename: generate-uuid-v4.yaml
+  tags:
+  - utils
+  created: '2025-03-29'
+  author: Unknown
+content: 'uuid -v4
 
-content: |
-  <%=$(uuid -v4)%>
+  '

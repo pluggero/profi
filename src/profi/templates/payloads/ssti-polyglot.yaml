@@ -1,9 +1,9 @@
----
 metadata:
-  filename: "ssti-polyglot.yaml"
-  tags: ["web"]
-  created: "2025-03-29"
-  author: "@anakles"
+  filename: ssti-polyglot.yaml
+  tags:
+  - web
+  created: '2025-03-29'
+  author: '@anakles'
+content: '{% raw %}${{\<\%[%''"}}%\
 
-content: |
-  ${{\<\%[%'"}}%\
+  {% endraw %}'

