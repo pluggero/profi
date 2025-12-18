@@ -1,9 +1,9 @@
+---
 metadata:
   filename: generate-uuid-v1-number-only.yaml
-  tags:
-  - utils
-  created: '2025-03-29'
+  tags: ["utils"]
+  created: "2025-03-29"
   author: Unknown
-content: 'uuid | tr -d ''a-zA-Z-''
 
-  '
+content: |
+  uuid | tr -d 'a-zA-Z-'

