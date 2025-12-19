@@ -42,7 +42,6 @@ Some information on how tags are used:
 ### Prerequisites
 
 - [rofi](https://github.com/davatorium/rofi)
-- [esh](https://github.com/jirutka/esh)
 - [php](https://www.php.net/)
 - [xclip](https://github.com/astrand/xclip) (for X11)
 
@@ -54,14 +53,16 @@ Some information on how tags are used:
    git clone https://github.com/pluggero/profi.git
    cd profi
    ```
-3. Install Tools
-   ```sh
-   python install.py
-   ```
-4. Install Python Requirements
+3. Install Python Requirements
 
    ```sh
    pip install -r requirements.txt
+   ```
+
+4. Install Tools
+
+   ```sh
+   python install.py
    ```
 
 5. Install PRofi
@@ -109,33 +110,71 @@ This list contains a (non-exhaustive) list of template-specific tools:
 
 - [uuid](https://pkg.kali.org/pkg/ossp-uuid)
 
-## Contributing
+## Template Authoring
 
-If you want to add a template, please use this YAML format:
+PRofi uses **Jinja2** for template processing, enabling dynamic content with variables, includes, and custom filters.
+
+### Basic Template Structure
 
 ```yaml
 metadata:
-  filename: "<filename>.yaml"
-  tags:
-    [
-      "web",
-      "api",
-      "shell",
-      "system",
-      "linux",
-      "windows",
-      "domain",
-      "mobile",
-      "cracking",
-      "privesc",
-      "proxy",
-    ]
+  filename: "example.yaml"
+  tags: ["available_tags"]
   created: "2025-03-29"
-  author: "Unknown"
+  author: "Your Name"
 
 content: |
-  Ur payload here
+  Your payload with {{ variables }}
 ```
+
+### Variables
+
+Access configuration values from `~/.config/profi/config.yaml`:
+
+```jinja2
+{{ attacker_ip }}           # Auto-detected or from OP_ATTACKER_IP
+{{ shell_port }}            # Default: 4444
+{{ delivery_outbound_port}} # Default: 8086
+{{ tools_dir }}             # Tools directory
+{{ delivery_path_windows }} # C:\Windows\Temp
+```
+
+### Template Inclusion
+
+Compose complex payloads by including other templates:
+
+```jinja2
+{{ include('payloads/revshell-linux.yaml') }}
+
+# With encoding
+{{ include('payloads/revshell-powershell.yaml') | base64_pwsh }}
+```
+
+### Custom Filters
+
+Specialized encoding for security testing:
+
+- `url_encode` - URL encoding
+- `base64` - Standard base64
+- `base64_pwsh` - PowerShell compatible (UTF-16 LE)
+- `hex_encode` - Hexadecimal encoding
+
+Example:
+
+```jinja2
+powershell.exe -EncodedCommand {{ include('payloads/cmd.yaml') | base64_pwsh }}
+```
+
+### Raw Content
+
+For content with Jinja2-like syntax that should not be processed:
+
+```yaml
+content: |
+  {% raw %}PS1='\[\033[0m\][\D{%F %T}]\$ '{% endraw %}
+```
+
+## Contributing
 
 Contributions are what make the open source community such an amazing place to learn, inspire, and create. Any contributions you make are **greatly appreciated**.
 See the [open issues](https://github.com/pluggero/profi/issues) for a full list of proposed features (and known issues).
