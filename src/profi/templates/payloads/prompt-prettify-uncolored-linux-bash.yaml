@@ -1,9 +1,9 @@
 ---
 metadata:
-  filename: prompt-prettify-uncolored-linux-bash.yaml
+  filename: "prompt-prettify-uncolored-linux-bash.yaml"
   tags: ["linux"]
   created: "2025-03-29"
-  author: Unknown
+  author: "Unknown"
 
 content: |
   {% raw %}export PS1='[BASH][\u@\h \w]-[\D{%F %T}]\n\$ '{% endraw %}

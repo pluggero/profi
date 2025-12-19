@@ -1,9 +1,9 @@
 ---
 metadata:
-  filename: generate-uuid-v1.yaml
+  filename: "generate-uuid-v1.yaml"
   tags: ["utils"]
   created: "2025-03-29"
-  author: Unknown
+  author: "Unknown"
 
 content: |
   uuid

