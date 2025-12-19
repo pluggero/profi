@@ -8,26 +8,21 @@ on:
   workflow_dispatch:
 
 jobs:
+  nix-flake-update:
+    name: Nix Flake Update
+    uses: ./.github/workflows/_nix-flake-update.yml
+
   lint:
     name: Lint
     uses: ./.github/workflows/_lint.yml
-
-      - name: Set up Python 3
-        uses: actions/setup-python@e797f83bcb11b83ae66e0230d6156d7c80228e7c # v6
-        with:
-          python-version: "3.x"
-
-      - name: Install test dependencies
-        run: pip3 install -r requirements.txt
-
-      - name: Run yamllint
-        run: |
-          yamllint src/profi/templates
+    needs: nix-flake-update
 
   test:
     name: Pytest
     uses: ./.github/workflows/_pytest.yml
+    needs: lint
 
   install:
     name: Install
     uses: ./.github/workflows/_install.yml
+    needs: pytest
