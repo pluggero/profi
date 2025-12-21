@@ -6,4 +6,4 @@ metadata:
   author: "Unknown"
 
 content: |
-  <%=$(uuid)%>
+  uuid

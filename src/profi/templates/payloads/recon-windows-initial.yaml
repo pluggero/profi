@@ -24,7 +24,7 @@ content: |
   $commandsAndPurposes.Add("Network Interfaces", "ipconfig /all");
   $commandsAndPurposes.Add("Routes", "route print");
   $commandsAndPurposes.Add("Currently Active Connections", "netstat -ano");
-  $commandsAndPurposes.Add("Common User Files", "<%=$(esh payloads/recon-windows-common-user-files)%>");
+  $commandsAndPurposes.Add("Common User Files", "{{ include('payloads/recon-windows-common-user-files.yaml') }}");
   $commandsAndPurposes.Add("User PSReadline History", "type $PSReadlineHistorySavePath");
 
   # Adding the command for running processes as a script block

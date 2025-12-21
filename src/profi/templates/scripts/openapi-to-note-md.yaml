@@ -6,4 +6,4 @@ metadata:
   author: "Unknown"
 
 content: |
-  python <%=$(esh variables/templates_dir)%>/helper_scripts/openapiEndpointsToNote.py
+  python {{ templates_dir }}/helper_scripts/openapiEndpointsToNote.py

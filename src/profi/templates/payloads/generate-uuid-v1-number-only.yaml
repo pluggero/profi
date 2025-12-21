@@ -6,4 +6,4 @@ metadata:
   author: "Unknown"
 
 content: |
-  <%=$(uuid | tr -d 'a-zA-Z-')%>
+  uuid | tr -d 'a-zA-Z-'

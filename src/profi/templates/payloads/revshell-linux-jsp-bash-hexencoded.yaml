@@ -6,4 +6,4 @@ metadata:
   author: "Unknown"
 
 content: |
-  <% echo $(esh payloads/revshell-linux-jsp-bash) | python helper_scripts/encode.py --hex %>
+  {{ include('payloads/revshell-linux-jsp-bash.yaml') | hex_encode }}

@@ -9,6 +9,8 @@ from typing import List
 import click
 import yaml
 
+from .renderer import render_template
+
 
 @dataclass
 class Metadata:
@@ -234,42 +236,32 @@ def get_available_templates(template_dir: str, clean: bool = False) -> list[str]
     return templates
 
 
-def print_debug_info(template_name: str, raw_content: str, esh_output: str, esh_errors: str, final_output: str):
+def print_debug_info(debug_info: dict):
     """
-    Display debug information showing the processing steps.
+    Display debug information showing the rendering process.
     """
     click.echo("=" * 50)
     click.echo("DEBUG MODE")
     click.echo("=" * 50)
-    click.echo(f"Template: {template_name}")
+    click.echo(f"Template: {debug_info['template_path']}")
     click.echo()
-    
-    click.echo("Raw Content:")
+
+    click.echo("Raw Template:")
     click.echo("-" * 20)
-    click.echo(raw_content)
+    click.echo(debug_info['raw_template'])
     click.echo()
-    
-    click.echo("ESH Output:")
-    click.echo("-" * 20)
-    click.echo(esh_output)
-    click.echo()
-    
-    if esh_errors.strip():
-        click.echo("ESH Errors/Warnings:")
-        click.echo("-" * 30)
-        click.echo(esh_errors, err=True)
-        click.echo()
-    
-    click.echo("Final Output:")
-    click.echo("-" * 20)
-    click.echo(final_output)
-    click.echo()
-    
-    click.echo("Environment Variables (OP_*):")
+
+    click.echo("Template Context (Variables):")
     click.echo("-" * 30)
-    op_vars = {k: v for k, v in os.environ.items() if k.startswith("OP_")}
-    for key, value in sorted(op_vars.items()):
+    for key, value in sorted(debug_info['context'].items()):
         click.echo(f"{key}={value}")
+    click.echo()
+
+    click.echo("Rendered Output:")
+    click.echo("-" * 20)
+    click.echo(debug_info['rendered_output'])
+    click.echo()
+
     click.echo("=" * 50)
 
 
@@ -340,49 +332,36 @@ def main(template: str, debug: bool):
         # User didn't pick anything
         sys.exit(0)
 
-    # Build up the pipeline: esh -> perl -> copy_command
-    # We can do each step separately to avoid shell piping
+    # Render template using Jinja2
     copy_command = config["copy_command"].split()
     try:
-        # 0) extract payload from yaml
-        payload = parse_payload(f"{str(Path(templates_dir))}/{selected_file}")
-
-        # 1) Run esh
-        esh_result = subprocess.run(
-            ["esh", "-"],  # "-" prompts esh to read from stdin instead
-            input=payload,  # Pass the payload content directly to esh
-            capture_output=True,
-            text=True,
-            check=True,
-            cwd=Path(templates_dir),
-        )
-
-        # 2) Run perl
-        perl_result = subprocess.run(
-            ["perl", "-pe", "chomp if eof"],
-            input=esh_result.stdout,
-            capture_output=True,
-            text=True,
-            check=True,
+        # Render the template
+        rendered_output, debug_info = render_template(
+            selected_file,
+            Path(templates_dir),
+            config,
+            debug=debug
         )
 
         # Show debug information if requested
         if debug:
-            print_debug_info(selected_file, payload, esh_result.stdout, esh_result.stderr, perl_result.stdout)
-
-        # 3) Run copy command (skip if debug mode to avoid clipboard pollution)
-        if not debug:
-            subprocess.run(copy_command, input=perl_result.stdout, text=True, check=True)
-        else:
+            print_debug_info(debug_info)
             click.echo("\n[Debug mode: Output not copied to clipboard]")
+        else:
+            # Copy to clipboard
+            subprocess.run(copy_command, input=rendered_output, text=True, check=True)
+
     except FileNotFoundError as fnf:
         click.echo(f"Error: required command not found -> {fnf}", err=True)
         sys.exit(1)
     except subprocess.CalledProcessError as cpe:
         click.echo(f"Error running command: {cpe}", err=True)
-        if debug and 'esh_result' in locals() and hasattr(locals()['esh_result'], 'stderr'):
-            click.echo("\nESH stderr output:", err=True)
-            click.echo(locals()['esh_result'].stderr, err=True)
+        sys.exit(1)
+    except Exception as e:
+        click.echo(f"Error rendering template: {e}", err=True)
+        if debug:
+            import traceback
+            traceback.print_exc()
         sys.exit(1)
 
 

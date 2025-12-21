@@ -6,4 +6,4 @@ metadata:
   author: "Unknown"
 
 content: |
-  nc -lvnp <%=$(esh variables/shell_port)%>
+  nc -lvnp {{ shell_port }}

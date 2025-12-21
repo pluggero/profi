@@ -6,4 +6,4 @@ metadata:
   author: "Unknown"
 
 content: |
-  export PS1='[BASH][\u@\h \w]-[\D{%F %T}]\n\$ '
+  {% raw %}export PS1='[BASH][\u@\h \w]-[\D{%F %T}]\n\$ '{% endraw %}

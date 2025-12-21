@@ -1,18 +1,17 @@
---- 
-name: "Flake.lock: update Nix dependencies"
+---
+name: Nix Flake Update
 
 on:
-  workflow_dispatch: # allows manual triggering
-  schedule:
-    - cron: '0 0 * * 0' # runs weekly on Sunday at 00:00
+  workflow_call:
+
+permissions:
+  contents: write
+  id-token: write
+  issues: write
+  pull-requests: write
 
 jobs:
   nix-flake-update:
-    permissions:
-      contents: write
-      id-token: write
-      issues: write
-      pull-requests: write
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6
@@ -22,6 +21,6 @@ jobs:
           pr-title: "Update Nix flake inputs"
           pr-assignees: Cserny
           pr-reviewers: Cserny
-          pr-labels: |                  
+          pr-labels: |
             dependencies
             automated

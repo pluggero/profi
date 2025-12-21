@@ -6,4 +6,4 @@ metadata:
   author: "Unknown"
 
 content: |
-  <%=$(echo "$(random)$(random)")%>
+  echo "$(random)$(random)"

