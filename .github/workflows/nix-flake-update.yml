@@ -2,13 +2,16 @@
 name: Nix Flake Update
 
 on:
-  workflow_call:
+  schedule:
+    # Run every Sunday at 1 AM UTC
+    - cron: "0 1 * * 0"
+  workflow_dispatch:
 
 permissions:
   contents: write
-  id-token: write
   issues: write
   pull-requests: write
+  id-token: write
 
 jobs:
   nix-flake-update:
