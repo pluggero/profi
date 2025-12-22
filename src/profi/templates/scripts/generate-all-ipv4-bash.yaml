@@ -1,0 +1,13 @@
+---
+metadata:
+  filename: "generate-all-ipv4-bash.yaml"
+  tags: ["utils"]
+  created: "2025-07-16"
+  author: "@Anakles"
+
+content: |
+  for a in {1..255};do
+    for b in {1..255};do
+        echo "192.168.$a.$b" >> ips.txt
+    done
+  done
