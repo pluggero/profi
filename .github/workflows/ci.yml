@@ -10,14 +10,16 @@ on:
 jobs:
   nix-flake-update:
     name: Nix Flake Update
+    if: github.event_name == 'schedule'
     uses: ./.github/workflows/_nix-flake-update.yml
 
   lint:
     name: Lint
     uses: ./.github/workflows/_lint.yml
     needs: nix-flake-update
+    if: always() && !cancelled()
 
-  test:
+  pytest:
     name: Pytest
     uses: ./.github/workflows/_pytest.yml
     needs: lint
