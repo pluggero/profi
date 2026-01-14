@@ -172,6 +172,7 @@
                 python
                 pyyaml
                 click
+                jinja2
               ];
 
               preFixup =
