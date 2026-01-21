@@ -1,0 +1,9 @@
+---
+metadata:
+  filename: "hashcat-bcrypt.yaml"
+  tags: ["cracking"]
+  created: "2025-07-08"
+  author: "@Anakles"
+
+content: |
+  hashcat -m 3200 <hashes-files> /usr/share/wordlists/fasttrack.txt
