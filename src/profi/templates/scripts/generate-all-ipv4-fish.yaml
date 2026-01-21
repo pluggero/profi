@@ -1,0 +1,13 @@
+---
+metadata:
+  filename: "generate-all-ipv4-fish.yaml"
+  tags: ["utils"]
+  created: "2025-07-16"
+  author: "@Anakles"
+
+content: |
+  for a in (seq 1 255)
+    for b in (seq 1 255)
+        echo "192.168.$a.$b" >> ips.txt
+    end
+  end
