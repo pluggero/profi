@@ -3,7 +3,7 @@ metadata:
   filename: "generate-wordlist-nmap-top-ports.yaml"
   tags: ["wordlist"]
   created: "2025-04-03"
-  author: "PluggeRo"
+  authors: ["PluggeRo"]
 
 content: |
   read --prompt-str "Top X ports:" PORT_AMOUNT; \

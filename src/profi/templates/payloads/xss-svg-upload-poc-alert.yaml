@@ -3,7 +3,7 @@ metadata:
   filename: "xss-svg-upload-poc-alert.yaml"
   tags: ["web", "xss"]
   created: "2025-03-29"
-  author: "@anakles"
+  authors: ["@anakles"]
 
 content: |
   <?xml version="1.0" standalone="no"?>

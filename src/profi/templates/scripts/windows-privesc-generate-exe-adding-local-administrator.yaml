@@ -3,7 +3,7 @@ metadata:
   filename: "windows-privesc-generate-exe-adding-local-administrator.yaml"
   tags: ["windows", "privesc"]
   created: "2025-03-29"
-  author: "Unknown"
+  authors: ["Unknown"]
 
 content: |
   mkdir -p packstation/outbound; echo '{{ include('source_code/create-new-local-administrator.c') }}' > packstation/outbound/create-new-local-administrator.c; x86_64-w64-mingw32-gcc packstation/outbound/create-new-local-administrator.c -o packstation/outbound/create-new-local-administrator.exe; \

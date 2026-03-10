@@ -3,7 +3,7 @@ metadata:
   filename: "prompt-prettify-uncolored-windows-powershell.yaml"
   tags: ["windows"]
   created: "2025-03-29"
-  author: "Unknown"
+  authors: ["Unknown"]
 
 content: |
   function Prompt {

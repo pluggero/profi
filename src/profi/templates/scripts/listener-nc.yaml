@@ -3,7 +3,7 @@ metadata:
   filename: "listener-nc.yaml"
   tags: ["shell"]
   created: "2025-03-29"
-  author: "Unknown"
+  authors: ["Unknown"]
 
 content: |
   nc -lvnp {{ shell_port }}

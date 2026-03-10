@@ -3,7 +3,7 @@ metadata:
   filename: "stabilize-shell-python.yaml"
   tags: ["shell", "linux"]
   created: "2025-03-29"
-  author: "@anakles"
+  authors: ["@anakles"]
 
 content: |
   echo '================================================================'; \

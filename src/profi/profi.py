@@ -17,7 +17,7 @@ class Metadata:
     filename: str
     tags: List[str]
     created: str
-    author: str
+    authors: List[str]
 
 
 DEFAULT_CONFIG = {
@@ -116,13 +116,13 @@ def parse_metadata(file_path: Path) -> Metadata:
             filename=metadata.get("filename", "unknown.yaml"),  # Default filename
             tags=metadata.get("tags", []),  # Default empty list if tags are missing
             created=metadata.get("created", "Unknown Date"),  # Default date string
-            author=metadata.get("author", "Unknown"),  # Default author name
+            authors=metadata.get("authors", ["Unknown"]),  # Default authors list
         )
 
     except (FileNotFoundError, yaml.YAMLError) as e:
         print(f"Error reading {file_path}: {e}")
         return Metadata(
-            "unknown.yaml", [], "Unknown Date", "Unknown"
+            "unknown.yaml", [], "Unknown Date", ["Unknown"]
         )  # Fallback values
 
 

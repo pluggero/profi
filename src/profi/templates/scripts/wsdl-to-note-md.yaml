@@ -3,7 +3,7 @@ metadata:
   filename: "wsdl-to-note-md.yaml"
   tags: ["utils"]
   created: "2025-03-29"
-  author: "Unknown"
+  authors: ["Unknown"]
 
 content: |
   python {{ templates_dir }}/helper_scripts/wsdlEndpointsToNote.py

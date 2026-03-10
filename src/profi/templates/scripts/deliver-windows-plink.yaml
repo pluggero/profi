@@ -3,7 +3,7 @@ metadata:
   filename: "deliver-windows-plink.yaml"
   tags: ["windows", "proxy"]
   created: "2025-03-29"
-  author: "Unknown"
+  authors: ["Unknown"]
 
 content: |
   mkdir -p packstation/outbound; cp -n /usr/share/windows-resources/binaries/plink.exe packstation/outbound; \

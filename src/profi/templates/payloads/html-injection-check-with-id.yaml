@@ -3,7 +3,7 @@ metadata:
   filename: "html-injection-check-with-id.yaml"
   tags: ["web", "xss"]
   created: "2025-06-12"
-  author: "pluggero"
+  authors: ["pluggero"]
 
 content: |
   "'><s id=1337>CanYouSeeMe</s>

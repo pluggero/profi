@@ -3,7 +3,7 @@ metadata:
   filename: "deliver-linux-unix-privesc-check.yaml"
   tags: ["linux", "privesc"]
   created: "2025-03-29"
-  author: "Unknown"
+  authors: ["Unknown"]
 
 content: |
   mkdir -p packstation/outbound; cp -n /usr/bin/unix-privesc-check packstation/outbound; \
