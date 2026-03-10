@@ -3,7 +3,7 @@ metadata:
   filename: "jwttool-post-request.yaml"
   tags: ["web", "api"]
   created: "2025-03-29"
-  author: "@anakles"
+  authors: ["@anakles"]
 
 content: |
   mkdir -p jwttool; python3 jwt_tool.py -M at \

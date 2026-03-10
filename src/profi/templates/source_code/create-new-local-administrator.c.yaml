@@ -3,7 +3,7 @@ metadata:
   filename: "create-new-local-administrator.c.yaml"
   tags: ["windows", "privesc"]
   created: "2025-03-29"
-  author: "Unknown"
+  authors: ["Unknown"]
 
 content: |
   #include <stdlib.h>

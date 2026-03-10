@@ -3,7 +3,7 @@ metadata:
   filename: "capture-http-ssrf-out-of-band-responses-including-headers.yaml"
   tags: ["web"]
   created: "2025-04-10"
-  author: "Unknown"
+  authors: ["Unknown"]
 
 content: |
   mkdir -p packstation/outbound; \

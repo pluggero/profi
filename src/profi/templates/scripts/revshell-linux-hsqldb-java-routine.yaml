@@ -3,7 +3,7 @@ metadata:
   filename: "revshell-linux-hsqldb-java-routine.yaml"
   tags: ["shell"]
   created: "2025-03-29"
-  author: "Unknown"
+  authors: ["Unknown"]
 
 content: |
   echo "1. Create Java Routine function that creates a file on the system:

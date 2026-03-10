@@ -3,7 +3,7 @@ metadata:
   filename: "deliver-windows-pingcastle.yaml"
   tags: ["windows", "privesc", "domain"]
   created: "2025-04-02"
-  author: "@anakles"
+  authors: ["@anakles"]
   updated: "2026-02-16"
 
 content: |
