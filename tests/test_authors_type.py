@@ -18,7 +18,7 @@ def test_authors_is_list():
         authors = metadata.get("authors")
 
         # Check if authors field exists and is a list
-        if authors is not None and not isinstance(authors, list):
+        if authors is None or (authors is not None and not isinstance(authors, list)):
             errors[filepath.name] = f"authors has type {type(authors).__name__}, expected list"
 
     assert not errors, f"Templates with incorrect authors type: {errors}"
