@@ -281,7 +281,12 @@ def post_install_sysinternals(dep: Dependency, dest_dir: Path):
 
 
 def post_install_chisel(dep: Dependency, dest_dir: Path):
+    unzip_files(dest_dir, create_subfolder=False)
     gunzip_files(dest_dir)
+    # Rename Linux binary to version-independent name
+    linux_binary = dest_dir / f"chisel_{dep.version}_linux_amd64"
+    if linux_binary.exists():
+        linux_binary.rename(dest_dir / "chisel_linux_amd64")
 
 
 def post_install_ligolo(dep: Dependency, dest_dir: Path):
@@ -399,9 +404,9 @@ DEPENDENCIES = [
     ),
     Dependency(
         name="chisel",
-        version="1.10.1",
+        version="1.11.5",
         urls=[
-            "https://github.com/jpillora/chisel/releases/download/v{version}/chisel_{version}_windows_amd64.gz",
+            "https://github.com/jpillora/chisel/releases/download/v{version}/chisel_{version}_windows_amd64.zip",
             "https://github.com/jpillora/chisel/releases/download/v{version}/chisel_{version}_linux_amd64.gz",
         ],
         directory=Path("chisel"),
