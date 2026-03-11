@@ -1,0 +1,14 @@
+---
+metadata:
+  filename: "deliver-windows-powershell-shcode_runner.yaml"
+  tags: ["shell", "windows"]
+  created: "2026-03-11"
+  authors: ["@s3mme"]
+
+content: |
+  mkdir -p packstation/outbound; echo 'Creating run.ps1. Please wait...'; \
+  cat <<'EOF' > packstation/outbound/run.ps1
+  {{ include('scripts/pwsh-shcode_run-staged.yaml') }}
+  EOF
+  echo '================================================================'; \
+  python {{ templates_dir }}/helper_scripts/startEnhancedHttpServer.py -p {{ delivery_outbound_port }} -d packstation/outbound {{ delivery_dir_listing_flag }}
