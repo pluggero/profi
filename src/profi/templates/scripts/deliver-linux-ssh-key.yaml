@@ -13,4 +13,4 @@ content: |
   echo 'Deliver (with credentials): ssh-copy-id -i ~/.ssh/id69_rsa <user>@<remote_ip>'
   echo 'Connect to box: ssh -i ~/.ssh/id69_rsa <user>@<remote_ip>'
   echo '================================================================'; \
-  python {{ templates_dir }}/helper_scripts/startEnhancedHttpServer.py -p {{ delivery_outbound_port }} -d packstation/outbound
+  python {{ templates_dir }}/helper_scripts/startEnhancedHttpServer.py -p {{ delivery_outbound_port }} -d packstation/outbound {{ delivery_dir_listing_flag }}
