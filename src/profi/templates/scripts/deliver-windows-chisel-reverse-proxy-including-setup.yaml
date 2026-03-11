@@ -6,7 +6,7 @@ metadata:
   authors: ["Unknown"]
 
 content: |
-  mkdir -p packstation/outbound; gunzip -c {{ tools_dir }}/chisel/chisel_windows_amd64.gz > packstation/outbound/chisel.exe; gunzip -c {{ tools_dir }}/chisel/chisel_linux_amd64.gz > chisel; chmod +x chisel; \
+  mkdir -p packstation/outbound; cp {{ tools_dir }}/chisel/chisel.exe packstation/outbound/chisel.exe; cp {{ tools_dir }}/chisel/chisel_linux_amd64 chisel; chmod +x chisel; \
 
   echo "Answer the following with a target ip and port. Appropriate commands will be printed."; \
   read --prompt-str "Target IP:" target; \
