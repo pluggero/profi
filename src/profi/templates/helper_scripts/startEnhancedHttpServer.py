@@ -4,7 +4,7 @@ import os
 
 class EnhancedRequestHandler(SimpleHTTPRequestHandler):
     show_headers = False
-    allow_listing = True
+    allow_listing = False
 
     def do_GET(self):
         print("=" * 32)
