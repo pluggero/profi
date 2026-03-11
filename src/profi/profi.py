@@ -17,12 +17,12 @@ class Metadata:
     filename: str
     tags: List[str]
     created: str
-    author: str
+    authors: List[str]
 
 
 DEFAULT_CONFIG = {
     "tools_dir": "~/.local/share/profi/tools",
-    "templates_dir": str(importlib.resources.files("profi") / "templates"),
+    "templates_dir": "@package/templates",
     "copy_command": "xclip -sel clip",
     "settings": {
         "attacker_interface": "tun0",
@@ -84,6 +84,10 @@ def load_config() -> dict:
     with config_file_path.open("r", encoding="utf-8") as file:
         config = yaml.safe_load(file)
 
+    # Resolve the templates_dir if it's the sentinel value
+    if config.get("templates_dir") == "@package/templates":
+        config["templates_dir"] = str(importlib.resources.files("profi") / "templates")
+
     # Set environment variables from the loaded configuration with 'OP_' prefix and uppercase names
     for key, value in config["settings"].items():
         if value is not None:
@@ -112,13 +116,13 @@ def parse_metadata(file_path: Path) -> Metadata:
             filename=metadata.get("filename", "unknown.yaml"),  # Default filename
             tags=metadata.get("tags", []),  # Default empty list if tags are missing
             created=metadata.get("created", "Unknown Date"),  # Default date string
-            author=metadata.get("author", "Unknown"),  # Default author name
+            authors=metadata.get("authors", ["Unknown"]),  # Default authors list
         )
 
     except (FileNotFoundError, yaml.YAMLError) as e:
         print(f"Error reading {file_path}: {e}")
         return Metadata(
-            "unknown.yaml", [], "Unknown Date", "Unknown"
+            "unknown.yaml", [], "Unknown Date", ["Unknown"]
         )  # Fallback values
 
 
@@ -248,40 +252,82 @@ def print_debug_info(debug_info: dict):
 
     click.echo("Raw Template:")
     click.echo("-" * 20)
-    click.echo(debug_info['raw_template'])
+    click.echo(debug_info["raw_template"])
     click.echo()
 
     click.echo("Template Context (Variables):")
     click.echo("-" * 30)
-    for key, value in sorted(debug_info['context'].items()):
+    for key, value in sorted(debug_info["context"].items()):
         click.echo(f"{key}={value}")
     click.echo()
 
     click.echo("Rendered Output:")
     click.echo("-" * 20)
-    click.echo(debug_info['rendered_output'])
+    click.echo(debug_info["rendered_output"])
     click.echo()
 
     click.echo("=" * 50)
 
 
-@click.command()
+def validate_template(ctx, param, value):
+    """Validate that the provided template exists in available templates."""
+    if value is None:
+        return None
+
+    config = load_config()
+    templates_dir = os.path.expanduser(config["templates_dir"])
+    available = get_available_templates(templates_dir, True)
+
+    if value not in available:
+        raise click.BadParameter(
+            f"Invalid template '{value}'. Use 'profi --help' to see available templates."
+        )
+    return value
+
+
+class ProfiCommand(click.Command):
+    """Custom command class that shows available templates in help text."""
+
+    def format_help(self, ctx, formatter):
+        """Format help text with available templates."""
+        # First render the standard help
+        super().format_help(ctx, formatter)
+
+        # Add available templates section
+        try:
+            config = load_config()
+            templates_dir = os.path.expanduser(config["templates_dir"])
+            available = get_available_templates(templates_dir, True)
+
+            if available:
+                with formatter.section("Available Templates"):
+                    formatter.write_text(
+                        f"{len(available)} templates found. Use --list-templates to see all."
+                    )
+        except Exception:
+            # If template loading fails, just skip this section
+            pass
+
+
+@click.command(cls=ProfiCommand)
 @click.option(
     "-t",
     "--template",
+    metavar="TEMPLATE_NAME",
     help="The template to be executed, skipping rofi",
-    type=click.Choice(
-        get_available_templates(
-            os.path.expanduser(load_config()["templates_dir"]), True
-        )
-    ),
+    callback=validate_template,
+)
+@click.option(
+    "--list-templates",
+    is_flag=True,
+    help="List all available templates (one per line) and exit",
 )
 @click.option(
     "--debug",
     is_flag=True,
     help="Show debug information including esh processing steps",
 )
-def main(template: str, debug: bool):
+def main(template: str, list_templates: bool, debug: bool):
     """
     Command-line entry point for profi.
     Uses a pre-selected template if provided, otherwise prompts via rofi.
@@ -294,6 +340,14 @@ def main(template: str, debug: bool):
     # Change directory to templates
     templates_dir = os.path.expanduser(config["templates_dir"])
     os.environ["OP_TEMPLATES_DIR"] = templates_dir
+
+    # Handle --list-templates flag
+    if list_templates:
+        available = get_available_templates(templates_dir, True)
+        for template_name in sorted(available):
+            click.echo(template_name)
+        sys.exit(0)
+
     available_templates = get_available_templates(templates_dir)
 
     if template:
@@ -337,10 +391,7 @@ def main(template: str, debug: bool):
     try:
         # Render the template
         rendered_output, debug_info = render_template(
-            selected_file,
-            Path(templates_dir),
-            config,
-            debug=debug
+            selected_file, Path(templates_dir), config, debug=debug
         )
 
         # Show debug information if requested
@@ -361,6 +412,7 @@ def main(template: str, debug: bool):
         click.echo(f"Error rendering template: {e}", err=True)
         if debug:
             import traceback
+
             traceback.print_exc()
         sys.exit(1)
 

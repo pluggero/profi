@@ -3,7 +3,7 @@ metadata:
   filename: "generate-random-number.yaml"
   tags: ["utils"]
   created: "2025-03-29"
-  author: "Unknown"
+  authors: ["Unknown"]
 
 content: |
   echo "$(random)$(random)"

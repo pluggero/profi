@@ -3,7 +3,7 @@ metadata:
   filename: "nmap-initial-udp-top1000.yaml"
   tags: ["system"]
   created: "2025-03-29"
-  author: "Unknown"
+  authors: ["Unknown"]
 
 content: |
   mkdir -p nmap; sudo nmap -v -sU -sCV -Pn -oA nmap/initial-udp-top1000 -T4 --traceroute -O --max-retries 3 $IP; sudo chown -R $(whoami):$(whoami) nmap

@@ -3,7 +3,7 @@ metadata:
   filename: "recon-windows-initial.yaml"
   tags: ["windows", "domain"]
   created: "2025-03-29"
-  author: "Unknown"
+  authors: ["Unknown"]
 
 content: |
   $commandsAndPurposes = New-Object 'system.collections.generic.dictionary[string,string]';

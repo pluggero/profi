@@ -3,7 +3,7 @@ metadata:
   filename: "special-characters.yaml"
   tags: ["wordlist"]
   created: "2025-03-29"
-  author: "Unknown"
+  authors: ["Unknown"]
 
 content: |
   !"§$%&/|\()=?`´+*#'<>[]{},;.:-_

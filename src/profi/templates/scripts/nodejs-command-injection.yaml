@@ -3,7 +3,7 @@ metadata:
   filename: "nodejs-command-injection.yaml"
   tags: ["web"]
   created: "2025-03-29"
-  author: "@anakles"
+  authors: ["@anakles"]
 
 content: |
   mkdir -p packstation/outbound; \

@@ -3,7 +3,7 @@ metadata:
   filename: "deliver-windows-powerview.ps1.yaml"
   tags: ["windows", "domain"]
   created: "2025-03-29"
-  author: "Unknown"
+  authors: ["Unknown"]
 
 content: |
   mkdir -p packstation/outbound; cp -n /usr/share/powershell-empire/empire/server/data/module_source/situational_awareness/network/powerview.ps1 packstation/outbound; \

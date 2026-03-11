@@ -3,7 +3,7 @@ metadata:
   filename: "webdav-initial.yaml"
   tags: ["web"]
   created: "2025-03-29"
-  author: "Unknown"
+  authors: ["Unknown"]
 
 content: |
   mkdir -p webdav ;\

@@ -338,7 +338,7 @@ def post_install_pingcastle(dep: Dependency, dest_dir: Path):
 DEPENDENCIES = [
     Dependency(
         name="sharphound",
-        version="2.8.1",
+        version="2.10.0",
         urls=[
             "https://github.com/SpecterOps/SharpHound/releases/download/v{version}/SharpHound_v{version}_windows_x86.zip"
         ],
@@ -382,7 +382,7 @@ DEPENDENCIES = [
     ),
     Dependency(
         name="linpeas",
-        version="20251215-2904ebf1",
+        version="20260308-8a13be4d",
         urls=[
             "https://github.com/peass-ng/PEASS-ng/releases/download/{version}/linpeas.sh",
         ],
@@ -390,7 +390,7 @@ DEPENDENCIES = [
     ),
     Dependency(
         name="winpeas",
-        version="20251215-2904ebf1",
+        version="20260308-8a13be4d",
         urls=[
             "https://github.com/peass-ng/PEASS-ng/releases/download/{version}/winPEAS.bat",
             "https://github.com/peass-ng/PEASS-ng/releases/download/{version}/winPEASx64.exe",
@@ -409,7 +409,7 @@ DEPENDENCIES = [
     ),
     Dependency(
         name="ligolo-ng",
-        version="0.8.2",
+        version="0.8.3",
         urls=[
             "https://github.com/nicocha30/ligolo-ng/releases/download/v{version}/ligolo-ng_agent_{version}_windows_amd64.zip",
             "https://github.com/nicocha30/ligolo-ng/releases/download/v{version}/ligolo-ng_proxy_{version}_linux_amd64.tar.gz",
@@ -462,7 +462,7 @@ DEPENDENCIES = [
     ),
     Dependency(
         name="pingcastle",
-        version="3.4.2.66",
+        version="3.5.0.44",
         urls=[
             "https://github.com/netwrix/pingcastle/releases/download/{version}/PingCastle_{version}.zip",
         ],
