@@ -1,0 +1,9 @@
+---
+metadata:
+  filename: "generate-ipv4-addresses.yaml"
+  tags: ["utils"]
+  created: "2026-03-11"
+  authors: ["@Anakles", "TIVKU"]
+
+content: |
+  python3 -c 'import ipaddress; print(*ipaddress.ip_network("192.168.1.0/24").hosts(), sep="\n")'
