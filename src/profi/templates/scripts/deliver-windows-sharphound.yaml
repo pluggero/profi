@@ -6,7 +6,7 @@ metadata:
   authors: ["Unknown"]
 
 content: |
-  mkdir -p packstation/outbound; cp -n {{ tools_dir }}/bloodhound/* packstation/outbound; \
+  mkdir -p packstation/outbound; bash -c 'cp -n {{ tools_dir }}/bloodhound/* packstation/outbound'; \
   echo '================================================================'; \
   echo '                      -----PowerShell-----                      '; \
   echo 'Preparation (for Save on disk only): powershell -ep bypass'; \
