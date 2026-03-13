@@ -6,6 +6,7 @@ PROJECT_ROOT = Path(__file__).resolve().parent.parent
 TEMPLATES_DIR = PROJECT_ROOT / "src" / "profi" / "templates"
 AVAILABLE_TAGS = {
     "api",
+    "c2",
     "cracking",
     "domain",
     "linux",

