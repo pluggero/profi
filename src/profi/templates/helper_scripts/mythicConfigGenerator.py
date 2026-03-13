@@ -127,7 +127,7 @@ def generate_config(args):
         "build_parameters": build_parameters,
         "commands": commands,
         "selected_os": args.selected_os,
-        "filename": args.filename if args.filename else f"{args.payload_type}-payload.bin",
+        "filename": args.filename if args.filename else f"{args.payload_type}-http-payload.bin",
         "wrapped_payload": ""
     }
 

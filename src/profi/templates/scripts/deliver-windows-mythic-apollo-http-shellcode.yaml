@@ -1,6 +1,6 @@
 ---
 metadata:
-  filename: "deliver-windows-mythic-apollo-shellcode.yaml"
+  filename: "deliver-windows-mythic-apollo-http-shellcode.yaml"
   tags: ["windows", "c2"]
   created: "2026-03-13"
   authors: ["TIVKU"]
