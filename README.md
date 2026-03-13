@@ -31,6 +31,7 @@ We currently support these tags:
 | <span color='tomato'>utils</span>      | For templates that run utility scripts                                                                                                     |
 | <span color='tan'>enum</span>          | For templates that help you to enumerate targets                                                                                           |
 | <span color='plum'>xss</span>          | For templates that help you to exploit xss vulnerabilities                                                                                 |
+| <span color='olive'>c2</span>          | For templates that set up or interact with a C2 framework                                                                                  |
 
 Some information on how tags are used:
 
@@ -121,7 +122,7 @@ metadata:
   filename: "example.yaml"
   tags: ["available_tags"]
   created: "2025-03-29"
-  author: "Your Name"
+  authors: ["Your Name"]
 
 content: |
   Your payload with {{ variables }}

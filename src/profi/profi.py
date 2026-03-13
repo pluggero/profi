@@ -35,6 +35,16 @@ DEFAULT_CONFIG = {
         "proxy_port": "8087",
         "shell_port": "4444",
         "webdav_port": "80",
+        "c2_settings": {
+            "mythic_url": "https://127.0.0.1:7443",
+            "mythic_api_token": "your-api-token-here",
+            "mythic_callback_url": "http://127.0.0.1",
+            "mythic_callback_port": "80",
+            "mythic_callback_interval": "5",
+            "mythic_callback_jitter": "23",
+            "mythic_killdate": "2027-12-31",
+            "mythic_payload_commands": ["all"],
+        },
     },
     "colors": {
         "web": "cyan",
@@ -52,6 +62,7 @@ DEFAULT_CONFIG = {
         "utils": "tomato",
         "enum": "tan",
         "xss": "plum",
+        "c2": "olive",
     },
 }
 
@@ -92,7 +103,19 @@ def load_config() -> dict:
     # Set environment variables from the loaded configuration with 'OP_' prefix and uppercase names
     for key, value in config["settings"].items():
         if value is not None:
-            os.environ[f"OP_{key.upper()}"] = str(value)
+            # Handle nested dictionaries (like c2_settings)
+            if isinstance(value, dict):
+                for nested_key, nested_value in value.items():
+                    if nested_value is not None:
+                        # Convert lists to comma-separated strings for environment variables
+                        if isinstance(nested_value, list):
+                            os.environ[f"OP_{nested_key.upper()}"] = ",".join(
+                                str(v) for v in nested_value
+                            )
+                        else:
+                            os.environ[f"OP_{nested_key.upper()}"] = str(nested_value)
+            else:
+                os.environ[f"OP_{key.upper()}"] = str(value)
     for key, value in config["colors"].items():
         if value is not None:
             os.environ[f"OP_COLOR_{key.upper()}"] = str(value)
@@ -341,6 +364,9 @@ def main(template: str, list_templates: bool, debug: bool):
     # Change directory to templates
     templates_dir = os.path.expanduser(config["templates_dir"])
     os.environ["OP_TEMPLATES_DIR"] = templates_dir
+
+    # Set Python executable path for helper scripts
+    os.environ["OP_PYTHON_PATH"] = sys.executable
 
     # Handle --list-templates flag
     if list_templates:
