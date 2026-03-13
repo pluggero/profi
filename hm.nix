@@ -106,6 +106,54 @@ in
               default = defaultSettings.webdav_port;
               description = "Port used for webdav servers";
             };
+            c2_settings = mkOption {
+              type = types.submodule {
+                options = {
+                  mythic_url = mkOption {
+                    type = types.str;
+                    default = "https://127.0.0.1:7443";
+                    description = "Mythic C2 server URL";
+                  };
+                  mythic_api_token = mkOption {
+                    type = types.str;
+                    default = "";
+                    description = "Mythic API authentication token";
+                  };
+                  mythic_callback_url = mkOption {
+                    type = types.str;
+                    default = "http://127.0.0.1";
+                    description = "C2 callback server URL (can differ from mythic_url)";
+                  };
+                  mythic_callback_port = mkOption {
+                    type = types.str;
+                    default = "80";
+                    description = "C2 callback port";
+                  };
+                  mythic_callback_interval = mkOption {
+                    type = types.str;
+                    default = "5";
+                    description = "Callback interval in seconds";
+                  };
+                  mythic_callback_jitter = mkOption {
+                    type = types.str;
+                    default = "23";
+                    description = "Callback jitter percentage";
+                  };
+                  mythic_killdate = mkOption {
+                    type = types.str;
+                    default = "2027-12-31";
+                    description = "Payload kill date in YYYY-MM-DD format";
+                  };
+                  mythic_payload_commands = mkOption {
+                    type = types.listOf types.str;
+                    default = ["all"];
+                    description = "List of commands to include in payload";
+                  };
+                };
+              };
+              default = { };
+              description = "C2 framework settings";
+            };
           };
         };
         default = defaultSettings;
@@ -187,6 +235,11 @@ in
               type = types.str;
               default = "plum";
               description = "Color for xss-related text.";
+            };
+            c2 = mkOption {
+              type = types.str;
+              default = "magenta";
+              description = "Color for c2-related text.";
             };
           };
         };
