@@ -1,12 +1,17 @@
 """Snapshot tests for template outputs to detect regressions."""
 
 import os
+import re
 from pathlib import Path
 
 import pytest
 
 from profi.renderer import render_template
 from tests.utils import get_all_templates
+
+# Matches unrendered Jinja2 variable/expression syntax: {{ identifier... }}
+# Using \w after optional whitespace avoids false positives from code like `{}};`
+_UNRENDERED_JINJA2 = re.compile(r"\{\{\s*\w|\w\s*\}\}")
 
 
 def get_test_config():
@@ -25,6 +30,17 @@ def get_test_config():
     os.environ["OP_TEMPLATES_DIR"] = "/home/user/.local/share/profi/templates"
 
     return {}
+
+
+def _template_params():
+    templates_dir = Path(__file__).parent.parent / "src" / "profi" / "templates"
+    return [
+        pytest.param(str(t.relative_to(templates_dir)), id=str(t.relative_to(templates_dir)))
+        for t in get_all_templates()
+    ]
+
+
+TEMPLATE_PARAMS = _template_params()
 
 
 class TestTemplateOutputs:
@@ -136,6 +152,22 @@ class TestTemplateOutputs:
 
             except Exception as e:
                 pytest.fail(f"Failed to render {template_path}: {e}")
+
+    @pytest.mark.parametrize("rel_path", TEMPLATE_PARAMS)
+    def test_each_template_renders_cleanly(self, rel_path):
+        """Test that each template renders without errors and produces clean output."""
+        templates_dir = Path(__file__).parent.parent / "src" / "profi" / "templates"
+        config = get_test_config()
+
+        rendered, _ = render_template(rel_path, templates_dir, config, debug=False)
+
+        assert rendered is not None
+        assert isinstance(rendered, str)
+        assert len(rendered) > 0, f"Template {rel_path} produced empty output"
+        match = _UNRENDERED_JINJA2.search(rendered)
+        assert match is None, (
+            f"Unrendered Jinja2 syntax in {rel_path}: ...{rendered[max(0, match.start()-10):match.end()+10]}..."
+        )
 
     def test_variable_substitution(self):
         """Test that variables are correctly substituted."""
