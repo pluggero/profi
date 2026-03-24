@@ -343,7 +343,7 @@ def post_install_pingcastle(dep: Dependency, dest_dir: Path):
 DEPENDENCIES = [
     Dependency(
         name="sharphound",
-        version="2.10.0",
+        version="2.11.0",
         urls=[
             "https://github.com/SpecterOps/SharpHound/releases/download/v{version}/SharpHound_v{version}_windows_x86.zip"
         ],
