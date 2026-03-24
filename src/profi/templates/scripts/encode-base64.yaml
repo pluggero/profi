@@ -1,0 +1,9 @@
+---
+metadata:
+  filename: "encode-base64.yaml"
+  tags: ["utils"]
+  created: "2026-03-24"
+  authors: ["TIVKU"]
+
+content: |
+  PYTHONPATH={{ profi_install_dir }} {{ templates_dir }}/helper_scripts/encode.py -t base64
