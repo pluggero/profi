@@ -54,4 +54,13 @@ def compute_dynamic_values(config: Dict[str, Any]) -> Dict[str, str]:
     else:
         context['delivery_dir_listing_flag'] = ''
 
+    # Compute profi installation directory (parent of profi package)
+    # Used for PYTHONPATH in helper scripts that import profi.filters
+    try:
+        import profi
+        context['profi_install_dir'] = os.path.dirname(os.path.dirname(profi.__file__))
+    except (ImportError, AttributeError):
+        # Fallback: if profi not installed, use empty string
+        context['profi_install_dir'] = ''
+
     return context
