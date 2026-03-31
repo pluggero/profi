@@ -6,4 +6,4 @@ metadata:
   authors: ["@benzammour@infosec.exchange"]
 
 content: |
-  echo "Check algorithm of given SSH Key: ssh-keygen -l -f $FILE";
+  printf '%s\n' "Check algorithm of given SSH Key: ssh-keygen -l -f $FILE";

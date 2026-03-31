@@ -7,7 +7,7 @@ metadata:
 
 content: |
   touch ips.txt; \
-  echo "Enumerating over the following ips:"; \
+  printf '%s\n' "Enumerating over the following ips:"; \
   cat ips.txt;
 
   cat ips.txt | while read ip

