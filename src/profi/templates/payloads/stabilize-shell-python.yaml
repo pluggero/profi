@@ -6,14 +6,14 @@ metadata:
   authors: ["@anakles"]
 
 content: |
-  echo '================================================================'; \
-  echo '                      -----On Target-----                      '; \
-  echo "Execute: python3 -c 'import pty;pty.spawn(\"/bin/bash\");'"; \
-  echo 'Then background: Ctrl + Z  '; \
-  echo '================================================================'; \
-  echo '                         -----On Host-----                          '; \
-  echo 'Execute: stty raw -echo; fg   '; \
-  echo '================================================================'; \
-  echo '                         ----On Target----                          '; \
-  echo 'Execute: export TERM=xterm   '; \
-  echo '================================================================';
+  printf '%s\n' '================================================================'; \
+  printf '%s\n' '                      -----On Target-----                      '; \
+  printf '%s\n' "Execute: python3 -c 'import pty;pty.spawn(\"/bin/bash\");'"; \
+  printf '%s\n' 'Then background: Ctrl + Z  '; \
+  printf '%s\n' '================================================================'; \
+  printf '%s\n' '                         -----On Host-----                          '; \
+  printf '%s\n' 'Execute: stty raw -echo; fg   '; \
+  printf '%s\n' '================================================================'; \
+  printf '%s\n' '                         ----On Target----                          '; \
+  printf '%s\n' 'Execute: export TERM=xterm   '; \
+  printf '%s\n' '================================================================';

