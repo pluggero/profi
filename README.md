@@ -175,6 +175,14 @@ content: |
   {% raw %}PS1='\[\033[0m\][\D{%F %T}]\$ '{% endraw %}
 ```
 
+### Add New Templates Locally
+
+To add new templates locally, perform the following steps:
+
+1. Put the template in the appropriate folder in `src/profi/templates`
+2. From the repository root, run `rm -r build` (add `-f` to avoid being prompted for confirmation)
+3. Reinstall with `pip install .` from the repository root. Your new templates should now be available.
+
 ## Contributing
 
 Contributions are what make the open source community such an amazing place to learn, inspire, and create. Any contributions you make are **greatly appreciated**.
