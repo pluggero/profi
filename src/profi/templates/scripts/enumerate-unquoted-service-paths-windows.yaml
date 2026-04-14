@@ -1,0 +1,9 @@
+---
+metadata:
+  filename: "enumerate-unquoted-service-paths-windows.yaml"
+  tags: ["windows", "privesc", "enum"]
+  created: "2026-03-30"
+  authors: ["Unknown"]
+
+content: |
+  Get-CimInstance -ClassName win32_service | Select Name,State,PathName | findstr /i /v "C:\Windows\" | findstr /v '\"'
