@@ -6,4 +6,4 @@ metadata:
   authors: ["Unknown"]
 
 content: |
-  sudo hashcat -m 18200 hashes.asreproast /usr/share/wordlists/rockyou.txt -r /usr/share/hashcat/rules/best64.rule --force
+  sudo hashcat -m 18200 hashes.asreproast /usr/share/wordlists/rockyou.txt -r /usr/share/john/rules/best64.rule --force
