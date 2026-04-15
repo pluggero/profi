@@ -1,9 +1,0 @@
----
-metadata:
-  filename: "powershell-search-common-files.yaml"
-  tags: ["windows"]
-  created: "2026-04-14"
-  authors: ["0x4rdi"]
-
-content: |+
-  Get-ChildItem -Path C:\Users -Include *.txt,*.pdf,*.xls,*.xlsx,*.doc,*.docx,*.kdbx -File -Recurse -ErrorAction SilentlyContinue

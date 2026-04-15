@@ -1,9 +1,0 @@
----
-metadata:
-  filename: "find-file-windows-powershell.yaml"
-  tags: ["utils,windows"]
-  created: "2026-03-27"
-  authors: ["Unknown"]
-
-content: |
-  Get-ChildItem -Path C:\ -Include <file_pattern> -File -Recurse -ErrorAction SilentlyContinue

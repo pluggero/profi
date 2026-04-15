@@ -1,9 +1,0 @@
----
-metadata:
-  filename: "ffuf-dir.yaml"
-  tags: ["web", "api", "enum"]
-  created: "2026-04-10"
-  authors: ["Unknown"]
-
-content: |
-  mkdir -p ffuf; ffuf -w /usr/share/seclists/Discovery/Web-Content/combined_directories.txt -e .php,.zip,.pdf,.html,.txt,.config -c -ic -of csv -o ffuf/ffuf.csv -t 40 -recursion -recursion-depth 5 -u http://<host>:<port>/FUZZ
