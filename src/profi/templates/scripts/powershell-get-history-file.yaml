@@ -1,0 +1,9 @@
+---
+metadata:
+  filename: "powershell-get-history-file.yaml"
+  tags: ["windows"]
+  created: "2026-04-14"
+  authors: ["0x4rdi"]
+
+content: |+
+  (Get-PSReadlineOption).HistorySavePath

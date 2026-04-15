@@ -1,0 +1,9 @@
+---
+metadata:
+  filename: "enumerate-installed-services-windows.yaml"
+  tags: ["windows", "privesc", "enum"]
+  created: "2026-03-30"
+  authors: ["Unknown"]
+
+content: |
+  Get-CimInstance -ClassName win32_service | Select Name,State,PathName
