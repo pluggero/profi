@@ -1,9 +1,0 @@
----
-metadata:
-  filename: "enumerate-installed-default-applications-windows.yaml"
-  tags: ["windows", "privesc", "enum"]
-  created: "2026-03-30"
-  authors: ["Unknown"]
-
-content: |
-  Get-ItemProperty "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\*" | select displayname

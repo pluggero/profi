@@ -1,9 +1,0 @@
----
-metadata:
-  filename: "enumerate-installed-applications-windows.yaml"
-  tags: ["windows", "privesc", "enum"]
-  created: "2026-03-29"
-  authors: ["Unknown"]
-
-content: |
-  Get-ItemProperty "HKLM:\SOFTWARE\Wow6432Node\Microsoft\Windows\CurrentVersion\Uninstall\*" | select displayname
