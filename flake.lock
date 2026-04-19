@@ -134,11 +134,11 @@
     },
     "nixpkgs": {
       "locked": {
-        "lastModified": 1774273680,
-        "narHash": "sha256-a++tZ1RQsDb1I0NHrFwdGuRlR5TORvCEUksM459wKUA=",
+        "lastModified": 1776329215,
+        "narHash": "sha256-a8BYi3mzoJ/AcJP8UldOx8emoPRLeWqALZWu4ZvjPXw=",
         "owner": "nixos",
         "repo": "nixpkgs",
-        "rev": "fdc7b8f7b30fdbedec91b71ed82f36e1637483ed",
+        "rev": "b86751bc4085f48661017fa226dee99fab6c651b",
         "type": "github"
       },
       "original": {
@@ -220,7 +220,7 @@
     "sysinternals": {
       "flake": false,
       "locked": {
-        "narHash": "sha256-jAAfq0S6sd5x3VgcvSoNQ/1m9abu3dH7RyYUgKVwWA8=",
+        "narHash": "sha256-ZgzkllEQ6CyYYDEEw/swL4YRQKH1xMMfJHxvWiuX3+w=",
         "type": "file",
         "url": "https://download.sysinternals.com/files/SysinternalsSuite.zip"
       },
