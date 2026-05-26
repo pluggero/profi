@@ -54,6 +54,15 @@ def compute_dynamic_values(config: Dict[str, Any]) -> Dict[str, str]:
     else:
         context['delivery_dir_listing_flag'] = ''
 
+    # Compute delivery_tls_flag for HTTP server (TLS on by default)
+    outbound_tls = context.get('delivery_outbound_tls', 'True')
+    if str(outbound_tls).lower() in ('true', '1', 'yes'):
+        context['delivery_tls_flag'] = ''
+        context['delivery_outbound_scheme'] = 'https'
+    else:
+        context['delivery_tls_flag'] = '--no-tls'
+        context['delivery_outbound_scheme'] = 'http'
+
     # Compute profi installation directory (parent of profi package)
     # Used for PYTHONPATH in helper scripts that import profi.filters
     try:

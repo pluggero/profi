@@ -34,4 +34,4 @@ content: |
   printf '%s\n' 'Interval: {{ mythic_callback_interval }}s (jitter: {{ mythic_callback_jitter }}%)' && \
   printf '%s\n' '================================================================'; \
   rm -f /tmp/mythic_token_tmp; \
-  python {{ templates_dir }}/helper_scripts/startEnhancedHttpServer.py -p {{ delivery_outbound_port }} -d packstation/outbound {{ delivery_dir_listing_flag }}
+  python {{ templates_dir }}/helper_scripts/startEnhancedHttpServer.py -p {{ delivery_outbound_port }} -d packstation/outbound {{ delivery_dir_listing_flag }} {{ delivery_tls_flag }}
