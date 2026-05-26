@@ -134,8 +134,14 @@ def main(bind, port, directory, show_headers, allow_listing, tls, tls_cert, tls_
     if tls:
         if not tls_cert or not tls_key:
             cert_dir = os.path.dirname(serve_dir) if directory else serve_dir
-            tls_cert, tls_key = generate_self_signed_cert(cert_dir, bind)
-            print(f"Generated self-signed certificate: {tls_cert}")
+            existing_cert = os.path.join(cert_dir, "server.pem")
+            existing_key = os.path.join(cert_dir, "server.key")
+            if os.path.exists(existing_cert) and os.path.exists(existing_key):
+                tls_cert, tls_key = existing_cert, existing_key
+                print(f"Using existing certificate: {tls_cert}")
+            else:
+                tls_cert, tls_key = generate_self_signed_cert(cert_dir, bind)
+                print(f"Generated self-signed certificate: {tls_cert}")
         ctx = ssl.SSLContext(ssl.PROTOCOL_TLS_SERVER)
         ctx.load_cert_chain(certfile=tls_cert, keyfile=tls_key)
         httpd.socket = ctx.wrap_socket(httpd.socket, server_side=True)
