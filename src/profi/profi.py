@@ -32,6 +32,7 @@ DEFAULT_CONFIG = {
         "delivery_path_linux": "/dev/shm",
         "delivery_path_windows": "C:\\Windows\\Temp",
         "delivery_dir_listing": "False",
+        "delivery_outbound_tls": "True",
         "proxy_port": "8087",
         "shell_port": "4444",
         "webdav_port": "80",

