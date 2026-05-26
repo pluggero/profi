@@ -4,6 +4,7 @@ import datetime
 import ipaddress
 import os
 import ssl
+from urllib.parse import urlparse, parse_qs
 
 from cryptography import x509
 from cryptography.hazmat.backends import default_backend
@@ -14,6 +15,11 @@ from cryptography.x509.oid import NameOID
 class EnhancedRequestHandler(SimpleHTTPRequestHandler):
     show_headers = False
     allow_listing = False
+
+    def do_HEAD(self):
+        print("=" * 32)
+        self.send_response(200)
+        self.end_headers()
 
     def do_GET(self):
         print("=" * 32)
@@ -30,38 +36,71 @@ class EnhancedRequestHandler(SimpleHTTPRequestHandler):
             return super().list_directory(path)
 
     def do_POST(self):
-        import cgi
+        import email.parser
         print("=" * 32)
         if EnhancedRequestHandler.show_headers:
             for key, value in self.headers.items():
                 print(f"{key}: {value}")
 
         content_type = self.headers.get("Content-Type", "")
-        if not content_type.startswith("multipart/form-data"):
-            self.send_error(400, "Expected multipart/form-data")
-            return
-
-        form = cgi.FieldStorage(
-            fp=self.rfile,
-            headers=self.headers,
-            environ={"REQUEST_METHOD": "POST", "CONTENT_TYPE": content_type},
-        )
-
+        length = int(self.headers.get("Content-Length", 0))
         uploaded = []
-        for field in form.list or []:
-            if field.filename:
-                filename = os.path.basename(field.filename)
+
+        if content_type.startswith("multipart/form-data"):
+            body = self.rfile.read(length)
+            mime_data = f"Content-Type: {content_type}\r\n\r\n".encode() + body
+            msg = email.parser.BytesParser().parsebytes(mime_data)
+
+            payload = msg.get_payload()
+            if not isinstance(payload, list):
+                self.send_error(400, "Failed to parse multipart data")
+                return
+            for part in payload:
+                disposition = part.get("Content-Disposition", "")
+                if "filename=" not in disposition:
+                    continue
+                filename = os.path.basename(part.get_filename() or "")
+                if not filename:
+                    continue
                 filepath = os.path.join(os.getcwd(), filename)
                 with open(filepath, "wb") as f:
-                    f.write(field.file.read())
+                    f.write(part.get_payload(decode=True))
                 print(f"Uploaded: {filepath}")
                 uploaded.append(filename)
 
+        elif content_type.startswith("application/octet-stream") or content_type == "":
+            # Try Content-Disposition request header first (WebClient.UploadFile sends this)
+            disposition = self.headers.get("Content-Disposition", "")
+            filename = ""
+            if "filename=" in disposition:
+                for part in disposition.split(";"):
+                    part = part.strip()
+                    if part.lower().startswith("filename="):
+                        filename = part[9:].strip().strip('"').strip("'")
+                        break
+            if not filename:
+                # Fall back to ?filename= query param (iwr with query string)
+                parsed = urlparse(self.path)
+                params = parse_qs(parsed.query)
+                filename = params.get("filename", ["upload"])[0]
+            filename = os.path.basename(filename) or "upload"
+            filepath = os.path.join(os.getcwd(), filename)
+            with open(filepath, "wb") as f:
+                f.write(self.rfile.read(length))
+            print(f"Uploaded: {filepath}")
+            uploaded.append(filename)
+
+        else:
+            self.send_error(400, "Unsupported Content-Type")
+            return
+
         if uploaded:
+            body = f"Saved: {', '.join(uploaded)}\n".encode()
             self.send_response(200)
             self.send_header("Content-Type", "text/plain")
+            self.send_header("Content-Length", str(len(body)))
             self.end_headers()
-            self.wfile.write(f"Saved: {', '.join(uploaded)}\n".encode())
+            self.wfile.write(body)
         else:
             self.send_error(400, "No file found in upload")
 

