@@ -29,6 +29,42 @@ class EnhancedRequestHandler(SimpleHTTPRequestHandler):
         else:
             return super().list_directory(path)
 
+    def do_POST(self):
+        import cgi
+        print("=" * 32)
+        if EnhancedRequestHandler.show_headers:
+            for key, value in self.headers.items():
+                print(f"{key}: {value}")
+
+        content_type = self.headers.get("Content-Type", "")
+        if not content_type.startswith("multipart/form-data"):
+            self.send_error(400, "Expected multipart/form-data")
+            return
+
+        form = cgi.FieldStorage(
+            fp=self.rfile,
+            headers=self.headers,
+            environ={"REQUEST_METHOD": "POST", "CONTENT_TYPE": content_type},
+        )
+
+        uploaded = []
+        for field in form.list or []:
+            if field.filename:
+                filename = os.path.basename(field.filename)
+                filepath = os.path.join(os.getcwd(), filename)
+                with open(filepath, "wb") as f:
+                    f.write(field.file.read())
+                print(f"Uploaded: {filepath}")
+                uploaded.append(filename)
+
+        if uploaded:
+            self.send_response(200)
+            self.send_header("Content-Type", "text/plain")
+            self.end_headers()
+            self.wfile.write(f"Saved: {', '.join(uploaded)}\n".encode())
+        else:
+            self.send_error(400, "No file found in upload")
+
 
 def generate_self_signed_cert(directory, bind):
     private_key = rsa.generate_private_key(
