@@ -1,6 +1,6 @@
 ---
 metadata:
-  filename: "listener-msf-multi-handler-linux-x64-meterpreter-tcp-staged.yaml"
+  filename: "listener-metasploit-linux-x64-meterpreter-staged-tcp.yaml"
   tags: ["linux", "shell"]
   created: "2025-03-29"
   authors: ["Unknown"]
