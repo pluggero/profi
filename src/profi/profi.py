@@ -61,6 +61,7 @@ DEFAULT_CONFIG = {
         "wordlist": "black",
         "utils": "tomato",
         "enum": "tan",
+        "evasion": "coral",
         "xss": "plum",
         "c2": "olive",
     },

