@@ -322,16 +322,17 @@ Function Boerne(Beets)
 End Function
 
 Function Erdbeere(Grapes)
-    Erdbeere = Left(Grapes, 3)
+    Erdbeere = VBA.Left(Grapes, 3)
 End Function
 
 Function Mandel(Jelly)
-    Mandel = Right(Jelly, Len(Jelly) - 3)
+    Mandel = VBA.Right(Jelly, Len(Jelly) - 3)
 End Function
 
 Function DePuzzle(Milk)
+    Dim MM As String
     Do While Len(Milk) > 0
-    MM = MM + Boerne(Erdbeere(Milk))
+    MM = MM & Boerne(Erdbeere(Milk))
     Milk = Mandel(Milk)
     Loop
     DePuzzle = MM
