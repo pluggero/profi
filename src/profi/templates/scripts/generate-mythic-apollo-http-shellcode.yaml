@@ -32,4 +32,4 @@ content: |
   printf '%s\n' '                   Apollo Shellcode Ready                       ' && \
   printf '%s\n' 'Callback: http://{{ attacker_ip }}:{{ mythic_callback_port }}' && \
   printf '%s\n' 'Interval: {{ mythic_callback_interval }}s (jitter: {{ mythic_callback_jitter }}%)' && \
-  printf '%s\n' '================================================================';
+  printf '%s\n' '================================================================'
