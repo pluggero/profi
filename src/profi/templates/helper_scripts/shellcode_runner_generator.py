@@ -117,6 +117,8 @@ def obfuscate(script):
         "patch",
         "moduleName",
         "functionName",
+        "hMod",
+        "hRef",
         "assemblies",
         "delType",
         "assem",
@@ -153,7 +155,9 @@ def block_helpers():
     ).GetType('Microsoft.Win32.UnsafeNativeMethods')
     $tmp = @()
     $assem.GetMethods() | ForEach-Object { If($_.Name -eq "GetProcAddress") { $tmp += $_ } }
-    return $tmp[0].Invoke($null, @(($assem.GetMethod('GetModuleHandle')).Invoke($null, @($moduleName)), $functionName))
+    $hMod = ($assem.GetMethod('GetModuleHandle')).Invoke($null, @($moduleName))
+    $hRef = [System.Runtime.InteropServices.HandleRef]::new([System.Object]::new(), $hMod)
+    return $tmp[0].Invoke($null, @($hRef, $functionName))
 }
 
 function getDelegateType {
