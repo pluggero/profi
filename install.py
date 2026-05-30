@@ -474,6 +474,15 @@ DEPENDENCIES = [
         directory=Path("pingcastle"),
         post_download_function=post_install_pingcastle,
     ),
+    Dependency(
+        name="powershell-empire",
+        version="5.9.3",
+        urls=[
+            "https://raw.githubusercontent.com/BC-SECURITY/Empire/v{version}/empire/server/data/module_source/situational_awareness/network/powerview.ps1",
+            "https://raw.githubusercontent.com/BC-SECURITY/Empire/v{version}/empire/server/data/module_source/management/powercat.ps1",
+        ],
+        directory=Path("powershell-empire"),
+    ),
 ]
 
 
