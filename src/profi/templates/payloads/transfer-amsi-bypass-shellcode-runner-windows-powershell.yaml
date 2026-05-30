@@ -1,7 +1,7 @@
 ---
 metadata:
   filename: "transfer-amsi-bypass-shellcode-runner-windows-powershell.yaml"
-  tags: ["windows", "powershell", "evasion"]
+  tags: ["windows", "evasion"]
   created: "2026-05-30"
   authors: ["@s3mme", "@TIVKU"]
 
