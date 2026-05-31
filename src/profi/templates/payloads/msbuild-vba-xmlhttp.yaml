@@ -1,6 +1,6 @@
 ---
 metadata:
-  filename: "msbuild-vba.yaml"
+  filename: "msbuild-vba-xmlhttp.yaml"
   tags: ["windows", "evasion"]
   created: "2026-05-29"
   authors: ["@s3mme", "@TIVKU"]

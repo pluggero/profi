@@ -252,6 +252,41 @@ def encode_string(literal, randint):
     return f'DePuzzle("{output}")'
 
 
+def split_strings(src, rng, min_len=4):
+    """Split string literals into concatenated parts to break AMSI signatures."""
+    out_lines = []
+    for line in src.splitlines():
+        parts = re.split(r'("(?:[^"]|"")*")', line)
+        for i, part in enumerate(parts):
+            if i % 2 == 1:
+                inner = part[1:-1]
+                if len(inner) < min_len:
+                    continue
+                # Collect positions of characters not inside a "" escape pair
+                safe = []
+                j = 0
+                while j < len(inner):
+                    if j + 1 < len(inner) and inner[j] == '"' and inner[j + 1] == '"':
+                        j += 2
+                        continue
+                    safe.append(j)
+                    j += 1
+                if len(safe) < 2:
+                    continue
+                # Pick 1-2 split points (never at index 0 to avoid empty leading chunk)
+                candidates = safe[1:]
+                n = rng.randint(1, min(2, len(candidates)))
+                positions = sorted(rng.sample(candidates, n))
+                chunks, prev = [], 0
+                for pos in positions:
+                    chunks.append(f'"{inner[prev:pos]}"')
+                    prev = pos
+                chunks.append(f'"{inner[prev:]}"')
+                parts[i] = " & ".join(chunks)
+        out_lines.append("".join(parts))
+    return "\n".join(out_lines)
+
+
 def obfuscate_strings(src, randint):
     out_lines = []
     for line in src.splitlines():
@@ -345,6 +380,7 @@ def obfuscate(src, rng, junk_count):
     randint = rng.randint(1, 20)
     src = get_decode(randint) + src
     src = strip_comments(src)
+    src = split_strings(src, rng)
     src = obfuscate_strings(src, randint)
     src, _ = rename_identifiers(src, rng)
     # src = inject_junk(src, rng, junk_count)
