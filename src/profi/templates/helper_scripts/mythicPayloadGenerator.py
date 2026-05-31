@@ -214,14 +214,7 @@ class MythicPayloadGenerator:
 
             if config_hash in cache:
                 entry = cache[config_hash]
-                cached_output = Path(entry["output_path"])
-
-                if cached_output.exists():
-                    print(f"[*] Reusing existing payload (config hash match, file present: {cached_output})", file=sys.stderr)
-                    return True
-
-                # File was deleted — re-download from Mythic using the cached UUID
-                print(f"[*] Config matches cached payload (UUID: {entry['uuid']}), re-downloading...", file=sys.stderr)
+                print(f"[*] Config matches cached payload (UUID: {entry['uuid']}), downloading to {output_path}...", file=sys.stderr)
                 if not await self.login():
                     return False
                 return await self.download_payload_async(entry["uuid"], output_path)
