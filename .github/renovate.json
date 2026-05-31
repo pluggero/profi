@@ -149,6 +149,18 @@
       "datasourceTemplate": "github-releases",
       "depNameTemplate": "netwrix/pingcastle",
       "versioningTemplate": "ruby"
+    },
+    {
+      "customType": "regex",
+      "managerFilePatterns": [
+        "install.py"
+      ],
+      "matchStrings": [
+        "name=\"powershell-empire\",\\s+version=\"(?<currentValue>[\\d\\.]+)\""
+      ],
+      "datasourceTemplate": "github-releases",
+      "depNameTemplate": "BC-SECURITY/Empire",
+      "versioningTemplate": "semver"
     }
   ],
   "customDatasources": {

