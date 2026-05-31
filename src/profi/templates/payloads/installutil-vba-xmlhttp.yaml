@@ -1,6 +1,6 @@
 ---
 metadata:
-  filename: "installutil-vba.yaml"
+  filename: "installutil-vba-xmlhttp.yaml"
   tags: ["windows", "evasion"]
   created: "2026-05-29"
   authors: ["@s3mme", "@TIVKU"]
