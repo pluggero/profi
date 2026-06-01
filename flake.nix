@@ -52,6 +52,12 @@
     invoke-eventviewer.url = "https://raw.githubusercontent.com/CsEnox/EventViewer-UACBypass/main/Invoke-EventViewer.ps1";
     invoke-eventviewer.flake = false;
 
+    powerview.url = "https://raw.githubusercontent.com/BC-SECURITY/Empire/v5.9.3/empire/server/data/module_source/situational_awareness/network/PowerView.ps1";
+    powerview.flake = false;
+
+    powercat.url = "https://raw.githubusercontent.com/BC-SECURITY/Empire/v5.9.3/empire/server/data/module_source/management/powercat.ps1";
+    powercat.flake = false;
+
     payloadAllTheThings.url = "file+https://github.com/swisskyrepo/PayloadsAllTheThings/archive/refs/tags/4.1.zip";
     payloadAllTheThings.flake = false;
 
@@ -128,6 +134,8 @@
             "vshadow/Invoke-vshadow.ps1" = "${invoke-vshadow}";
             "godpotato/GodPotato-NET4.exe" = "${godpotato}";
             "uacbypass/Invoke-EventViewer.ps1" = "${invoke-eventviewer}";
+            "powershell-empire/powerview.ps1" = "${powerview}";
+            "powershell-empire/powercat.ps1" = "${powercat}";
             "powershell/spray-passwords.ps1" = templatesDir + /helper_scripts/spray-passwords.ps1;
             "nmap/nmapServicesToNote.py" = templatesDir + /helper_scripts/nmapServicesToNote.py;
             "nmap/nmapServicesToOrg.py" = templatesDir + /helper_scripts/nmapServicesToOrg.py;

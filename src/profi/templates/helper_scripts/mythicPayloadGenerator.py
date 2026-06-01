@@ -8,9 +8,39 @@ official Mythic Python library, polls for build completion, and downloads the ge
 
 import argparse
 import asyncio
+import hashlib
 import json
 import sys
+from datetime import datetime, timezone
 from pathlib import Path
+
+_CACHE_FILE = Path.home() / ".cache" / "profi" / "payload_cache.json"
+
+
+def _compute_config_hash(config: dict) -> str:
+    commands = config.get("commands")
+    identity = {
+        "payload_type": config.get("payload_type"),
+        "selected_os": config.get("selected_os"),
+        "filename": config.get("filename"),
+        "commands": sorted(commands) if isinstance(commands, list) else commands,
+        "c2_profiles": config.get("c2_profiles"),
+        "build_parameters": config.get("build_parameters"),
+    }
+    normalized = json.dumps(identity, sort_keys=True, ensure_ascii=True)
+    return hashlib.sha256(normalized.encode()).hexdigest()
+
+
+def _load_cache(cache_file: Path) -> dict:
+    try:
+        return json.loads(cache_file.read_text())
+    except (FileNotFoundError, json.JSONDecodeError):
+        return {}
+
+
+def _save_cache(cache_file: Path, cache: dict) -> None:
+    cache_file.parent.mkdir(parents=True, exist_ok=True)
+    cache_file.write_text(json.dumps(cache, indent=2))
 
 try:
     from mythic import mythic as mythic_api
@@ -165,17 +195,30 @@ class MythicPayloadGenerator:
             traceback.print_exc(file=sys.stderr)
             return False
 
-    async def generate_from_config_async(self, config, output_path):
+    async def generate_from_config_async(self, config, output_path, use_cache=True):
         """
         Complete workflow: login, create payload (with build wait), and download.
 
         Args:
             config: Payload configuration dictionary
             output_path: Local path to save payload
+            use_cache: When True, skip generation if an identical payload was already built
 
         Returns:
             True if successful, False otherwise
         """
+        # Step 0: Check local cache to avoid re-generating an identical payload
+        if use_cache:
+            config_hash = _compute_config_hash(config)
+            cache = _load_cache(_CACHE_FILE)
+
+            if config_hash in cache:
+                entry = cache[config_hash]
+                print(f"[*] Config matches cached payload (UUID: {entry['uuid']}), downloading to {output_path}...", file=sys.stderr)
+                if not await self.login():
+                    return False
+                return await self.download_payload_async(entry["uuid"], output_path)
+
         # Step 1: Login
         if not await self.login():
             return False
@@ -186,20 +229,34 @@ class MythicPayloadGenerator:
             return False
 
         # Step 3: Download payload
-        return await self.download_payload_async(payload_uuid, output_path)
+        if not await self.download_payload_async(payload_uuid, output_path):
+            return False
 
-    def generate_from_config(self, config, output_path):
+        # Step 4: Persist to cache so subsequent runs can reuse this payload
+        if use_cache:
+            cache[config_hash] = {
+                "uuid": payload_uuid,
+                "output_path": str(output_path),
+                "created_at": datetime.now(timezone.utc).isoformat(),
+                "payload_type": config.get("payload_type"),
+            }
+            _save_cache(_CACHE_FILE, cache)
+
+        return True
+
+    def generate_from_config(self, config, output_path, use_cache=True):
         """
         Synchronous wrapper for the async generate workflow.
 
         Args:
             config: Payload configuration dictionary
             output_path: Local path to save payload
+            use_cache: When True, skip generation if an identical payload was already built
 
         Returns:
             True if successful, False otherwise
         """
-        return asyncio.run(self.generate_from_config_async(config, output_path))
+        return asyncio.run(self.generate_from_config_async(config, output_path, use_cache=use_cache))
 
 
 def main():
@@ -245,6 +302,8 @@ Examples:
                         help='Build timeout in seconds (default: 300)')
     parser.add_argument('--ssl-verify', action='store_true',
                         help='Verify SSL certificates (default: disabled for self-signed certs)')
+    parser.add_argument('--no-cache', action='store_true',
+                        help='Always generate a new payload, ignoring the local cache')
 
     args = parser.parse_args()
 
@@ -293,7 +352,7 @@ Examples:
     )
 
     # Generate payload
-    success = generator.generate_from_config(config, args.output)
+    success = generator.generate_from_config(config, args.output, use_cache=not args.no_cache)
 
     if success:
         print(f"[+] Payload generation complete: {args.output}", file=sys.stderr)

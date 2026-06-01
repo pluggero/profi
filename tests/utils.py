@@ -9,6 +9,7 @@ AVAILABLE_TAGS = {
     "c2",
     "cracking",
     "domain",
+    "evasion",
     "linux",
     "mobile",
     "privesc",

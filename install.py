@@ -343,7 +343,7 @@ def post_install_pingcastle(dep: Dependency, dest_dir: Path):
 DEPENDENCIES = [
     Dependency(
         name="sharphound",
-        version="2.11.0",
+        version="2.13.0",
         urls=[
             "https://github.com/SpecterOps/SharpHound/releases/download/v{version}/SharpHound_v{version}_windows_x86.zip"
         ],
@@ -387,7 +387,7 @@ DEPENDENCIES = [
     ),
     Dependency(
         name="linpeas",
-        version="20260323-31545e76",
+        version="20260528-82c8c3b6",
         urls=[
             "https://github.com/peass-ng/PEASS-ng/releases/download/{version}/linpeas.sh",
         ],
@@ -395,7 +395,7 @@ DEPENDENCIES = [
     ),
     Dependency(
         name="winpeas",
-        version="20260323-31545e76",
+        version="20260528-82c8c3b6",
         urls=[
             "https://github.com/peass-ng/PEASS-ng/releases/download/{version}/winPEAS.bat",
             "https://github.com/peass-ng/PEASS-ng/releases/download/{version}/winPEASx64.exe",
@@ -467,12 +467,21 @@ DEPENDENCIES = [
     ),
     Dependency(
         name="pingcastle",
-        version="3.5.0.44",
+        version="3.5.1.31",
         urls=[
             "https://github.com/netwrix/pingcastle/releases/download/{version}/PingCastle_{version}.zip",
         ],
         directory=Path("pingcastle"),
         post_download_function=post_install_pingcastle,
+    ),
+    Dependency(
+        name="powershell-empire",
+        version="6.6.0",
+        urls=[
+            "https://raw.githubusercontent.com/BC-SECURITY/Empire/v{version}/empire/server/data/module_source/situational_awareness/network/powerview.ps1",
+            "https://raw.githubusercontent.com/BC-SECURITY/Empire/v{version}/empire/server/data/module_source/management/powercat.ps1",
+        ],
+        directory=Path("powershell-empire"),
     ),
 ]
 

