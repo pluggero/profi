@@ -1,0 +1,9 @@
+---
+metadata:
+  filename: "null-bytes.yaml"
+  tags: ["wordlist"]
+  created: "2026-04-23"
+  authors: ["@anakles"]
+
+content: |
+  %00%2500%252500\u0000%u0000
