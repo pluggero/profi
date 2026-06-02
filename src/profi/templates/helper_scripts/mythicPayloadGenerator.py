@@ -78,7 +78,6 @@ class MythicPayloadGenerator:
         try:
             print(f"[*] Authenticating with Mythic server...", file=sys.stderr)
 
-            # Login using API token
             self.mythic_instance = await mythic_api.login(
                 apitoken=self.api_token,
                 server_ip=self.server_ip,
@@ -87,13 +86,30 @@ class MythicPayloadGenerator:
                 timeout=self.timeout
             )
 
+            # mythic_api.login() does NOT validate the token when apitoken is passed
+            # directly — it returns immediately without any network call. Probe with a
+            # lightweight query so we catch invalid/missing tokens here instead of
+            # silently failing later during payload creation or download.
+            # Suppress the library's own logger during the probe so it doesn't emit
+            # a duplicate ERROR line before our cleaner message.
+            import logging as _logging
+            _saved_level = self.mythic_instance.logger.level
+            self.mythic_instance.logger.setLevel(_logging.CRITICAL)
+            try:
+                await mythic_api.execute_custom_query(
+                    mythic=self.mythic_instance,
+                    query="query ProbeAuth { operator { id } }"
+                )
+            except Exception:
+                raise Exception("API token was rejected by the Mythic server.")
+            finally:
+                self.mythic_instance.logger.setLevel(_saved_level)
+
             print(f"[+] Successfully authenticated", file=sys.stderr)
             return True
 
         except Exception as e:
             print(f"[!] Authentication failed: {e}", file=sys.stderr)
-            import traceback
-            traceback.print_exc(file=sys.stderr)
             return False
 
     async def create_payload_from_json(self, config):
@@ -191,8 +207,6 @@ class MythicPayloadGenerator:
 
         except Exception as e:
             print(f"[!] Download failed: {e}", file=sys.stderr)
-            import traceback
-            traceback.print_exc(file=sys.stderr)
             return False
 
     async def generate_from_config_async(self, config, output_path, use_cache=True):
@@ -207,21 +221,25 @@ class MythicPayloadGenerator:
         Returns:
             True if successful, False otherwise
         """
-        # Step 0: Check local cache to avoid re-generating an identical payload
-        if use_cache:
-            config_hash = _compute_config_hash(config)
-            cache = _load_cache(_CACHE_FILE)
+        config_hash = _compute_config_hash(config) if use_cache else None
+        cache = _load_cache(_CACHE_FILE) if use_cache else {}
 
-            if config_hash in cache:
-                entry = cache[config_hash]
-                print(f"[*] Config matches cached payload (UUID: {entry['uuid']}), downloading to {output_path}...", file=sys.stderr)
-                if not await self.login():
-                    return False
-                return await self.download_payload_async(entry["uuid"], output_path)
-
-        # Step 1: Login
-        if not await self.login():
-            return False
+        # Step 0: Try cached payload first to avoid re-generating an identical payload
+        if use_cache and config_hash in cache:
+            entry = cache[config_hash]
+            print(f"[*] Config matches cached payload (UUID: {entry['uuid']}), downloading to {output_path}...", file=sys.stderr)
+            if not await self.login():
+                return False
+            if await self.download_payload_async(entry["uuid"], output_path):
+                return True
+            # Payload no longer exists on the server (e.g. DB was reset) — evict and rebuild
+            print(f"[!] Cached payload no longer exists on server, regenerating...", file=sys.stderr)
+            del cache[config_hash]
+            _save_cache(_CACHE_FILE, cache)
+        else:
+            # Step 1: Login
+            if not await self.login():
+                return False
 
         # Step 2: Create payload (waits for build automatically)
         payload_uuid = await self.create_payload_from_json(config)
