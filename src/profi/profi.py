@@ -244,7 +244,7 @@ def get_available_templates(template_dir: str, clean: bool = False) -> list[str]
         if f.is_file():
             # Exclude certain folders and files that are not YAML
             parts = set(f.parts)
-            if not {"helper_scripts", "source_code", "variables"}.intersection(parts):
+            if not {"helper_scripts", "variables"}.intersection(parts):
                 # Only include YAML files
                 if f.suffix in {".yaml"}:
                     # Store the file path relative to the templates root

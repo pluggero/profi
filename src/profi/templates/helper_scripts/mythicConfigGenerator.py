@@ -12,17 +12,30 @@ import sys
 from datetime import datetime, timedelta
 
 
-def parse_commands(commands_str):
+def parse_commands(commands_str, payload_type="apollo"):
     """
     Parse commands string into a list.
 
     Args:
         commands_str: Either "all" or comma-separated list of commands
+        payload_type: Mythic payload type (apollo, poseidon, etc.)
 
     Returns:
         List of command names, or special list for "all"
     """
     if commands_str.lower() == "all":
+        if payload_type.lower() == "poseidon":
+            return [
+                "cat", "cd", "chmod", "config", "cp", "curl", "curl_env_clear",
+                "curl_env_get", "curl_env_set", "download", "download_bulk",
+                "drives", "exit", "getenv", "getuser", "head", "ifconfig",
+                "jobkill", "jobs", "keylog", "keys", "kill", "link_tcp",
+                "link_webshell", "ls", "mkdir", "mv", "portscan", "print_c2",
+                "print_p2p", "ps", "pty", "pwd", "rm", "rpfwd", "run",
+                "setenv", "shell", "shell_config", "sleep", "socks", "ssh",
+                "sshauth", "tail", "triagedirectory", "unlink_tcp",
+                "unlink_webshell", "unsetenv", "update_c2", "upload"
+            ]
         # Return comprehensive Apollo command set
         return [
             "assembly_inject", "blockdlls", "cat", "cd", "cp", "dcsync",
@@ -64,7 +77,7 @@ def generate_config(args):
         killdate = future_date.strftime("%Y-%m-%d")
 
     # Parse commands
-    commands = parse_commands(args.commands)
+    commands = parse_commands(args.commands, args.payload_type)
 
     # Build C2 profile parameters based on payload type
     c2_profile_params = {
