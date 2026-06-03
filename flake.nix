@@ -52,10 +52,10 @@
     invoke-eventviewer.url = "https://raw.githubusercontent.com/CsEnox/EventViewer-UACBypass/main/Invoke-EventViewer.ps1";
     invoke-eventviewer.flake = false;
 
-    powerview.url = "https://raw.githubusercontent.com/BC-SECURITY/Empire/v5.9.3/empire/server/data/module_source/situational_awareness/network/PowerView.ps1";
+    powerview.url = "https://raw.githubusercontent.com/BC-SECURITY/Empire/v6.6.0/empire/server/data/module_source/situational_awareness/network/powerview.ps1";
     powerview.flake = false;
 
-    powercat.url = "https://raw.githubusercontent.com/BC-SECURITY/Empire/v5.9.3/empire/server/data/module_source/management/powercat.ps1";
+    powercat.url = "https://raw.githubusercontent.com/BC-SECURITY/Empire/v6.6.0/empire/server/data/module_source/management/powercat.ps1";
     powercat.flake = false;
 
     payloadAllTheThings.url = "file+https://github.com/swisskyrepo/PayloadsAllTheThings/archive/refs/tags/4.1.zip";
@@ -97,6 +97,8 @@
         system:
         let
           pkgs = nixpkgsFor.${system};
+
+          python-mythic = pkgs.python3Packages.callPackage ./pkgs/mythic.nix { };
 
           templatesDir = ./src/profi/templates;
 
@@ -181,6 +183,7 @@
                 pyyaml
                 click
                 jinja2
+                python-mythic
               ];
 
               preFixup =
