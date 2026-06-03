@@ -160,6 +160,30 @@
         "url": "https://github.com/swisskyrepo/PayloadsAllTheThings/archive/refs/tags/4.1.zip"
       }
     },
+    "powercat": {
+      "flake": false,
+      "locked": {
+        "narHash": "sha256-YhmbRGgJFGLenI1TRZNkE2fXmVsx+1XuPwj7qUIPqAY=",
+        "type": "file",
+        "url": "https://raw.githubusercontent.com/BC-SECURITY/Empire/v6.6.0/empire/server/data/module_source/management/powercat.ps1"
+      },
+      "original": {
+        "type": "file",
+        "url": "https://raw.githubusercontent.com/BC-SECURITY/Empire/v6.6.0/empire/server/data/module_source/management/powercat.ps1"
+      }
+    },
+    "powerview": {
+      "flake": false,
+      "locked": {
+        "narHash": "sha256-vU43mtv5C9IP5HNaiFoh60YtjC3U7NpcM7ZK1mMxoMc=",
+        "type": "file",
+        "url": "https://raw.githubusercontent.com/BC-SECURITY/Empire/v6.6.0/empire/server/data/module_source/situational_awareness/network/powerview.ps1"
+      },
+      "original": {
+        "type": "file",
+        "url": "https://raw.githubusercontent.com/BC-SECURITY/Empire/v6.6.0/empire/server/data/module_source/situational_awareness/network/powerview.ps1"
+      }
+    },
     "printspoofer32": {
       "flake": false,
       "locked": {
@@ -210,6 +234,8 @@
         "mimikatz": "mimikatz",
         "nixpkgs": "nixpkgs",
         "payloadAllTheThings": "payloadAllTheThings",
+        "powercat": "powercat",
+        "powerview": "powerview",
         "printspoofer32": "printspoofer32",
         "printspoofer64": "printspoofer64",
         "pspy": "pspy",
@@ -220,7 +246,7 @@
     "sysinternals": {
       "flake": false,
       "locked": {
-        "narHash": "sha256-jAAfq0S6sd5x3VgcvSoNQ/1m9abu3dH7RyYUgKVwWA8=",
+        "narHash": "sha256-y9RXn4U+28Gb56K1MEwEiQZYRbQAULRjtkF7D+u2BVs=",
         "type": "file",
         "url": "https://download.sysinternals.com/files/SysinternalsSuite.zip"
       },
