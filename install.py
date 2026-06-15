@@ -303,6 +303,19 @@ def post_install_ligolo(dep: Dependency, dest_dir: Path):
     safe_move_files("*", windowsAgentDir, Path(f"{dest_dir}/agent/windows"))
     Path.rmdir(windowsAgentDir)
 
+    # Agent - Linux
+    safe_move_files(
+        "ligolo-ng_agent_*_linux_amd64.tar.gz",
+        dest_dir,
+        Path(f"{dest_dir}/agent/linux"),
+    )
+    gunzip_files(Path(f"{dest_dir}/agent/linux"))
+    untar_files(Path(f"{dest_dir}/agent/linux"))
+    linuxAgentDir = Path(
+        f"{dest_dir}/agent/linux/ligolo-ng_agent_{dep.version}_linux_amd64"
+    )
+    safe_move_files("*", linuxAgentDir, Path(f"{dest_dir}/agent/linux"))
+
     # Proxy - Linux
     safe_move_files(
         "ligolo-ng_proxy_*_linux_amd64.tar.gz",
@@ -417,6 +430,7 @@ DEPENDENCIES = [
         version="0.8.3",
         urls=[
             "https://github.com/nicocha30/ligolo-ng/releases/download/v{version}/ligolo-ng_agent_{version}_windows_amd64.zip",
+            "https://github.com/nicocha30/ligolo-ng/releases/download/v{version}/ligolo-ng_agent_{version}_linux_amd64.tar.gz",
             "https://github.com/nicocha30/ligolo-ng/releases/download/v{version}/ligolo-ng_proxy_{version}_linux_amd64.tar.gz",
         ],
         directory=Path("ligolo-ng"),
