@@ -99,13 +99,13 @@
     "ligolo-ng-agent-windows": {
       "flake": false,
       "locked": {
-        "narHash": "sha256-3pnFeSfvQZMllt25NDdbBrYOMvBtA2JhR4MVOKKE1ck=",
+        "narHash": "sha256-6IPkTHs45aqO4M70m/Ea7RdVHWKSYmIcupwjJSJSC88=",
         "type": "file",
-        "url": "https://github.com/nicocha30/ligolo-ng/releases/download/v0.8.2/ligolo-ng_agent_0.8.2_windows_amd64.zip"
+        "url": "https://github.com/nicocha30/ligolo-ng/releases/download/v0.8.3/ligolo-ng_agent_0.8.3_windows_amd64.zip"
       },
       "original": {
         "type": "file",
-        "url": "https://github.com/nicocha30/ligolo-ng/releases/download/v0.8.2/ligolo-ng_agent_0.8.2_windows_amd64.zip"
+        "url": "https://github.com/nicocha30/ligolo-ng/releases/download/v0.8.3/ligolo-ng_agent_0.8.3_windows_amd64.zip"
       }
     },
     "ligolo-ng-agent-wintun": {
