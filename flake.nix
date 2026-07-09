@@ -118,9 +118,9 @@
             "chisel/chisel_windows_amd64.gz" = "${chisel-windows}";
             "chisel/chisel_linux_amd64.gz" = "${pkgs.chisel}/bin/chisel";
 
-            "ghostpack/rubeus.exe" = "${ghostpack}/Rubeus.exe";
-            "ghostpack/certify.exe" = "${ghostpack}/Certify.exe";
-            "ghostpack/seatbelt.exe" = "${ghostpack}/Seatbelt.exe";
+            "ghostpack/Rubeus.exe" = "${ghostpack}/Rubeus.exe";
+            "ghostpack/Certify.exe" = "${ghostpack}/Certify.exe";
+            "ghostpack/Seatbelt.exe" = "${ghostpack}/Seatbelt.exe";
             "pspy/pspy64" = "${pspy}";
 
             # Workaround for https://github.com/NixOS/nix/issues/7083
