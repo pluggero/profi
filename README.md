@@ -6,6 +6,8 @@
 
 ## Usage
 
+![Demo](.github/assets/demo.gif)
+
 ### Tags
 
 You can search for templates either by name or by tag.
@@ -30,7 +32,7 @@ We currently support these tags:
 | <span color='black'>wordlist</span>    | For templates that help you creating wordlists                                                                                             |
 | <span color='tomato'>utils</span>      | For templates that run utility scripts                                                                                                     |
 | <span color='tan'>enum</span>          | For templates that help you to enumerate targets                                                                                           |
-| <span color='coral'>evasion</span>     | For templates that help bypass security controls (AV, EDR, AMSI, etc.)                                                                    |
+| <span color='coral'>evasion</span>     | For templates that help bypass security controls (AV, EDR, AMSI, etc.)                                                                     |
 | <span color='plum'>xss</span>          | For templates that help you to exploit xss vulnerabilities                                                                                 |
 | <span color='olive'>c2</span>          | For templates that set up or interact with a C2 framework                                                                                  |
 
