@@ -27,7 +27,7 @@
     pspy.url = "https://github.com/DominicBreuker/pspy/releases/download/v1.2.1/pspy64";
     pspy.flake = false;
 
-    ligolo-ng-agent-windows.url = "file+https://github.com/nicocha30/ligolo-ng/releases/download/v0.8.2/ligolo-ng_agent_0.8.2_windows_amd64.zip";
+    ligolo-ng-agent-windows.url = "file+https://github.com/nicocha30/ligolo-ng/releases/download/v0.8.3/ligolo-ng_agent_0.8.3_windows_amd64.zip";
     ligolo-ng-agent-windows.flake = false;
 
     # Broken due to being tar.gz => need to fix in postUnpackPhase
@@ -124,9 +124,16 @@
             "pspy/pspy64" = "${pspy}";
 
             # Workaround for https://github.com/NixOS/nix/issues/7083
+            "ligolo-ng/agent/linux" = pkgs.fetchzip {
+              url = "https://github.com/nicocha30/ligolo-ng/releases/download/v0.8.3/ligolo-ng_agent_0.8.3_linux_amd64.tar.gz";
+              sha256 = "sha256-Pr8KjJb+6Gx87cLNjaiP6cWLnb/fRsxiyoeZR6ge2pE=";
+              stripRoot = false;
+            };
+
+            # Workaround for https://github.com/NixOS/nix/issues/7083
             "ligolo-ng/proxy/linux" = pkgs.fetchzip {
-              url = "https://github.com/nicocha30/ligolo-ng/releases/download/v0.7.5/ligolo-ng_proxy_0.7.5_linux_amd64.tar.gz";
-              sha256 = "sha256-YfX6DFbDe9PtZnVEKAyS2PFEkjjPxl+8nUYb40HJLak=";
+              url = "https://github.com/nicocha30/ligolo-ng/releases/download/v0.8.3/ligolo-ng_proxy_0.8.3_linux_amd64.tar.gz";
+              sha256 = "sha256-1RjhLwCebOHaWFEmyMx74dRparUYDj872mos9QlYEB0=";
               stripRoot = false;
             };
             # "ligolo-ng/proxy/linux" = "${ligolo-ng-proxy-linux}";
