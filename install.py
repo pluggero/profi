@@ -400,7 +400,7 @@ DEPENDENCIES = [
     ),
     Dependency(
         name="linpeas",
-        version="20260604-085abf96",
+        version="20260708-abaa95f3",
         urls=[
             "https://github.com/peass-ng/PEASS-ng/releases/download/{version}/linpeas.sh",
         ],
@@ -408,7 +408,7 @@ DEPENDENCIES = [
     ),
     Dependency(
         name="winpeas",
-        version="20260604-085abf96",
+        version="20260708-abaa95f3",
         urls=[
             "https://github.com/peass-ng/PEASS-ng/releases/download/{version}/winPEAS.bat",
             "https://github.com/peass-ng/PEASS-ng/releases/download/{version}/winPEASx64.exe",
@@ -417,7 +417,7 @@ DEPENDENCIES = [
     ),
     Dependency(
         name="chisel",
-        version="1.11.5",
+        version="1.11.8",
         urls=[
             "https://github.com/jpillora/chisel/releases/download/v{version}/chisel_{version}_windows_amd64.zip",
             "https://github.com/jpillora/chisel/releases/download/v{version}/chisel_{version}_linux_amd64.gz",
