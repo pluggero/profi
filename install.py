@@ -490,7 +490,7 @@ DEPENDENCIES = [
     ),
     Dependency(
         name="powershell-empire",
-        version="6.6.0",
+        version="6.7.1",
         urls=[
             "https://raw.githubusercontent.com/BC-SECURITY/Empire/v{version}/empire/server/data/module_source/situational_awareness/network/powerview.ps1",
             "https://raw.githubusercontent.com/BC-SECURITY/Empire/v{version}/empire/server/data/module_source/management/powercat.ps1",
