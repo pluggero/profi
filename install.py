@@ -481,7 +481,7 @@ DEPENDENCIES = [
     ),
     Dependency(
         name="pingcastle",
-        version="4.0.0.20",
+        version="4.0.0.31",
         urls=[
             "https://github.com/netwrix/pingcastle/releases/download/{version}/PingCastle_{version}.zip",
         ],
