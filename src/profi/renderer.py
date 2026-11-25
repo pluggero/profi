@@ -10,23 +10,15 @@ from .filters import base64_encode, base64_pwsh, hex_encode, url_encode
 from .loader import YamlContentLoader
 
 
-def include_template(template_name: str, env: Environment, context: dict) -> str:
+def include_template(template_name: str, env: Environment, context: dict, **kwargs) -> str:
     """
-    Custom include function for use in Jinja2 expressions.
+    Render an included template for use in {{ include('path') }} expressions.
 
-    This allows templates to use {{ include('path') }} syntax
-    which can then be piped through filters.
-
-    Args:
-        template_name: Name of template to include
-        env: Jinja2 environment
-        context: Current template context
-
-    Returns:
-        Rendered content of the included template
+    kwargs are merged over the shared context, letting a template pass per-call
+    values, e.g. {{ include('partials/download-windows', filename='mimikatz.exe') }}.
     """
     template = env.get_template(template_name)
-    return template.render(**context)
+    return template.render(**{**context, **kwargs})
 
 
 def create_environment(templates_dir: Path) -> Environment:

