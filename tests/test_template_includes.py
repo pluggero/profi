@@ -6,7 +6,7 @@ import pytest
 
 from tests.utils import PROJECT_ROOT, TEMPLATES_DIR, get_all_templates, load_yaml_file
 
-INCLUDE_PATTERN = re.compile(r"""include\(\s*['"]([^'"]+)['"]\s*\)""")
+INCLUDE_PATTERN = re.compile(r"""include\(\s*['"]([^'"]+)['"]\s*(?:,[^)]*)?\)""")
 
 
 def _include_pairs():
