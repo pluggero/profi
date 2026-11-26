@@ -100,6 +100,12 @@
 
           python-mythic = pkgs.python3Packages.callPackage ./pkgs/mythic.nix { };
 
+          sharphound = pkgs.fetchzip {
+            url = "https://github.com/SpecterOps/SharpHound/releases/download/v1.1.1/SharpHound-v1.1.1.zip";
+            hash = "sha256-NpWqqC5gIw6Ecz+PizksAb+t8thl/Zuj2VDTs7cbfLY=";
+            stripRoot = false;
+          };
+
           templatesDir = ./src/profi/templates;
 
           # Mapping of tools to copy in the form of `destination = source`. The
@@ -109,10 +115,8 @@
           # Each entry will be copied during the installPhase.
           external-tools = with inputs; {
 
-            "bloodhound/SharpHound.ps1" =
-              "${pkgs.bloodhound}/lib/BloodHound/resources/app/Collectors/SharpHound.ps1";
-            "bloodhound/SharpHound.exe" =
-              "${pkgs.bloodhound}/lib/BloodHound/resources/app/Collectors/SharpHound.exe";
+            "bloodhound/SharpHound.ps1" = "${sharphound}/SharpHound.ps1";
+            "bloodhound/SharpHound.exe" = "${sharphound}/SharpHound.exe";
 
             "Invoke-Mimikatz.ps1" = "${invoke-mimikatz}/Invoke-Mimikatz.ps1";
             "chisel/chisel_windows_amd64.gz" = "${chisel-windows}";
